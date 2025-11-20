@@ -1,0 +1,13 @@
+{
+  "name": "main_footer",
+  "version": "1.0.0",
+  "display_name": "Main Footer",
+  "description": "Simple footer with links and copyright",
+  "author": {
+    "name": "Spwig",
+    "email": "themes@spwig.com"
+  },
+  "regions": ["footer"],
+  "category": "footer",
+  "tags": ["footer", "links", "copyright"]
+}

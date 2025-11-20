@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ product.title }} - {{ store.name }}{% endblock %}
+
+{% block body_class %}page-product{% endblock %}
+
+{% block content %}
+  <div class="product-page">
+    <div class="product-gallery">
+      <div class="main-image">
+        <img src="{{ product.image }}" alt="{{ product.title }}" id="main-product-image">
+      </div>
+
+      {% if product.images|length > 1 %}
+        <div class="thumbnails">
+          {% for image in product.images %}
+            <button class="thumbnail" data-image="{{ image.url }}">
+              <img src="{{ image.thumbnail }}" alt="{{ product.title }} - Image {{ forloop.counter }}">
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="product-info">
+      <h1 class="product-title">{{ product.title }}</h1>
+
+      {% if product.vendor %}
+        <p class="product-vendor">by {{ product.vendor }}</p>
+      {% endif %}
+
+      <div class="product-price">
+        {% if product.compare_at_price %}
+          <span class="sale-price">{{ product.price|currency }}</span>
+          <span class="compare-price">{{ product.compare_at_price|currency }}</span>
+        {% else %}
+          <span class="regular-price">{{ product.price|currency }}</span>
+        {% endif %}
+      </div>
+
+      {% if product.variants|length > 1 %}
+        <div class="product-variants">
+          <label for="variant-select">Options:</label>
+          <select id="variant-select" name="variant_id">
+            {% for variant in product.variants %}
+              <option value="{{ variant.id }}"
+                      data-price="{{ variant.price }}"
+                      {% if not variant.available %}disabled{% endif %}>
+                {{ variant.title }}
+                {% if not variant.available %} - Sold Out{% endif %}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endif %}
+
+      <form action="/cart/add" method="post" class="add-to-cart-form">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <input type="hidden" name="variant_id" value="{{ product.variants.0.id }}">
+
+        <div class="quantity-selector">
+          <label for="quantity">Quantity:</label>
+          <input type="number" id="quantity" name="quantity" value="1" min="1">
+        </div>
+
+        <button type="submit" class="add-to-cart-button"
+                {% if not product.available %}disabled{% endif %}>
+          {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+        </button>
+      </form>
+
+      <div class="product-description">
+        {{ product.description|safe }}
+      </div>
+    </div>
+  </div>
+{% endblock %}

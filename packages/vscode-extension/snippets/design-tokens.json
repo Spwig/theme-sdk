@@ -1,0 +1,106 @@
+{
+  "Complete Design Tokens": {
+    "prefix": "spwig-tokens",
+    "body": [
+      "{",
+      "  \"colors\": {",
+      "    \"primary\": \"${1:#3b82f6}\",",
+      "    \"secondary\": \"${2:#6b7280}\",",
+      "    \"accent\": \"${3:#f59e0b}\",",
+      "    \"background\": \"${4:#ffffff}\",",
+      "    \"surface\": \"${5:#f9fafb}\",",
+      "    \"text\": \"${6:#1f2937}\",",
+      "    \"text_secondary\": \"${7:#6b7280}\",",
+      "    \"border\": \"${8:#e5e7eb}\",",
+      "    \"error\": \"${9:#ef4444}\",",
+      "    \"success\": \"${10:#22c55e}\"",
+      "  },",
+      "  \"typography\": {",
+      "    \"font_family_heading\": \"${11:system-ui, sans-serif}\",",
+      "    \"font_family_body\": \"${12:system-ui, sans-serif}\",",
+      "    \"font_size_base\": \"${13:16px}\",",
+      "    \"font_size_sm\": \"${14:14px}\",",
+      "    \"font_size_lg\": \"${15:18px}\",",
+      "    \"font_size_xl\": \"${16:24px}\",",
+      "    \"font_size_2xl\": \"${17:32px}\",",
+      "    \"font_size_3xl\": \"${18:48px}\",",
+      "    \"line_height\": \"${19:1.6}\"",
+      "  },",
+      "  \"spacing\": {",
+      "    \"xs\": \"${20:0.25rem}\",",
+      "    \"sm\": \"${21:0.5rem}\",",
+      "    \"md\": \"${22:1rem}\",",
+      "    \"lg\": \"${23:1.5rem}\",",
+      "    \"xl\": \"${24:2rem}\",",
+      "    \"2xl\": \"${25:3rem}\",",
+      "    \"3xl\": \"${26:4rem}\"",
+      "  },",
+      "  \"borders\": {",
+      "    \"radius_sm\": \"${27:4px}\",",
+      "    \"radius_md\": \"${28:8px}\",",
+      "    \"radius_lg\": \"${29:12px}\",",
+      "    \"radius_full\": \"${30:9999px}\"",
+      "  }",
+      "}"
+    ],
+    "description": "Complete design tokens file"
+  },
+  "Color Palette": {
+    "prefix": "spwig-color-palette",
+    "body": [
+      "\"colors\": {",
+      "  \"primary\": \"${1:#3b82f6}\",",
+      "  \"secondary\": \"${2:#6b7280}\",",
+      "  \"accent\": \"${3:#f59e0b}\",",
+      "  \"background\": \"${4:#ffffff}\",",
+      "  \"surface\": \"${5:#f9fafb}\",",
+      "  \"text\": \"${6:#1f2937}\",",
+      "  \"text_secondary\": \"${7:#6b7280}\",",
+      "  \"border\": \"${8:#e5e7eb}\"",
+      "}"
+    ],
+    "description": "Color palette tokens"
+  },
+  "Typography Scale": {
+    "prefix": "spwig-typography",
+    "body": [
+      "\"typography\": {",
+      "  \"font_family_heading\": \"${1:system-ui, sans-serif}\",",
+      "  \"font_family_body\": \"${2:system-ui, sans-serif}\",",
+      "  \"font_size_base\": \"${3:16px}\",",
+      "  \"font_size_sm\": \"${4:14px}\",",
+      "  \"font_size_lg\": \"${5:18px}\",",
+      "  \"font_size_xl\": \"${6:24px}\",",
+      "  \"font_size_2xl\": \"${7:32px}\",",
+      "  \"line_height\": \"${8:1.6}\"",
+      "}"
+    ],
+    "description": "Typography tokens"
+  },
+  "Spacing System": {
+    "prefix": "spwig-spacing",
+    "body": [
+      "\"spacing\": {",
+      "  \"xs\": \"${1:0.25rem}\",",
+      "  \"sm\": \"${2:0.5rem}\",",
+      "  \"md\": \"${3:1rem}\",",
+      "  \"lg\": \"${4:1.5rem}\",",
+      "  \"xl\": \"${5:2rem}\",",
+      "  \"2xl\": \"${6:3rem}\"",
+      "}"
+    ],
+    "description": "Spacing tokens"
+  },
+  "Border Radii": {
+    "prefix": "spwig-borders",
+    "body": [
+      "\"borders\": {",
+      "  \"radius_sm\": \"${1:4px}\",",
+      "  \"radius_md\": \"${2:8px}\",",
+      "  \"radius_lg\": \"${3:12px}\",",
+      "  \"radius_full\": \"${4:9999px}\"",
+      "}"
+    ],
+    "description": "Border radius tokens"
+  }
+}

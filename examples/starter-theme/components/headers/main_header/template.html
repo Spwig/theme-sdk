@@ -1,0 +1,96 @@
+<header class="main-header {% if settings.sticky %}main-header--sticky{% endif %}"
+        style="background-color: {{ settings.background_color }}">
+  <div class="header-container">
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="menu-toggle__bar"></span>
+      <span class="menu-toggle__bar"></span>
+      <span class="menu-toggle__bar"></span>
+    </button>
+
+    <!-- Logo -->
+    <a href="/" class="logo">
+      {% if store.logo %}
+        <img src="{{ store.logo }}" alt="{{ store.name }}">
+      {% else %}
+        <span class="logo-text">{{ store.name }}</span>
+      {% endif %}
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="main-nav" aria-label="Main navigation">
+      {% for item in navigation.main_menu %}
+        <a href="{{ item.url }}"
+           class="nav-link {% if item.url == request.path %}active{% endif %}"
+           {% if item.target %}target="{{ item.target }}"{% endif %}>
+          {{ item.title }}
+        </a>
+      {% endfor %}
+    </nav>
+
+    <!-- Actions -->
+    <div class="header-actions">
+      {% if settings.show_search %}
+        <button class="action-button" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </button>
+      {% endif %}
+
+      {% if settings.show_account %}
+        <a href="/account" class="action-button" aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+      {% endif %}
+
+      <!-- Theme Toggle -->
+      <button class="theme-toggle action-button" aria-label="Toggle dark mode" data-theme-toggle>
+        <!-- Sun icon - shown in dark mode -->
+        <svg class="theme-toggle__icon theme-toggle__icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <!-- Moon icon - shown in light mode -->
+        <svg class="theme-toggle__icon theme-toggle__icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+
+      <a href="/cart" class="action-button cart-button" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+          <path d="M3 6h18"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        {% if cart.item_count > 0 %}
+          <span class="cart-count">{{ cart.item_count }}</span>
+        {% endif %}
+      </a>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+    <div class="mobile-nav__content">
+      {% for item in navigation.main_menu %}
+        <a href="{{ item.url }}"
+           class="mobile-nav__link {% if item.url == request.path %}active{% endif %}"
+           {% if item.target %}target="{{ item.target }}"{% endif %}>
+          {{ item.title }}
+        </a>
+      {% endfor %}
+    </div>
+  </nav>
+</header>

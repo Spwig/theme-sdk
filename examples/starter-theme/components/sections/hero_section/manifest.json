@@ -1,0 +1,13 @@
+{
+  "name": "hero_section",
+  "version": "1.0.0",
+  "display_name": "Hero Section",
+  "description": "Full-width hero with heading, subheading, and call-to-action",
+  "author": {
+    "name": "Spwig",
+    "email": "themes@spwig.com"
+  },
+  "regions": ["main"],
+  "category": "hero",
+  "tags": ["hero", "banner", "cta", "featured"]
+}

@@ -1,0 +1,266 @@
+{
+  "name": "spwig-theme-dev",
+  "displayName": "Spwig Theme Development",
+  "description": "Build professional themes for Spwig eCommerce",
+  "version": "1.1.1",
+  "publisher": "spwig",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spwig/theme-sdk.git",
+    "directory": "packages/vscode-extension"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Other"
+  ],
+  "keywords": [
+    "spwig",
+    "theme",
+    "ecommerce",
+    "jinja2",
+    "django"
+  ],
+  "icon": "resources/icons/extension-icon.png",
+  "activationEvents": [
+    "workspaceContains:**/manifest.json",
+    "onLanguage:html",
+    "onLanguage:json"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "spwig.init",
+        "title": "Create New Theme",
+        "category": "Spwig"
+      },
+      {
+        "command": "spwig.validate",
+        "title": "Validate Theme",
+        "category": "Spwig"
+      },
+      {
+        "command": "spwig.package",
+        "title": "Package Theme",
+        "category": "Spwig"
+      },
+      {
+        "command": "spwig.dev",
+        "title": "Start Dev Server",
+        "category": "Spwig"
+      },
+      {
+        "command": "spwig.devStop",
+        "title": "Stop Dev Server",
+        "category": "Spwig"
+      },
+      {
+        "command": "spwig.componentAdd",
+        "title": "Add Component",
+        "category": "Spwig"
+      },
+      {
+        "command": "spwig.openDocs",
+        "title": "Open Documentation",
+        "category": "Spwig"
+      },
+      {
+        "command": "spwig.refresh",
+        "title": "Refresh Theme Explorer",
+        "category": "Spwig",
+        "icon": "$(refresh)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "spwig.validate",
+        "key": "ctrl+alt+v",
+        "mac": "cmd+alt+v",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "spwig.package",
+        "key": "ctrl+alt+p",
+        "mac": "cmd+alt+p",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "spwig.dev",
+        "key": "ctrl+alt+d",
+        "mac": "cmd+alt+d"
+      },
+      {
+        "command": "spwig.componentAdd",
+        "key": "ctrl+alt+c",
+        "mac": "cmd+alt+c"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "spwig-explorer",
+          "title": "Spwig Themes",
+          "icon": "resources/icons/theme.svg"
+        }
+      ]
+    },
+    "views": {
+      "spwig-explorer": [
+        {
+          "id": "spwigThemeExplorer",
+          "name": "Theme Explorer",
+          "contextualTitle": "Spwig Theme Explorer"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "spwigThemeExplorer",
+        "contents": "No Spwig theme found in workspace.\n[Create New Theme](command:spwig.init)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "spwig.refresh",
+          "when": "view == spwigThemeExplorer",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "spwig.validate",
+          "when": "view == spwigThemeExplorer && viewItem == theme",
+          "group": "spwig@1"
+        },
+        {
+          "command": "spwig.package",
+          "when": "view == spwigThemeExplorer && viewItem == theme",
+          "group": "spwig@2"
+        },
+        {
+          "command": "spwig.dev",
+          "when": "view == spwigThemeExplorer && viewItem == theme",
+          "group": "spwig@3"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "spwig.componentAdd",
+          "when": "explorerResourceIsFolder && resourcePath =~ /components/",
+          "group": "spwig@1"
+        }
+      ]
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": "manifest.json",
+        "url": "./schemas/theme-manifest.schema.json"
+      },
+      {
+        "fileMatch": "components/**/manifest.json",
+        "url": "./schemas/component-manifest.schema.json"
+      },
+      {
+        "fileMatch": "design_tokens.json",
+        "url": "./schemas/design-tokens.schema.json"
+      },
+      {
+        "fileMatch": "pages/*.json",
+        "url": "./schemas/page.schema.json"
+      },
+      {
+        "fileMatch": "components/**/schema.json",
+        "url": "./schemas/component-settings.schema.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "json",
+        "path": "./snippets/manifests.json"
+      },
+      {
+        "language": "json",
+        "path": "./snippets/settings.json"
+      },
+      {
+        "language": "json",
+        "path": "./snippets/design-tokens.json"
+      },
+      {
+        "language": "html",
+        "path": "./snippets/templates.json"
+      }
+    ],
+    "grammars": [
+      {
+        "scopeName": "text.html.jinja",
+        "path": "./syntaxes/jinja-html.tmLanguage.json",
+        "injectTo": ["text.html.basic"]
+      }
+    ],
+    "configuration": {
+      "title": "Spwig Theme Development",
+      "properties": {
+        "spwig.autoValidate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Validate theme on file save"
+        },
+        "spwig.devServer.shopUrl": {
+          "type": "string",
+          "default": "http://localhost:8000",
+          "description": "Spwig shop URL for dev server"
+        },
+        "spwig.devServer.autoOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open browser when starting dev server"
+        },
+        "spwig.cli.path": {
+          "type": "string",
+          "default": "spwig",
+          "description": "Path to Spwig CLI executable"
+        },
+        "spwig.snippets.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Spwig code snippets"
+        },
+        "spwig.treeView.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show Theme Explorer in sidebar"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run esbuild-base -- --production",
+    "esbuild-base": "node esbuild.js",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package --no-dependencies",
+    "publish": "vsce publish --no-dependencies"
+  },
+  "dependencies": {
+    "@spwig/theme-validator": "file:../validator"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/node": "^20.10.0",
+    "@types/fs-extra": "^11.0.4",
+    "esbuild": "^0.19.0",
+    "typescript": "^5.3.0",
+    "@vscode/vsce": "^2.22.0"
+  }
+}

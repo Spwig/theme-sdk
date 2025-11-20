@@ -1,0 +1,46 @@
+{
+  "page_type": "home",
+  "sections": [
+    {
+      "type": "hero_section",
+      "settings": {
+        "heading": "Welcome to Our Store",
+        "subheading": "Discover amazing products at great prices",
+        "background_color": "#f3f4f6",
+        "text_color": "#111827",
+        "text_alignment": "center",
+        "min_height": 500,
+        "show_button": true,
+        "button_text": "Shop Now",
+        "button_url": "/collections/all"
+      }
+    },
+    {
+      "type": "product_grid",
+      "settings": {
+        "heading": "Featured Products",
+        "subheading": "",
+        "text_alignment": "center",
+        "product_count": 8,
+        "columns": "4",
+        "show_vendor": false,
+        "show_sale_badge": true,
+        "show_view_all": true,
+        "view_all_text": "View All Products",
+        "view_all_url": "/collections/all"
+      }
+    },
+    {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Subscribe to Our Newsletter",
+        "description": "Get the latest updates on new products and upcoming sales.",
+        "placeholder": "Enter your email",
+        "button_text": "Subscribe",
+        "background_color": "#f3f4f6",
+        "text_color": "#111827",
+        "privacy_text": "We respect your privacy. Unsubscribe at any time."
+      }
+    }
+  ]
+}

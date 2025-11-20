@@ -1,0 +1,23 @@
+{
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "id": "show_logo",
+      "type": "checkbox",
+      "label": "Show Logo",
+      "default": true
+    },
+    {
+      "id": "sticky",
+      "type": "checkbox",
+      "label": "Sticky Header",
+      "info": "Header stays at top when scrolling",
+      "default": false
+    }
+  ]
+}

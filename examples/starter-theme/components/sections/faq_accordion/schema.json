@@ -1,0 +1,106 @@
+{
+  "name": "FAQ Accordion",
+  "description": "Frequently asked questions with expandable answers",
+  "tag": "faq-accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions",
+      "translatable": true
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Find answers to common questions about our products and services",
+      "translatable": true
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "single", "label": "Single Column" },
+        { "value": "split", "label": "Two Columns" }
+      ],
+      "default": "single"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_multiple_open",
+      "label": "Allow Multiple Open",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "first_open",
+      "label": "First Item Open by Default",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f8fafc"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your return policy?",
+          "translatable": true
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "We offer a 30-day return policy on all items. Products must be unused and in their original packaging. Please contact our customer service team to initiate a return.",
+          "translatable": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "We offer a 30-day return policy on all items. Products must be unused and in their original packaging. Please contact our customer service team to initiate a return."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "Standard shipping typically takes 5-7 business days. Express shipping options are available at checkout for faster delivery."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "Yes, we ship to most countries worldwide. International shipping times and costs vary by location."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How can I track my order?",
+            "answer": "Once your order ships, you'll receive an email with tracking information. You can also check your order status in your account dashboard."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "{{themeName}}",
+  "version": "1.0.0",
+  "display_name": "{{displayName}}",
+  "description": "{{description}}",
+  "author": "{{author}}",
+  "license": "{{license}}",
+  "bundled_components": [
+    {
+      "type": "header",
+      "name": "default_header",
+      "path": "components/headers/default_header"
+    },
+    {
+      "type": "footer",
+      "name": "default_footer",
+      "path": "components/footers/default_footer"
+    },
+    {
+      "type": "section",
+      "name": "hero_section",
+      "path": "components/sections/hero_section"
+    }
+  ],
+  "page_schemas": {
+    "home": "pages/home.json",
+    "product": "pages/product.json",
+    "collection": "pages/collection.json",
+    "cart": "pages/cart.json"
+  },
+  "design_tokens": "design_tokens.json",
+  "tags": ["ecommerce", "modern"],
+  "categories": ["general"],
+  "features": [
+    "Responsive design",
+    "Modern aesthetics",
+    "Customizable color schemes",
+    "Performance optimized"
+  ]
+}

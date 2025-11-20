@@ -1,0 +1,39 @@
+<header class="site-header" style="background-color: {{ settings.background_color }};">
+  <div class="container">
+    <div class="header-content">
+      <!-- Logo -->
+      <div class="header-logo">
+        {% if settings.show_logo and store.logo %}
+          <a href="/">
+            <img src="{{ store.logo }}" alt="{{ store.name }}" class="logo-image">
+          </a>
+        {% else %}
+          <a href="/" class="logo-text">
+            {{ store.name }}
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Navigation -->
+      <nav class="main-navigation">
+        {% for item in navigation.main_menu %}
+          <a href="{{ item.url }}" class="nav-link">
+            {{ item.title }}
+          </a>
+        {% endfor %}
+      </nav>
+
+      <!-- Cart Icon -->
+      <div class="header-actions">
+        <a href="/cart" class="cart-link">
+          <svg class="cart-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M9 2L9 4M15 2L15 4M3 8h18M5 8h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V10a2 2 0 012-2z" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {% if cart.item_count > 0 %}
+            <span class="cart-count">{{ cart.item_count }}</span>
+          {% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,79 @@
+{
+  "settings": [
+    {
+      "id": "heading",
+      "type": "text",
+      "label": "Heading",
+      "default": "Featured Products",
+      "translatable": true
+    },
+    {
+      "id": "subheading",
+      "type": "text",
+      "label": "Subheading",
+      "default": "",
+      "translatable": true
+    },
+    {
+      "id": "text_alignment",
+      "type": "select",
+      "label": "Text Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "id": "product_count",
+      "type": "number",
+      "label": "Number of Products",
+      "default": 8,
+      "min": 2,
+      "max": 24
+    },
+    {
+      "id": "columns",
+      "type": "select",
+      "label": "Desktop Columns",
+      "default": "4",
+      "options": [
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" }
+      ]
+    },
+    {
+      "id": "show_vendor",
+      "type": "checkbox",
+      "label": "Show Vendor",
+      "default": false
+    },
+    {
+      "id": "show_sale_badge",
+      "type": "checkbox",
+      "label": "Show Sale Badge",
+      "default": true
+    },
+    {
+      "id": "show_view_all",
+      "type": "checkbox",
+      "label": "Show View All Link",
+      "default": true
+    },
+    {
+      "id": "view_all_text",
+      "type": "text",
+      "label": "View All Text",
+      "default": "View All Products",
+      "translatable": true
+    },
+    {
+      "id": "view_all_url",
+      "type": "url",
+      "label": "View All URL",
+      "default": "/collections/all"
+    }
+  ]
+}

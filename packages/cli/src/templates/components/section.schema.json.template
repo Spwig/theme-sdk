@@ -1,0 +1,40 @@
+{
+  "settings": [
+    {
+      "id": "title",
+      "type": "text",
+      "label": "Title",
+      "default": "Welcome"
+    },
+    {
+      "id": "description",
+      "type": "textarea",
+      "label": "Description",
+      "default": "Discover our amazing products"
+    },
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "id": "show_button",
+      "type": "checkbox",
+      "label": "Show Button",
+      "default": true
+    },
+    {
+      "id": "button_text",
+      "type": "text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "id": "button_url",
+      "type": "url",
+      "label": "Button URL",
+      "default": "/products"
+    }
+  ]
+}

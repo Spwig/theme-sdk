@@ -1,0 +1,63 @@
+<section class="testimonials-section" style="background-color: {{ settings.background_color }}">
+  <div class="container">
+    {% if settings.heading %}
+      <div class="section-header">
+        <h2 class="section-heading">{{ settings.heading }}</h2>
+        {% if settings.subheading %}
+          <p class="section-subheading">{{ settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="testimonials-grid columns-{{ settings.columns }}">
+      {% for block in blocks %}
+        <div class="testimonial-card">
+          <!-- Rating Stars -->
+          {% if block.settings.rating > 0 %}
+            <div class="testimonial-rating" aria-label="{{ block.settings.rating }} out of 5 stars">
+              {% for i in "12345"|make_list %}
+                {% if forloop.counter <= block.settings.rating %}
+                  <svg class="star star--filled" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                {% else %}
+                  <svg class="star star--empty" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <!-- Quote -->
+          <blockquote class="testimonial-quote">
+            <p>{{ block.settings.quote }}</p>
+          </blockquote>
+
+          <!-- Author -->
+          <div class="testimonial-author">
+            {% if block.settings.author_image %}
+              <img src="{{ block.settings.author_image }}"
+                   alt="{{ block.settings.author_name }}"
+                   class="testimonial-avatar"
+                   loading="lazy">
+            {% else %}
+              <div class="testimonial-avatar testimonial-avatar--placeholder">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+            {% endif %}
+            <div class="testimonial-author-info">
+              <span class="testimonial-name">{{ block.settings.author_name }}</span>
+              {% if block.settings.author_title %}
+                <span class="testimonial-title">{{ block.settings.author_title }}</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

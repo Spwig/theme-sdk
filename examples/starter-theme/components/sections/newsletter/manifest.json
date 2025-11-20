@@ -1,0 +1,13 @@
+{
+  "name": "newsletter",
+  "version": "1.0.0",
+  "display_name": "Newsletter Signup",
+  "description": "Email subscription form with customizable styling",
+  "author": {
+    "name": "Spwig",
+    "email": "themes@spwig.com"
+  },
+  "regions": ["main"],
+  "category": "cta",
+  "tags": ["newsletter", "email", "subscription", "cta"]
+}

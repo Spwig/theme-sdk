@@ -1,0 +1,54 @@
+<div class="announcement-bar"
+     style="background-color: {{ settings.background_color }}; color: {{ settings.text_color }};"
+     role="region"
+     aria-label="Announcement">
+  <div class="announcement-container">
+    {% if settings.show_icon %}
+      <span class="announcement-icon" aria-hidden="true">
+        {% if settings.icon_type == 'sale' %}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+            <line x1="7" y1="7" x2="7.01" y2="7"/>
+          </svg>
+        {% elif settings.icon_type == 'shipping' %}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="3" width="15" height="13"/>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+            <circle cx="5.5" cy="18.5" r="2.5"/>
+            <circle cx="18.5" cy="18.5" r="2.5"/>
+          </svg>
+        {% elif settings.icon_type == 'info' %}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+        {% endif %}
+      </span>
+    {% endif %}
+
+    <p class="announcement-text">
+      {{ settings.message }}
+      {% if settings.link_text and settings.link_url %}
+        <a href="{{ settings.link_url }}" class="announcement-link">
+          {{ settings.link_text }}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      {% endif %}
+    </p>
+
+    {% if settings.dismissible %}
+      <button class="announcement-close"
+              aria-label="Dismiss announcement"
+              data-announcement-dismiss>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    {% endif %}
+  </div>
+</div>

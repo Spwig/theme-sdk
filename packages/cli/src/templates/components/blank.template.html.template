@@ -1,0 +1,4 @@
+<!-- {{displayName}} -->
+<div class="{{componentName}}">
+  <!-- Add your HTML here -->
+</div>

@@ -1,0 +1,64 @@
+# {{displayName}}
+
+{{description}}
+
+## Theme Information
+
+- **Author**: {{author}}
+- **Version**: 1.0.0
+- **License**: {{license}}
+
+## Features
+
+- Responsive design optimized for all devices
+- Modern and clean aesthetics
+- Customizable color schemes via design tokens
+- Performance optimized
+- Accessible and SEO-friendly
+
+## Development
+
+```bash
+# Start development server
+spwig dev
+
+# Validate theme
+spwig validate
+
+# Package for distribution
+spwig package
+```
+
+## Bundled Components
+
+This theme includes the following components:
+
+- **Default Header** - Site header with navigation
+- **Default Footer** - Site footer with links
+- **Hero Section** - Eye-catching hero banner
+
+## Customization
+
+### Design Tokens
+
+Edit `design_tokens.json` to customize colors, typography, spacing, and more.
+
+### Components
+
+Components are located in the `components/` directory. Each component has:
+- `manifest.json` - Component configuration
+- `template.html` - Component template
+- `schema.json` - Component settings schema
+- `styles.css` - Component styles (optional)
+
+### Pages
+
+Page schemas are in the `pages/` directory. Configure which components appear on each page type.
+
+## Support
+
+For questions or support, please contact {{author}}.
+
+## License
+
+This theme is licensed under the {{license}} license.

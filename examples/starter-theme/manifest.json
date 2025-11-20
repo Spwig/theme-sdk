@@ -1,0 +1,64 @@
+{
+  "name": "starter_theme",
+  "version": "1.0.0",
+  "display_name": "Starter Theme",
+  "description": "A clean, minimal theme to get you started with Spwig theme development",
+  "author": {
+    "name": "Spwig",
+    "email": "themes@spwig.com",
+    "url": "https://spwig.com"
+  },
+  "license": "MIT",
+  "default_language": "en",
+  "tier_compatibility": ["A", "B", "C"],
+  "features": [
+    "responsive",
+    "accessible",
+    "seo-optimized"
+  ],
+  "categories": [
+    "minimal",
+    "modern",
+    "starter"
+  ],
+  "tags": [
+    "starter",
+    "minimal",
+    "clean",
+    "modern"
+  ],
+  "bundled_components": [
+    {
+      "type": "header",
+      "name": "main_header",
+      "path": "components/headers/main_header"
+    },
+    {
+      "type": "footer",
+      "name": "main_footer",
+      "path": "components/footers/main_footer"
+    },
+    {
+      "type": "section",
+      "name": "hero_section",
+      "path": "components/sections/hero_section"
+    },
+    {
+      "type": "section",
+      "name": "product_grid",
+      "path": "components/sections/product_grid"
+    },
+    {
+      "type": "section",
+      "name": "newsletter",
+      "path": "components/sections/newsletter"
+    }
+  ],
+  "page_schemas": [
+    "pages/home.json",
+    "pages/product.json",
+    "pages/collection.json",
+    "pages/cart.json"
+  ],
+  "design_tokens": "design_tokens.json"
+}

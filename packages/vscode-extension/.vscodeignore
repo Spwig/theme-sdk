@@ -1,0 +1,23 @@
+.vscode/**
+.vscode-test/**
+src/**
+out/**
+.gitignore
+.yarnrc
+vsc-extension-quickstart.md
+**/tsconfig.json
+**/.eslintrc.json
+**/*.map
+**/*.ts
+!**/*.d.ts
+esbuild.js
+
+# Exclude node_modules (dependencies are bundled)
+node_modules/**
+
+# Exclude parent/sibling directories
+../**
+
+# Exclude development files
+*.vsix
+.npmrc

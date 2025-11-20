@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ store.name }} - Home{% endblock %}
+
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+  <!-- Hero Section -->
+  {% include "components/sections/hero_section/template.html" with settings=page.sections.0.settings %}
+
+  <!-- Featured Products -->
+  <section class="featured-products">
+    <div class="container">
+      <h2 class="section-title">Featured Products</h2>
+      <div class="product-grid">
+        {% for product in featured_products %}
+          <div class="product-card">
+            <a href="{{ product.url }}" class="product-link">
+              {% if product.image %}
+                <img src="{{ product.image }}" alt="{{ product.title }}" class="product-image">
+              {% endif %}
+              <h3 class="product-title">{{ product.title }}</h3>
+              <p class="product-price">{{ product.price|currency }}</p>
+            </a>
+          </div>
+        {% empty %}
+          <p class="no-products">No featured products available.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Collections -->
+  {% if featured_collections %}
+    <section class="featured-collections">
+      <div class="container">
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="collection-grid">
+          {% for collection in featured_collections %}
+            <a href="{{ collection.url }}" class="collection-card">
+              {% if collection.image %}
+                <img src="{{ collection.image }}" alt="{{ collection.title }}" class="collection-image">
+              {% endif %}
+              <h3 class="collection-title">{{ collection.title }}</h3>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}

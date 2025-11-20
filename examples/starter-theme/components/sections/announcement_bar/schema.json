@@ -1,0 +1,63 @@
+{
+  "name": "Announcement Bar",
+  "description": "A promotional banner that appears at the top of the page",
+  "tag": "announcement-bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Message",
+      "default": "Free shipping on orders over $50!",
+      "translatable": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#2563eb"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "icon_type",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "sale", "label": "Sale Tag" },
+        { "value": "shipping", "label": "Shipping Truck" },
+        { "value": "info", "label": "Info" }
+      ],
+      "default": "shipping"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show Icon",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link Text",
+      "default": "Shop Now",
+      "translatable": true
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL",
+      "default": "/collections/all"
+    },
+    {
+      "type": "checkbox",
+      "id": "dismissible",
+      "label": "Allow Dismiss",
+      "default": true
+    }
+  ]
+}

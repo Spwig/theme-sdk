@@ -1,0 +1,59 @@
+<section class="faq-section" style="background-color: {{ settings.background_color }}">
+  <div class="container">
+    {% if settings.heading %}
+      <div class="section-header">
+        <h2 class="section-heading">{{ settings.heading }}</h2>
+        {% if settings.subheading %}
+          <p class="section-subheading">{{ settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="faq-accordion {% if settings.layout == 'split' %}faq-accordion--split{% endif %}"
+         data-faq-accordion
+         data-allow-multiple="{{ settings.allow_multiple_open|yesno:'true,false' }}">
+      {% for block in blocks %}
+        <details class="faq-item"
+                 {% if settings.first_open and forloop.first %}open{% endif %}>
+          <summary class="faq-question">
+            <span class="faq-question-text">{{ block.settings.question }}</span>
+            <span class="faq-icon" aria-hidden="true">
+              <svg class="faq-icon__plus" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              <svg class="faq-icon__minus" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="faq-answer">
+            <p>{{ block.settings.answer }}</p>
+          </div>
+        </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  document.querySelectorAll('[data-faq-accordion]').forEach(accordion => {
+    const allowMultiple = accordion.dataset.allowMultiple === 'true';
+
+    if (!allowMultiple) {
+      accordion.querySelectorAll('.faq-item').forEach(item => {
+        item.addEventListener('toggle', function() {
+          if (this.open) {
+            accordion.querySelectorAll('.faq-item').forEach(otherItem => {
+              if (otherItem !== this && otherItem.open) {
+                otherItem.open = false;
+              }
+            });
+          }
+        });
+      });
+    }
+  });
+})();
+</script>

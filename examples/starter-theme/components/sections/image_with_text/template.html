@@ -1,0 +1,46 @@
+<section class="image-with-text {% if settings.full_width %}image-with-text--full-width{% endif %}" style="background-color: {{ settings.background_color }}">
+  <div class="{% if settings.full_width %}image-with-text__wrapper{% else %}container{% endif %}">
+    <div class="image-with-text__grid image-with-text__grid--{{ settings.image_position }} image-with-text__grid--{{ settings.image_width }} image-with-text__grid--align-{{ settings.content_alignment }}">
+      <!-- Image -->
+      <div class="image-with-text__media">
+        {% if settings.image %}
+          <img src="{{ settings.image }}"
+               alt="{{ settings.heading }}"
+               class="image-with-text__image"
+               loading="lazy">
+        {% else %}
+          <div class="image-with-text__placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Content -->
+      <div class="image-with-text__content">
+        {% if settings.heading %}
+          <h2 class="image-with-text__heading">{{ settings.heading }}</h2>
+        {% endif %}
+
+        {% if settings.description %}
+          <div class="image-with-text__description">
+            <p>{{ settings.description }}</p>
+          </div>
+        {% endif %}
+
+        {% if settings.button_text and settings.button_url %}
+          <a href="{{ settings.button_url }}" class="image-with-text__button button button--primary">
+            {{ settings.button_text }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,153 @@
+/* Back to Top Button Styles */
+
+.back-to-top {
+  position: fixed;
+  bottom: var(--spacing-xl);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background-color: var(--back-to-top-bg, var(--color-primary));
+  color: var(--back-to-top-color, #ffffff);
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition:
+    opacity var(--transition-default),
+    visibility var(--transition-default),
+    transform var(--transition-default),
+    background-color var(--transition-fast);
+  box-shadow: var(--shadow-lg);
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  filter: brightness(1.1);
+}
+
+.back-to-top:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* Position */
+.back-to-top--bottom-right {
+  right: var(--spacing-xl);
+}
+
+.back-to-top--bottom-left {
+  left: var(--spacing-xl);
+}
+
+/* Style Variants */
+.back-to-top--circle {
+  border-radius: 50%;
+}
+
+.back-to-top--rounded {
+  border-radius: var(--border-radius-md);
+}
+
+.back-to-top--square {
+  border-radius: var(--border-radius-sm);
+}
+
+/* Icon */
+.back-to-top__icon {
+  position: relative;
+  z-index: 1;
+  transition: transform var(--transition-fast);
+}
+
+.back-to-top:hover .back-to-top__icon {
+  transform: translateY(-2px);
+}
+
+/* Progress Ring */
+.back-to-top--with-progress {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.back-to-top__progress {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.back-to-top__progress-track {
+  fill: var(--color-surface);
+  stroke: var(--color-border);
+  stroke-width: 6;
+}
+
+.back-to-top__progress-bar {
+  fill: none;
+  stroke: var(--back-to-top-bg, var(--color-primary));
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--transition-fast);
+}
+
+.back-to-top--with-progress .back-to-top__icon {
+  color: var(--color-text);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: var(--spacing-lg);
+    width: 44px;
+    height: 44px;
+  }
+
+  .back-to-top--bottom-right {
+    right: var(--spacing-lg);
+  }
+
+  .back-to-top--bottom-left {
+    left: var(--spacing-lg);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top {
+    transition: none;
+  }
+
+  .back-to-top__icon,
+  .back-to-top__progress-bar {
+    transition: none;
+  }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .back-to-top--with-progress .back-to-top__icon {
+    color: var(--color-text);
+  }
+
+  :root:not([data-theme="light"]) .back-to-top__progress-track {
+    fill: var(--color-background);
+  }
+}
+
+[data-theme="dark"] .back-to-top--with-progress .back-to-top__icon {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .back-to-top__progress-track {
+  fill: var(--color-background);
+}

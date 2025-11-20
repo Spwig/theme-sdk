@@ -1,0 +1,34 @@
+<section class="hero-section"
+         style="
+           background-color: {{ settings.background_color }};
+           {% if settings.background_image %}
+           background-image: url('{{ settings.background_image }}');
+           {% endif %}
+           min-height: {{ settings.min_height }}px;
+         ">
+  {% if settings.background_image %}
+    <div class="hero-overlay"
+         style="background-color: {{ settings.overlay_color }}; opacity: calc({{ settings.overlay_opacity }} * 0.01);">
+    </div>
+  {% endif %}
+
+  <div class="hero-content" style="text-align: {{ settings.text_alignment }}">
+    {% if settings.heading %}
+      <h1 class="hero-heading" style="color: {{ settings.text_color }}">
+        {{ settings.heading }}
+      </h1>
+    {% endif %}
+
+    {% if settings.subheading %}
+      <p class="hero-subheading" style="color: {{ settings.text_color }}">
+        {{ settings.subheading }}
+      </p>
+    {% endif %}
+
+    {% if settings.show_button and settings.button_text %}
+      <a href="{{ settings.button_url }}" class="hero-button button button--cta">
+        {{ settings.button_text }}
+      </a>
+    {% endif %}
+  </div>
+</section>

@@ -1,0 +1,13 @@
+<section class="hero-section" style="background-color: {{ settings.background_color }};">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title">{{ settings.title }}</h1>
+      <p class="hero-description">{{ settings.description }}</p>
+      {% if settings.show_button %}
+        <a href="{{ settings.button_url }}" class="hero-button">
+          {{ settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>

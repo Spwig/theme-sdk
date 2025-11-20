@@ -1,0 +1,30 @@
+{
+  "name": "spwig-theme-sdk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Spwig Theme SDK - Build professional themes for Spwig eCommerce",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spwig/theme-sdk.git"
+  },
+  "author": "Spwig",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "eslint packages/*/src --ext .ts",
+    "format": "prettier --write 'packages/*/src/**/*.ts'",
+    "clean": "npm run clean --workspaces --if-present && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.0"
+  }
+}

@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block title %}Shopping Cart - {{ store.name }}{% endblock %}
+
+{% block body_class %}page-cart{% endblock %}
+
+{% block content %}
+  <div class="cart-page">
+    <div class="container">
+      <h1 class="page-title">Shopping Cart</h1>
+
+      {% if cart.items %}
+        <div class="cart-layout">
+          <!-- Cart Items -->
+          <div class="cart-items">
+            {% for item in cart.items %}
+              <div class="cart-item" data-item-id="{{ item.id }}">
+                <div class="item-image">
+                  {% if item.image %}
+                    <img src="{{ item.image }}" alt="{{ item.title }}">
+                  {% endif %}
+                </div>
+
+                <div class="item-details">
+                  <h3 class="item-title">
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                  </h3>
+                  {% if item.variant_title %}
+                    <p class="item-variant">{{ item.variant_title }}</p>
+                  {% endif %}
+                </div>
+
+                <div class="item-quantity">
+                  <form action="/cart/update/" method="post" class="quantity-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                    <button type="button" class="qty-btn minus" onclick="this.nextElementSibling.stepDown(); this.form.submit();">-</button>
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="0" max="99" class="qty-input">
+                    <button type="button" class="qty-btn plus" onclick="this.previousElementSibling.stepUp(); this.form.submit();">+</button>
+                  </form>
+                </div>
+
+                <div class="item-price">
+                  {{ item.line_price|currency }}
+                </div>
+
+                <form action="/cart/remove/" method="post" class="remove-form">
+                  {% csrf_token %}
+                  <input type="hidden" name="item_id" value="{{ item.id }}">
+                  <button type="submit" class="remove-btn" aria-label="Remove item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </form>
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Cart Summary -->
+          <div class="cart-summary">
+            <h2>Order Summary</h2>
+
+            <div class="summary-line">
+              <span>Subtotal</span>
+              <span>{{ cart.subtotal|currency }}</span>
+            </div>
+
+            {% if cart.discount %}
+              <div class="summary-line discount">
+                <span>Discount</span>
+                <span>-{{ cart.discount|currency }}</span>
+              </div>
+            {% endif %}
+
+            <div class="summary-line shipping">
+              <span>Shipping</span>
+              <span>Calculated at checkout</span>
+            </div>
+
+            <div class="summary-total">
+              <span>Total</span>
+              <span>{{ cart.total|currency }}</span>
+            </div>
+
+            <a href="/checkout/" class="checkout-button">
+              Proceed to Checkout
+            </a>
+
+            <a href="/" class="continue-shopping">
+              Continue Shopping
+            </a>
+          </div>
+        </div>
+      {% else %}
+        <div class="cart-empty">
+          <p>Your cart is empty.</p>
+          <a href="/" class="continue-shopping-button">Continue Shopping</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

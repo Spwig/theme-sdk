@@ -1,0 +1,110 @@
+<section class="product-grid-section">
+  <div class="container">
+    {% if settings.heading %}
+      <h2 class="section-heading" style="text-align: {{ settings.text_alignment }}">
+        {{ settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if settings.subheading %}
+      <p class="section-subheading" style="text-align: {{ settings.text_alignment }}">
+        {{ settings.subheading }}
+      </p>
+    {% endif %}
+
+    <div class="product-grid columns-{{ settings.columns }}">
+      {% for product in featured_products|slice:settings.product_count %}
+        <div class="product-card">
+          <div class="product-image">
+            <a href="{{ product.url }}" class="product-image-link">
+              {% if product.image %}
+                <img src="{{ product.image }}" alt="{{ product.title }}" loading="lazy">
+              {% endif %}
+            </a>
+
+            <!-- Badges -->
+            <div class="product-badges">
+              {% if product.compare_at_price and settings.show_sale_badge %}
+                <span class="badge badge--sale">Sale</span>
+              {% endif %}
+              {% if product.is_new %}
+                <span class="badge badge--new">New</span>
+              {% endif %}
+            </div>
+
+            <!-- Quick Add Button -->
+            <button class="product-quick-add button button--cta"
+                    data-product-id="{{ product.id }}"
+                    aria-label="Add {{ product.title }} to cart">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                <path d="M3 6h18"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
+              </svg>
+              <span>Add to Cart</span>
+            </button>
+          </div>
+
+          <div class="product-info">
+            <a href="{{ product.url }}" class="product-link">
+              {% if settings.show_vendor and product.vendor %}
+                <p class="product-vendor">{{ product.vendor }}</p>
+              {% endif %}
+
+              <h3 class="product-title">{{ product.title }}</h3>
+
+              {% if product.rating %}
+                <div class="product-rating">
+                  <span class="product-stars" aria-label="{{ product.rating }} out of 5 stars">
+                    {% for i in "12345" %}
+                      {% if forloop.counter <= product.rating %}
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                          <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                        </svg>
+                      {% else %}
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                        </svg>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                  {% if product.review_count %}
+                    <span class="product-review-count">({{ product.review_count }})</span>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              <div class="product-price">
+                {% if product.compare_at_price %}
+                  <span class="sale-price">{{ product.price|currency }}</span>
+                  <span class="compare-price">{{ product.compare_at_price|currency }}</span>
+                {% else %}
+                  <span class="regular-price">{{ product.price|currency }}</span>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="no-products">
+          <div class="no-products__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+              <path d="M3 6h18"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+          </div>
+          <p class="no-products__text">No products available</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if settings.show_view_all %}
+      <div class="view-all" style="text-align: {{ settings.text_alignment }}">
+        <a href="{{ settings.view_all_url }}" class="view-all-link">
+          {{ settings.view_all_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>

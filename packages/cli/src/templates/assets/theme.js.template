@@ -1,0 +1,150 @@
+/**
+ * {{displayName}} - Theme JavaScript
+ *
+ * Main entry point for theme interactivity
+ */
+
+(function() {
+  'use strict';
+
+  /**
+   * Initialize theme when DOM is ready
+   */
+  document.addEventListener('DOMContentLoaded', function() {
+    initProductGallery();
+    initQuantitySelectors();
+    initMobileMenu();
+  });
+
+  /**
+   * Product image gallery functionality
+   */
+  function initProductGallery() {
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const mainImage = document.getElementById('main-product-image');
+
+    if (!mainImage || thumbnails.length === 0) return;
+
+    thumbnails.forEach(function(thumbnail) {
+      thumbnail.addEventListener('click', function() {
+        const newSrc = this.getAttribute('data-image');
+        if (newSrc) {
+          mainImage.src = newSrc;
+
+          // Update active state
+          thumbnails.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+  }
+
+  /**
+   * Quantity selector +/- buttons
+   */
+  function initQuantitySelectors() {
+    const quantityInputs = document.querySelectorAll('.qty-input');
+
+    quantityInputs.forEach(function(input) {
+      input.addEventListener('change', function() {
+        const form = this.closest('form');
+        if (form && form.classList.contains('quantity-form')) {
+          form.submit();
+        }
+      });
+    });
+  }
+
+  /**
+   * Mobile menu toggle
+   */
+  function initMobileMenu() {
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    if (!menuToggle || !mobileMenu) return;
+
+    menuToggle.addEventListener('click', function() {
+      const isOpen = mobileMenu.classList.toggle('is-open');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+      document.body.classList.toggle('menu-open', isOpen);
+    });
+  }
+
+  /**
+   * Add to cart with AJAX (optional enhancement)
+   */
+  function initAjaxCart() {
+    const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+
+    addToCartForms.forEach(function(form) {
+      form.addEventListener('submit', function(e) {
+        // Comment out to enable AJAX cart
+        // e.preventDefault();
+        // const formData = new FormData(form);
+        //
+        // fetch('/cart/add/', {
+        //   method: 'POST',
+        //   body: formData,
+        //   headers: {
+        //     'X-Requested-With': 'XMLHttpRequest'
+        //   }
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //   // Update cart count
+        //   updateCartCount(data.item_count);
+        //   // Show success message
+        //   showNotification('Added to cart');
+        // })
+        // .catch(error => {
+        //   console.error('Error:', error);
+        // });
+      });
+    });
+  }
+
+  /**
+   * Update cart item count in header
+   */
+  function updateCartCount(count) {
+    const cartCount = document.querySelector('.cart-count');
+    if (cartCount) {
+      cartCount.textContent = count;
+      cartCount.style.display = count > 0 ? 'flex' : 'none';
+    }
+  }
+
+  /**
+   * Show notification message
+   */
+  function showNotification(message, type) {
+    type = type || 'success';
+
+    const notification = document.createElement('div');
+    notification.className = 'notification notification-' + type;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    // Trigger animation
+    setTimeout(function() {
+      notification.classList.add('is-visible');
+    }, 10);
+
+    // Remove after delay
+    setTimeout(function() {
+      notification.classList.remove('is-visible');
+      setTimeout(function() {
+        notification.remove();
+      }, 300);
+    }, 3000);
+  }
+
+  // Expose functions globally if needed
+  window.ThemeHelpers = {
+    updateCartCount: updateCartCount,
+    showNotification: showNotification
+  };
+
+})();

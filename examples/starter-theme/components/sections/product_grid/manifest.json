@@ -1,0 +1,13 @@
+{
+  "name": "product_grid",
+  "version": "1.0.0",
+  "display_name": "Product Grid",
+  "description": "Display products in a responsive grid layout",
+  "author": {
+    "name": "Spwig",
+    "email": "themes@spwig.com"
+  },
+  "regions": ["main"],
+  "category": "featured",
+  "tags": ["products", "grid", "featured"]
+}
