@@ -8,7 +8,7 @@
     "url": "https://github.com/spwig/theme-sdk.git"
   },
   "author": "Spwig",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "workspaces": [
     "packages/*"
   ],

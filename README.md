@@ -1,5 +1,10 @@
 # Spwig Theme SDK
 
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/spwig.spwig-theme-dev?label=VS%20Code%20Extension)](https://marketplace.visualstudio.com/items?itemName=spwig.spwig-theme-dev)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/spwig.spwig-theme-dev)](https://marketplace.visualstudio.com/items?itemName=spwig.spwig-theme-dev)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/spwig/theme-sdk?style=social)](https://github.com/spwig/theme-sdk)
+
 Professional theme development toolkit for Spwig eCommerce Platform.
 
 ## Overview
@@ -18,7 +23,19 @@ The Spwig Theme SDK provides developers with a complete set of tools to create, 
 
 ## Packages
 
-This monorepo contains two packages:
+This monorepo contains three packages:
+
+### [VS Code Extension](packages/vscode-extension)
+Full-featured VS Code extension for theme development with built-in validation, IntelliSense, snippets, and CLI integration.
+
+Install from [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=spwig.spwig-theme-dev)
+
+**Features:**
+- Built-in theme validation (no CLI required)
+- JSON schema validation and autocomplete
+- 50+ code snippets
+- Theme Explorer sidebar
+- Jinja2 syntax highlighting
 
 ### [@spwig/theme-cli](packages/cli)
 Command-line interface for theme development. Create themes, add components, validate, and package your work.
