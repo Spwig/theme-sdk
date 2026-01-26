@@ -1,5 +1,6 @@
 # Spwig Theme SDK
 
+[![SDK Version](https://img.shields.io/badge/SDK-v1.2.0-blue)](https://github.com/spwig/theme-sdk/releases)
 [![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/spwig.spwig-theme-dev?label=VS%20Code%20Extension)](https://marketplace.visualstudio.com/items?itemName=spwig.spwig-theme-dev)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/spwig.spwig-theme-dev)](https://marketplace.visualstudio.com/items?itemName=spwig.spwig-theme-dev)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
@@ -128,7 +129,7 @@ Add a new component to your theme.
 ```
 my-theme/
 ├── manifest.json           # Theme metadata and configuration
-├── design_tokens.json      # Color, typography, spacing tokens
+├── tokens.json             # Design tokens (colors, typography, spacing, etc.)
 ├── components/             # Theme components
 │   ├── headers/
 │   ├── footers/
@@ -178,8 +179,17 @@ npm run format
 
 ## Documentation
 
-- [CLI Package Documentation](packages/cli/README.md)
-- [Validator Package Documentation](packages/validator/README.md)
+### Guides
+- [Getting Started](docs/GETTING_STARTED.md) - First theme creation walkthrough
+- [Design Tokens](docs/DESIGN_TOKENS.md) - Complete design token reference (colors, typography, spacing, etc.)
+- [Component Guide](docs/COMPONENT_GUIDE.md) - Building reusable components
+- [Template Reference](docs/TEMPLATE_REFERENCE.md) - Jinja2/Django template development
+- [Settings Schema](docs/SETTINGS_SCHEMA.md) - Component configuration options
+- [Context Variables](docs/CONTEXT_VARIABLES.md) - Available template data
+
+### Package Documentation
+- [CLI Package](packages/cli/README.md) - Command-line interface
+- [Validator Package](packages/validator/README.md) - Validation library
 
 ## Support
 

@@ -1,6 +1,6 @@
 {
   "name": "@spwig/theme-validator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "Spwig Theme validation library",
   "main": "dist/index.js",

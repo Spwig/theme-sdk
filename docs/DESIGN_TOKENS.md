@@ -19,19 +19,23 @@ Design tokens are named values that represent your design decisions. Instead of 
 
 ## Token File Structure
 
-All tokens live in `design_tokens.json` at your theme root:
+All tokens live in `tokens.json` at your theme root:
 
 ```json
 {
   "colors": { ... },
   "typography": { ... },
   "spacing": { ... },
-  "breakpoints": { ... },
   "borders": { ... },
   "shadows": { ... },
-  "transitions": { ... }
+  "transitions": { ... },
+  "breakpoints": { ... },
+  "z-index": { ... },
+  "container": { ... }
 }
 ```
+
+> **Note:** Token keys use hyphens (kebab-case), e.g., `primary-dark`, `text-light`, `font-size-lg`.
 
 ---
 
@@ -39,14 +43,25 @@ All tokens live in `design_tokens.json` at your theme root:
 
 ### Core Colors
 
+Every theme should define primary, secondary, and accent colors with their variants:
+
 ```json
 {
   "colors": {
-    "primary": "#3b82f6",
-    "primary_dark": "#2563eb",
-    "primary_light": "#60a5fa",
+    "primary": "#2563eb",
+    "primary-light": "#dbeafe",
+    "primary-dark": "#1e40af",
+    "primary-hover": "#1d4ed8",
+
     "secondary": "#8b5cf6",
-    "accent": "#f59e0b"
+    "secondary-light": "#a78bfa",
+    "secondary-dark": "#7c3aed",
+    "secondary-hover": "#6d28d9",
+
+    "accent": "#10b981",
+    "accent-light": "#d1fae5",
+    "accent-dark": "#059669",
+    "accent-hover": "#047857"
   }
 }
 ```
@@ -58,20 +73,60 @@ All tokens live in `design_tokens.json` at your theme root:
 }
 
 .button-primary:hover {
-  background-color: var(--color-primary-dark);
+  background-color: var(--color-primary-hover);
 }
 ```
 
-### UI Colors
+### Text Colors
+
+```json
+{
+  "colors": {
+    "text": "#1f2937",
+    "text-light": "#374151",
+    "text-muted": "#6b7280",
+    "text-inverse": "#ffffff"
+  }
+}
+```
+
+**Usage in CSS:**
+```css
+body {
+  color: var(--color-text);
+}
+
+.subtitle {
+  color: var(--color-text-light);
+}
+
+.caption {
+  color: var(--color-text-muted);
+}
+
+.button-primary {
+  color: var(--color-text-inverse);
+}
+```
+
+### Background & Surface Colors
 
 ```json
 {
   "colors": {
     "background": "#ffffff",
-    "surface": "#f9fafb",
-    "text": "#111827",
-    "text_light": "#6b7280",
-    "border": "#e5e7eb"
+    "background-secondary": "#f9fafb",
+    "background-tertiary": "#f3f4f6",
+    "background-alt": "#f9fafb",
+
+    "surface": "#ffffff",
+    "surface-secondary": "#fafafa",
+    "surface-variant": "#f3f4f6",
+    "surface-hover": "#f3f4f6",
+    "surface-dark": "#e5e7eb",
+
+    "header-bg": "#ffffff",
+    "footer-bg": "#f9fafb"
   }
 }
 ```
@@ -80,16 +135,49 @@ All tokens live in `design_tokens.json` at your theme root:
 ```css
 body {
   background-color: var(--color-background);
-  color: var(--color-text);
 }
 
 .card {
   background-color: var(--color-surface);
+}
+
+.card:hover {
+  background-color: var(--color-surface-hover);
+}
+
+header {
+  background-color: var(--color-header-bg);
+}
+
+footer {
+  background-color: var(--color-footer-bg);
+}
+```
+
+### Border Colors
+
+```json
+{
+  "colors": {
+    "border": "#e5e7eb",
+    "border-light": "#f3f4f6",
+    "border-dark": "#d1d5db"
+  }
+}
+```
+
+**Usage in CSS:**
+```css
+.card {
   border: 1px solid var(--color-border);
 }
 
-.caption {
-  color: var(--color-text-light);
+.divider-subtle {
+  border-color: var(--color-border-light);
+}
+
+.input:focus {
+  border-color: var(--color-border-dark);
 }
 ```
 
@@ -99,9 +187,20 @@ body {
 {
   "colors": {
     "success": "#10b981",
+    "success-light": "#d1fae5",
+    "success-dark": "#059669",
+
     "warning": "#f59e0b",
+    "warning-light": "#fef3c7",
+    "warning-dark": "#d97706",
+
     "error": "#ef4444",
-    "info": "#3b82f6"
+    "error-light": "#fee2e2",
+    "error-dark": "#dc2626",
+
+    "info": "#3b82f6",
+    "info-light": "#dbeafe",
+    "info-dark": "#2563eb"
   }
 }
 ```
@@ -109,11 +208,9 @@ body {
 **Usage in CSS:**
 ```css
 .alert-success {
-  background-color: var(--color-success);
-}
-
-.alert-error {
-  background-color: var(--color-error);
+  background-color: var(--color-success-light);
+  border-color: var(--color-success);
+  color: var(--color-success-dark);
 }
 
 .sale-badge {
@@ -121,40 +218,89 @@ body {
 }
 ```
 
-### Complete Color Palette
+### Utility Colors
 
 ```json
 {
   "colors": {
-    "primary": "#3b82f6",
-    "primary_dark": "#2563eb",
-    "primary_light": "#60a5fa",
-    "secondary": "#8b5cf6",
-    "secondary_dark": "#7c3aed",
-    "secondary_light": "#a78bfa",
-    "accent": "#f59e0b",
-    "accent_dark": "#d97706",
-    "accent_light": "#fbbf24",
+    "shadow": "rgba(0, 0, 0, 0.1)",
+    "overlay": "rgba(0, 0, 0, 0.5)"
+  }
+}
+```
+
+**Usage in CSS:**
+```css
+.modal-backdrop {
+  background-color: var(--color-overlay);
+}
+
+.card {
+  box-shadow: 0 4px 6px var(--color-shadow);
+}
+```
+
+### Complete Color Palette Example
+
+```json
+{
+  "colors": {
+    "primary": "#2563eb",
+    "primary-light": "#dbeafe",
+    "primary-dark": "#1e40af",
+    "primary-hover": "#1d4ed8",
+
+    "secondary": "#64748b",
+    "secondary-light": "#94a3b8",
+    "secondary-dark": "#475569",
+    "secondary-hover": "#475569",
+
+    "accent": "#10b981",
+    "accent-light": "#d1fae5",
+    "accent-dark": "#059669",
+    "accent-hover": "#059669",
+
+    "text": "#1f2937",
+    "text-light": "#374151",
+    "text-muted": "#6b7280",
+    "text-inverse": "#ffffff",
 
     "background": "#ffffff",
-    "surface": "#f9fafb",
-    "surface_dark": "#f3f4f6",
+    "background-secondary": "#f9fafb",
+    "background-tertiary": "#f3f4f6",
+    "background-alt": "#f9fafb",
 
-    "text": "#111827",
-    "text_light": "#6b7280",
-    "text_inverse": "#ffffff",
+    "surface": "#ffffff",
+    "surface-secondary": "#fafafa",
+    "surface-variant": "#f3f4f6",
+    "surface-hover": "#f3f4f6",
+    "surface-dark": "#e5e7eb",
+
+    "header-bg": "#ffffff",
+    "footer-bg": "#f9fafb",
 
     "border": "#e5e7eb",
-    "border_dark": "#d1d5db",
+    "border-light": "#f3f4f6",
+    "border-dark": "#d1d5db",
 
     "success": "#10b981",
-    "success_light": "#d1fae5",
+    "success-light": "#d1fae5",
+    "success-dark": "#059669",
+
     "warning": "#f59e0b",
-    "warning_light": "#fef3c7",
+    "warning-light": "#fef3c7",
+    "warning-dark": "#d97706",
+
     "error": "#ef4444",
-    "error_light": "#fee2e2",
+    "error-light": "#fee2e2",
+    "error-dark": "#dc2626",
+
     "info": "#3b82f6",
-    "info_light": "#dbeafe"
+    "info-light": "#dbeafe",
+    "info-dark": "#2563eb",
+
+    "shadow": "rgba(0, 0, 0, 0.1)",
+    "overlay": "rgba(0, 0, 0, 0.5)"
   }
 }
 ```
@@ -167,7 +313,7 @@ You can use any valid CSS color format:
 {
   "colors": {
     "hex": "#3b82f6",
-    "hex_short": "#38f",
+    "hex-short": "#38f",
     "rgb": "rgb(59, 130, 246)",
     "rgba": "rgba(59, 130, 246, 0.5)",
     "hsl": "hsl(217, 91%, 60%)",
@@ -182,54 +328,105 @@ You can use any valid CSS color format:
 
 ### Font Families
 
+There are two approaches to defining font families:
+
+**Approach 1: Generic font stacks**
 ```json
 {
   "typography": {
-    "heading_font": "Inter, system-ui, sans-serif",
-    "body_font": "Inter, system-ui, sans-serif",
-    "mono_font": "ui-monospace, SFMono-Regular, monospace"
+    "font-sans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+    "font-serif": "Georgia, 'Times New Roman', serif",
+    "font-mono": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace"
+  }
+}
+```
+
+**Approach 2: Semantic font assignments with per-heading fonts**
+```json
+{
+  "typography": {
+    "font-family-body": "Inter, system-ui, sans-serif",
+    "font-family-h1": "Inter, system-ui, sans-serif",
+    "font-family-h2": "Inter, system-ui, sans-serif",
+    "font-family-h3": "Inter, system-ui, sans-serif",
+    "font-family-h4": "Inter, system-ui, sans-serif",
+    "font-family-h5": "Inter, system-ui, sans-serif",
+    "font-family-h6": "Inter, system-ui, sans-serif"
+  }
+}
+```
+
+This allows for mixed typography, such as serif headings with sans-serif body:
+```json
+{
+  "typography": {
+    "font-family-body": "Inter, system-ui, sans-serif",
+    "font-family-h1": "'Playfair Display', serif",
+    "font-family-h2": "'Playfair Display', serif"
   }
 }
 ```
 
 **Usage in CSS:**
 ```css
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-family-heading);
-}
-
 body {
   font-family: var(--font-family-body);
 }
 
+h1 {
+  font-family: var(--font-family-h1);
+}
+
 code, pre {
-  font-family: var(--font-family-mono);
+  font-family: var(--font-mono);
 }
 ```
 
 ### Font Sizes
 
+**T-Shirt sizing scale:**
 ```json
 {
   "typography": {
-    "base_size": "16px",
-    "scale": 1.25
+    "font-size-xs": "0.75rem",
+    "font-size-sm": "0.875rem",
+    "font-size-base": "1rem",
+    "font-size-lg": "1.125rem",
+    "font-size-xl": "1.25rem",
+    "font-size-2xl": "1.5rem",
+    "font-size-3xl": "1.875rem",
+    "font-size-4xl": "2.25rem",
+    "font-size-5xl": "3rem"
   }
 }
 ```
 
-This generates a type scale:
+**Per-heading sizes (alternative):**
+```json
+{
+  "typography": {
+    "font-size-body": "1rem",
+    "font-size-h1": "2.5rem",
+    "font-size-h2": "2rem",
+    "font-size-h3": "1.75rem",
+    "font-size-h4": "1.5rem",
+    "font-size-h5": "1.25rem",
+    "font-size-h6": "1rem"
+  }
+}
+```
 
-| Token | Calculation | Result |
-|-------|-------------|--------|
-| `--font-size-xs` | base / scale^2 | 10.24px |
-| `--font-size-sm` | base / scale | 12.8px |
-| `--font-size-base` | base | 16px |
-| `--font-size-lg` | base * scale | 20px |
-| `--font-size-xl` | base * scale^2 | 25px |
-| `--font-size-2xl` | base * scale^3 | 31.25px |
-| `--font-size-3xl` | base * scale^4 | 39.06px |
-| `--font-size-4xl` | base * scale^5 | 48.83px |
+| Token | Size | Pixels (at 16px base) |
+|-------|------|----------------------|
+| `font-size-xs` | 0.75rem | 12px |
+| `font-size-sm` | 0.875rem | 14px |
+| `font-size-base` | 1rem | 16px |
+| `font-size-lg` | 1.125rem | 18px |
+| `font-size-xl` | 1.25rem | 20px |
+| `font-size-2xl` | 1.5rem | 24px |
+| `font-size-3xl` | 1.875rem | 30px |
+| `font-size-4xl` | 2.25rem | 36px |
+| `font-size-5xl` | 3rem | 48px |
 
 **Usage in CSS:**
 ```css
@@ -248,16 +445,92 @@ This generates a type scale:
 
 ### Font Weights
 
+**Generic weights:**
 ```json
 {
   "typography": {
-    "weights": {
-      "light": 300,
-      "regular": 400,
-      "medium": 500,
-      "semibold": 600,
-      "bold": 700
-    }
+    "font-weight-normal": "400",
+    "font-weight-medium": "500",
+    "font-weight-semibold": "600",
+    "font-weight-bold": "700"
+  }
+}
+```
+
+**Per-heading weights (optional, for fine control):**
+```json
+{
+  "typography": {
+    "font-weight-body": "400",
+    "font-weight-h1": "700",
+    "font-weight-h2": "600",
+    "font-weight-h3": "600",
+    "font-weight-h4": "500",
+    "font-weight-h5": "500",
+    "font-weight-h6": "500"
+  }
+}
+```
+
+**Usage in CSS:**
+```css
+h1 {
+  font-weight: var(--font-weight-h1);
+}
+
+.subtitle {
+  font-weight: var(--font-weight-medium);
+}
+```
+
+### Line Heights
+
+**Generic scale:**
+```json
+{
+  "typography": {
+    "line-height-tight": "1.25",
+    "line-height-normal": "1.5",
+    "line-height-relaxed": "1.625",
+    "line-height-base": "1.5"
+  }
+}
+```
+
+**Per-heading line heights (optional):**
+```json
+{
+  "typography": {
+    "line-height-body": "1.5",
+    "line-height-h1": "1.2",
+    "line-height-h2": "1.3",
+    "line-height-h3": "1.3",
+    "line-height-h4": "1.4",
+    "line-height-h5": "1.4",
+    "line-height-h6": "1.4"
+  }
+}
+```
+
+**Usage in CSS:**
+```css
+h1 {
+  line-height: var(--line-height-h1);
+}
+
+p {
+  line-height: var(--line-height-normal);
+}
+```
+
+### Letter Spacing
+
+```json
+{
+  "typography": {
+    "letter-spacing-tight": "-0.025em",
+    "letter-spacing-normal": "0",
+    "letter-spacing-wide": "0.025em"
   }
 }
 ```
@@ -265,40 +538,79 @@ This generates a type scale:
 **Usage in CSS:**
 ```css
 .heading {
-  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
-.subtitle {
-  font-weight: var(--font-weight-medium);
-}
-
-.body {
-  font-weight: var(--font-weight-regular);
+.uppercase-label {
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
 }
 ```
 
-### Complete Typography
+### Complete Typography Example
 
 ```json
 {
   "typography": {
-    "heading_font": "Inter, system-ui, sans-serif",
-    "body_font": "Inter, system-ui, sans-serif",
-    "mono_font": "ui-monospace, SFMono-Regular, monospace",
-    "base_size": "16px",
-    "scale": 1.25,
-    "weights": {
-      "light": 300,
-      "regular": 400,
-      "medium": 500,
-      "semibold": 600,
-      "bold": 700
-    },
-    "line_heights": {
-      "tight": 1.25,
-      "normal": 1.5,
-      "relaxed": 1.75
-    }
+    "font-sans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+    "font-serif": "Georgia, 'Times New Roman', serif",
+    "font-mono": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace",
+
+    "font-family-body": "Inter, system-ui, sans-serif",
+    "font-family-h1": "Inter, system-ui, sans-serif",
+    "font-family-h2": "Inter, system-ui, sans-serif",
+    "font-family-h3": "Inter, system-ui, sans-serif",
+    "font-family-h4": "Inter, system-ui, sans-serif",
+    "font-family-h5": "Inter, system-ui, sans-serif",
+    "font-family-h6": "Inter, system-ui, sans-serif",
+
+    "font-size-xs": "0.75rem",
+    "font-size-sm": "0.875rem",
+    "font-size-base": "1rem",
+    "font-size-lg": "1.125rem",
+    "font-size-xl": "1.25rem",
+    "font-size-2xl": "1.5rem",
+    "font-size-3xl": "1.875rem",
+    "font-size-4xl": "2.25rem",
+    "font-size-5xl": "3rem",
+
+    "font-size-body": "1rem",
+    "font-size-h1": "2.5rem",
+    "font-size-h2": "2rem",
+    "font-size-h3": "1.75rem",
+    "font-size-h4": "1.5rem",
+    "font-size-h5": "1.25rem",
+    "font-size-h6": "1rem",
+
+    "font-weight-normal": "400",
+    "font-weight-medium": "500",
+    "font-weight-semibold": "600",
+    "font-weight-bold": "700",
+
+    "font-weight-body": "400",
+    "font-weight-h1": "700",
+    "font-weight-h2": "600",
+    "font-weight-h3": "600",
+    "font-weight-h4": "500",
+    "font-weight-h5": "500",
+    "font-weight-h6": "500",
+
+    "line-height-tight": "1.25",
+    "line-height-normal": "1.5",
+    "line-height-relaxed": "1.625",
+    "line-height-base": "1.5",
+
+    "line-height-body": "1.5",
+    "line-height-h1": "1.2",
+    "line-height-h2": "1.3",
+    "line-height-h3": "1.3",
+    "line-height-h4": "1.4",
+    "line-height-h5": "1.4",
+    "line-height-h6": "1.4",
+
+    "letter-spacing-tight": "-0.025em",
+    "letter-spacing-normal": "0",
+    "letter-spacing-wide": "0.025em"
   }
 }
 ```
@@ -307,62 +619,61 @@ This generates a type scale:
 
 ## Spacing Tokens
 
-### Spacing System
+### Spacing Scale
 
 ```json
 {
   "spacing": {
-    "unit": "0.25rem",
-    "scale": [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64]
+    "0": "0",
+    "1": "0.25rem",
+    "2": "0.5rem",
+    "3": "0.75rem",
+    "4": "1rem",
+    "5": "1.25rem",
+    "6": "1.5rem",
+    "8": "2rem",
+    "10": "2.5rem",
+    "12": "3rem",
+    "16": "4rem",
+    "20": "5rem",
+    "24": "6rem"
   }
 }
 ```
 
-This generates spacing values:
-
-| Token | Calculation | Result |
-|-------|-------------|--------|
-| `--spacing-0` | 0 * unit | 0 |
-| `--spacing-1` | 1 * unit | 0.25rem |
-| `--spacing-2` | 2 * unit | 0.5rem |
-| `--spacing-3` | 3 * unit | 0.75rem |
-| `--spacing-4` | 4 * unit | 1rem |
-| `--spacing-6` | 6 * unit | 1.5rem |
-| `--spacing-8` | 8 * unit | 2rem |
-| `--spacing-12` | 12 * unit | 3rem |
-| `--spacing-16` | 16 * unit | 4rem |
-
-### Named Spacing
-
-For convenience, these semantic names are also available:
-
-| Token | Maps To |
-|-------|---------|
-| `--spacing-xs` | `--spacing-1` (0.25rem) |
-| `--spacing-sm` | `--spacing-2` (0.5rem) |
-| `--spacing-md` | `--spacing-4` (1rem) |
-| `--spacing-lg` | `--spacing-6` (1.5rem) |
-| `--spacing-xl` | `--spacing-8` (2rem) |
-| `--spacing-2xl` | `--spacing-12` (3rem) |
-| `--spacing-3xl` | `--spacing-16` (4rem) |
+| Token | Value | Pixels (at 16px base) |
+|-------|-------|----------------------|
+| `--space-0` | 0 | 0px |
+| `--space-1` | 0.25rem | 4px |
+| `--space-2` | 0.5rem | 8px |
+| `--space-3` | 0.75rem | 12px |
+| `--space-4` | 1rem | 16px |
+| `--space-5` | 1.25rem | 20px |
+| `--space-6` | 1.5rem | 24px |
+| `--space-8` | 2rem | 32px |
+| `--space-10` | 2.5rem | 40px |
+| `--space-12` | 3rem | 48px |
+| `--space-16` | 4rem | 64px |
+| `--space-20` | 5rem | 80px |
+| `--space-24` | 6rem | 96px |
 
 **Usage in CSS:**
 ```css
 .card {
-  padding: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .button {
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--space-2) var(--space-4);
 }
 
 .section {
-  padding: var(--spacing-2xl) 0;
+  padding: var(--space-12) 0;
 }
 
 .stack > * + * {
-  margin-top: var(--spacing-md);
+  margin-top: var(--space-4);
 }
 ```
 
@@ -370,24 +681,54 @@ For convenience, these semantic names are also available:
 
 ## Border Tokens
 
+### Border Width
+
+```json
+{
+  "borders": {
+    "width-0": "0",
+    "width-1": "1px",
+    "width-2": "2px"
+  }
+}
+```
+
+**Usage in CSS:**
+```css
+.card {
+  border: var(--border-width-1) solid var(--color-border);
+}
+
+.button-outlined {
+  border: var(--border-width-2) solid var(--color-primary);
+}
+```
+
 ### Border Radius
 
 ```json
 {
   "borders": {
-    "radius": {
-      "none": "0",
-      "sm": "0.125rem",
-      "default": "0.25rem",
-      "md": "0.375rem",
-      "lg": "0.5rem",
-      "xl": "0.75rem",
-      "2xl": "1rem",
-      "full": "9999px"
-    }
+    "radius-none": "0",
+    "radius-sm": "0.25rem",
+    "radius-base": "0.375rem",
+    "radius-md": "0.5rem",
+    "radius-lg": "0.75rem",
+    "radius-xl": "1rem",
+    "radius-full": "9999px"
   }
 }
 ```
+
+| Token | Value | Use Case |
+|-------|-------|----------|
+| `radius-none` | 0 | Sharp corners |
+| `radius-sm` | 0.25rem (4px) | Subtle rounding |
+| `radius-base` | 0.375rem (6px) | Default elements |
+| `radius-md` | 0.5rem (8px) | Buttons, inputs |
+| `radius-lg` | 0.75rem (12px) | Cards, panels |
+| `radius-xl` | 1rem (16px) | Large containers |
+| `radius-full` | 9999px | Circles, pills |
 
 **Usage in CSS:**
 ```css
@@ -404,33 +745,26 @@ For convenience, these semantic names are also available:
 }
 
 .input {
-  border-radius: var(--border-radius-default);
+  border-radius: var(--border-radius-base);
 }
 ```
 
-### Border Width
+### Complete Borders Example
 
 ```json
 {
   "borders": {
-    "width": {
-      "none": "0",
-      "default": "1px",
-      "2": "2px",
-      "4": "4px"
-    }
+    "width-0": "0",
+    "width-1": "1px",
+    "width-2": "2px",
+    "radius-none": "0",
+    "radius-sm": "0.25rem",
+    "radius-base": "0.375rem",
+    "radius-md": "0.5rem",
+    "radius-lg": "0.75rem",
+    "radius-xl": "1rem",
+    "radius-full": "9999px"
   }
-}
-```
-
-**Usage in CSS:**
-```css
-.card {
-  border: var(--border-width-default) solid var(--color-border);
-}
-
-.button-outlined {
-  border: var(--border-width-2) solid var(--color-primary);
 }
 ```
 
@@ -441,21 +775,29 @@ For convenience, these semantic names are also available:
 ```json
 {
   "shadows": {
+    "none": "none",
     "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-    "default": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-    "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-    "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-    "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-    "inner": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
-    "none": "none"
+    "base": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+    "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
+    "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+    "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
   }
 }
 ```
 
+| Token | Use Case |
+|-------|----------|
+| `shadow-none` | Remove shadow |
+| `shadow-sm` | Subtle depth |
+| `shadow-base` | Default cards |
+| `shadow-md` | Elevated cards |
+| `shadow-lg` | Dropdowns, modals |
+| `shadow-xl` | Floating elements |
+
 **Usage in CSS:**
 ```css
 .card {
-  box-shadow: var(--shadow-default);
+  box-shadow: var(--shadow-base);
 }
 
 .card:hover {
@@ -469,10 +811,6 @@ For convenience, these semantic names are also available:
 .button {
   box-shadow: var(--shadow-sm);
 }
-
-.input:focus {
-  box-shadow: var(--shadow-inner);
-}
 ```
 
 ---
@@ -482,33 +820,58 @@ For convenience, these semantic names are also available:
 ```json
 {
   "transitions": {
-    "fast": "150ms",
-    "default": "200ms",
-    "slow": "300ms",
-    "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+    "duration-fast": "150ms",
+    "duration-base": "200ms",
+    "duration-slow": "300ms",
+    "easing-default": "cubic-bezier(0.4, 0, 0.2, 1)",
+    "easing-in": "cubic-bezier(0.4, 0, 1, 1)",
+    "easing-out": "cubic-bezier(0, 0, 0.2, 1)"
   }
 }
 ```
 
+| Token | Value | Use Case |
+|-------|-------|----------|
+| `duration-fast` | 150ms | Quick feedback |
+| `duration-base` | 200ms | Standard transitions |
+| `duration-slow` | 300ms | Deliberate animations |
+| `easing-default` | ease-in-out | General purpose |
+| `easing-in` | ease-in | Enter animations |
+| `easing-out` | ease-out | Exit animations |
+
 **Usage in CSS:**
 ```css
 .button {
-  transition: all var(--transition-default) var(--transition-easing);
+  transition: all var(--transition-duration-base) var(--transition-easing-default);
 }
 
 .dropdown {
-  transition: opacity var(--transition-fast) var(--transition-easing);
+  transition: opacity var(--transition-duration-fast) var(--transition-easing-out);
 }
 
 .modal {
-  transition: transform var(--transition-slow) var(--transition-easing);
+  transition: transform var(--transition-duration-slow) var(--transition-easing-default);
 }
 
 /* Multiple properties */
 .card {
   transition:
-    transform var(--transition-default) var(--transition-easing),
-    box-shadow var(--transition-default) var(--transition-easing);
+    transform var(--transition-duration-base) var(--transition-easing-default),
+    box-shadow var(--transition-duration-base) var(--transition-easing-default);
+}
+```
+
+### Alternative: Animations Category
+
+Some themes use `animations` instead of `transitions`:
+
+```json
+{
+  "animations": {
+    "duration-150": "150ms",
+    "duration-300": "300ms",
+    "easing-in-out": "cubic-bezier(0.4, 0, 0.2, 1)"
+  }
 }
 ```
 
@@ -519,19 +882,28 @@ For convenience, these semantic names are also available:
 ```json
 {
   "breakpoints": {
-    "mobile": "640px",
-    "tablet": "768px",
-    "desktop": "1024px",
-    "wide": "1280px"
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px"
   }
 }
 ```
+
+| Token | Value | Typical Use |
+|-------|-------|-------------|
+| `sm` | 640px | Large phones |
+| `md` | 768px | Tablets |
+| `lg` | 1024px | Small laptops |
+| `xl` | 1280px | Desktops |
+| `2xl` | 1536px | Large displays |
 
 **Usage in CSS:**
 ```css
 .container {
   width: 100%;
-  padding: 0 var(--spacing-md);
+  padding: 0 var(--space-4);
 }
 
 @media (min-width: 768px) {
@@ -552,6 +924,12 @@ For convenience, these semantic names are also available:
     max-width: 1200px;
   }
 }
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1400px;
+  }
+}
 ```
 
 ### Responsive Grid Example
@@ -559,7 +937,7 @@ For convenience, these semantic names are also available:
 ```css
 .product-grid {
   display: grid;
-  gap: var(--spacing-md);
+  gap: var(--space-4);
   grid-template-columns: 1fr;
 }
 
@@ -587,89 +965,249 @@ For convenience, these semantic names are also available:
 
 ---
 
+## Z-Index Tokens
+
+The z-index scale ensures consistent stacking across your theme:
+
+```json
+{
+  "z-index": {
+    "dropdown": "1000",
+    "sticky": "1020",
+    "fixed": "1030",
+    "modal-backdrop": "1040",
+    "modal": "1050",
+    "popover": "1060",
+    "tooltip": "1070"
+  }
+}
+```
+
+| Token | Value | Use Case |
+|-------|-------|----------|
+| `dropdown` | 1000 | Dropdown menus |
+| `sticky` | 1020 | Sticky headers, navs |
+| `fixed` | 1030 | Fixed position elements |
+| `modal-backdrop` | 1040 | Modal overlay/backdrop |
+| `modal` | 1050 | Modal dialogs |
+| `popover` | 1060 | Popovers, tooltips anchored |
+| `tooltip` | 1070 | Tooltip content |
+
+**Usage in CSS:**
+```css
+.dropdown-menu {
+  position: absolute;
+  z-index: var(--z-index-dropdown);
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-index-sticky);
+}
+
+.modal-backdrop {
+  position: fixed;
+  z-index: var(--z-index-modal-backdrop);
+}
+
+.modal {
+  position: fixed;
+  z-index: var(--z-index-modal);
+}
+
+.tooltip {
+  z-index: var(--z-index-tooltip);
+}
+```
+
+---
+
+## Container Tokens
+
+Container tokens define the main content width and padding:
+
+```json
+{
+  "container": {
+    "max-width": "1280px",
+    "padding": "1rem"
+  }
+}
+```
+
+**Usage in CSS:**
+```css
+.container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+```
+
+---
+
 ## Complete Design Tokens Example
 
 ```json
 {
   "colors": {
-    "primary": "#3b82f6",
-    "primary_dark": "#2563eb",
-    "primary_light": "#60a5fa",
-    "secondary": "#8b5cf6",
-    "secondary_dark": "#7c3aed",
-    "accent": "#f59e0b",
+    "primary": "#2563eb",
+    "primary-light": "#dbeafe",
+    "primary-dark": "#1e40af",
+    "primary-hover": "#1d4ed8",
+
+    "secondary": "#64748b",
+    "secondary-light": "#94a3b8",
+    "secondary-dark": "#475569",
+    "secondary-hover": "#475569",
+
+    "accent": "#10b981",
+    "accent-light": "#d1fae5",
+    "accent-dark": "#059669",
+    "accent-hover": "#059669",
+
+    "text": "#1f2937",
+    "text-light": "#374151",
+    "text-muted": "#6b7280",
+    "text-inverse": "#ffffff",
 
     "background": "#ffffff",
-    "surface": "#f9fafb",
-    "text": "#111827",
-    "text_light": "#6b7280",
-    "text_inverse": "#ffffff",
+    "background-secondary": "#f9fafb",
+    "background-tertiary": "#f3f4f6",
+    "background-alt": "#f9fafb",
+
+    "surface": "#ffffff",
+    "surface-secondary": "#fafafa",
+    "surface-variant": "#f3f4f6",
+    "surface-hover": "#f3f4f6",
+    "surface-dark": "#e5e7eb",
+
+    "header-bg": "#ffffff",
+    "footer-bg": "#f9fafb",
+
     "border": "#e5e7eb",
+    "border-light": "#f3f4f6",
+    "border-dark": "#d1d5db",
 
     "success": "#10b981",
+    "success-light": "#d1fae5",
+    "success-dark": "#059669",
+
     "warning": "#f59e0b",
+    "warning-light": "#fef3c7",
+    "warning-dark": "#d97706",
+
     "error": "#ef4444",
-    "info": "#3b82f6"
+    "error-light": "#fee2e2",
+    "error-dark": "#dc2626",
+
+    "info": "#3b82f6",
+    "info-light": "#dbeafe",
+    "info-dark": "#2563eb",
+
+    "shadow": "rgba(0, 0, 0, 0.1)",
+    "overlay": "rgba(0, 0, 0, 0.5)"
   },
 
   "typography": {
-    "heading_font": "Inter, system-ui, sans-serif",
-    "body_font": "Inter, system-ui, sans-serif",
-    "mono_font": "ui-monospace, monospace",
-    "base_size": "16px",
-    "scale": 1.25,
-    "weights": {
-      "light": 300,
-      "regular": 400,
-      "medium": 500,
-      "semibold": 600,
-      "bold": 700
-    }
+    "font-sans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+    "font-serif": "Georgia, 'Times New Roman', serif",
+    "font-mono": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace",
+
+    "font-size-xs": "0.75rem",
+    "font-size-sm": "0.875rem",
+    "font-size-base": "1rem",
+    "font-size-lg": "1.125rem",
+    "font-size-xl": "1.25rem",
+    "font-size-2xl": "1.5rem",
+    "font-size-3xl": "1.875rem",
+    "font-size-4xl": "2.25rem",
+    "font-size-5xl": "3rem",
+
+    "font-weight-normal": "400",
+    "font-weight-medium": "500",
+    "font-weight-semibold": "600",
+    "font-weight-bold": "700",
+
+    "line-height-tight": "1.25",
+    "line-height-normal": "1.5",
+    "line-height-relaxed": "1.625",
+
+    "letter-spacing-tight": "-0.025em",
+    "letter-spacing-normal": "0",
+    "letter-spacing-wide": "0.025em"
   },
 
   "spacing": {
-    "unit": "0.25rem",
-    "scale": [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64]
-  },
-
-  "breakpoints": {
-    "mobile": "640px",
-    "tablet": "768px",
-    "desktop": "1024px",
-    "wide": "1280px"
+    "0": "0",
+    "1": "0.25rem",
+    "2": "0.5rem",
+    "3": "0.75rem",
+    "4": "1rem",
+    "5": "1.25rem",
+    "6": "1.5rem",
+    "8": "2rem",
+    "10": "2.5rem",
+    "12": "3rem",
+    "16": "4rem",
+    "20": "5rem",
+    "24": "6rem"
   },
 
   "borders": {
-    "radius": {
-      "none": "0",
-      "sm": "0.125rem",
-      "default": "0.25rem",
-      "md": "0.375rem",
-      "lg": "0.5rem",
-      "xl": "0.75rem",
-      "2xl": "1rem",
-      "full": "9999px"
-    },
-    "width": {
-      "none": "0",
-      "default": "1px",
-      "2": "2px"
-    }
+    "width-0": "0",
+    "width-1": "1px",
+    "width-2": "2px",
+    "radius-none": "0",
+    "radius-sm": "0.25rem",
+    "radius-base": "0.375rem",
+    "radius-md": "0.5rem",
+    "radius-lg": "0.75rem",
+    "radius-xl": "1rem",
+    "radius-full": "9999px"
   },
 
   "shadows": {
+    "none": "none",
     "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-    "default": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-    "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-    "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-    "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+    "base": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+    "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
+    "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+    "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
   },
 
   "transitions": {
-    "fast": "150ms",
-    "default": "200ms",
-    "slow": "300ms",
-    "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+    "duration-fast": "150ms",
+    "duration-base": "200ms",
+    "duration-slow": "300ms",
+    "easing-default": "cubic-bezier(0.4, 0, 0.2, 1)",
+    "easing-in": "cubic-bezier(0.4, 0, 1, 1)",
+    "easing-out": "cubic-bezier(0, 0, 0.2, 1)"
+  },
+
+  "breakpoints": {
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px"
+  },
+
+  "z-index": {
+    "dropdown": "1000",
+    "sticky": "1020",
+    "fixed": "1030",
+    "modal-backdrop": "1040",
+    "modal": "1050",
+    "popover": "1060",
+    "tooltip": "1070"
+  },
+
+  "container": {
+    "max-width": "1280px",
+    "padding": "1rem"
   }
 }
 ```
@@ -690,7 +1228,7 @@ For convenience, these semantic names are also available:
   align-items: center;
   justify-content: center;
   background-color: var(--color-surface);
-  padding: var(--spacing-2xl) var(--spacing-md);
+  padding: var(--space-12) var(--space-4);
 }
 
 .hero-content {
@@ -699,36 +1237,36 @@ For convenience, these semantic names are also available:
 }
 
 .hero-heading {
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-h1);
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
-  margin: 0 0 var(--spacing-md);
-  line-height: 1.2;
+  margin: 0 0 var(--space-4);
+  line-height: var(--line-height-tight);
 }
 
 .hero-subheading {
   font-size: var(--font-size-lg);
   color: var(--color-text-light);
-  margin: 0 0 var(--spacing-xl);
+  margin: 0 0 var(--space-8);
 }
 
 .hero-button {
   display: inline-block;
   background-color: var(--color-primary);
   color: var(--color-text-inverse);
-  padding: var(--spacing-sm) var(--spacing-xl);
+  padding: var(--space-2) var(--space-8);
   border: none;
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   text-decoration: none;
   cursor: pointer;
-  transition: all var(--transition-default) var(--transition-easing);
+  transition: all var(--transition-duration-base) var(--transition-easing-default);
 }
 
 .hero-button:hover {
-  background-color: var(--color-primary-dark);
+  background-color: var(--color-primary-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
@@ -737,7 +1275,7 @@ For convenience, these semantic names are also available:
 @media (max-width: 768px) {
   .hero-section {
     min-height: 400px;
-    padding: var(--spacing-xl) var(--spacing-md);
+    padding: var(--space-8) var(--space-4);
   }
 
   .hero-heading {
@@ -765,20 +1303,19 @@ For convenience, these semantic names are also available:
 /* Base */
 html {
   font-size: var(--font-size-base);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 body {
-  font-family: var(--font-family-body);
+  font-family: var(--font-sans);
   color: var(--color-text);
   background-color: var(--color-background);
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-family-heading);
   font-weight: var(--font-weight-bold);
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
 }
 
 h1 { font-size: var(--font-size-4xl); }
@@ -792,11 +1329,11 @@ h6 { font-size: var(--font-size-base); }
 a {
   color: var(--color-primary);
   text-decoration: none;
-  transition: color var(--transition-fast) var(--transition-easing);
+  transition: color var(--transition-duration-fast) var(--transition-easing-default);
 }
 
 a:hover {
-  color: var(--color-primary-dark);
+  color: var(--color-primary-hover);
 }
 
 /* Buttons */
@@ -804,13 +1341,13 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--space-2) var(--space-4);
   border: none;
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all var(--transition-default) var(--transition-easing);
+  transition: all var(--transition-duration-base) var(--transition-easing-default);
 }
 
 .button-primary {
@@ -819,7 +1356,7 @@ a:hover {
 }
 
 .button-primary:hover {
-  background-color: var(--color-primary-dark);
+  background-color: var(--color-primary-hover);
 }
 
 .button-secondary {
@@ -829,7 +1366,7 @@ a:hover {
 
 .button-outlined {
   background-color: transparent;
-  border: var(--border-width-default) solid var(--color-primary);
+  border: var(--border-width-1) solid var(--color-primary);
   color: var(--color-primary);
 }
 
@@ -841,11 +1378,11 @@ a:hover {
 /* Forms */
 .input {
   width: 100%;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: var(--border-width-default) solid var(--color-border);
-  border-radius: var(--border-radius-default);
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--border-radius-base);
   font-size: var(--font-size-base);
-  transition: border-color var(--transition-fast) var(--transition-easing);
+  transition: border-color var(--transition-duration-fast) var(--transition-easing-default);
 }
 
 .input:focus {
@@ -857,95 +1394,106 @@ a:hover {
 .card {
   background-color: var(--color-surface);
   border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-default);
-  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-base);
+  padding: var(--space-6);
 }
 
 /* Container */
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 var(--spacing-md);
+  padding: 0 var(--container-padding);
 }
 ```
 
 ---
 
+## CSS Variable Naming Convention
+
+When tokens are converted to CSS custom properties, they follow this naming pattern:
+
+| Token Category | Token Key | CSS Variable |
+|----------------|-----------|--------------|
+| colors | `primary` | `--color-primary` |
+| typography | `font-size-lg` | `--font-size-lg` |
+| spacing | `4` | `--space-4` |
+| borders | `radius-md` | `--border-radius-md` |
+| borders | `width-1` | `--border-width-1` |
+| shadows | `md` | `--shadow-md` |
+| transitions | `duration-base` | `--transition-duration-base` |
+| z-index | `modal` | `--z-index-modal` |
+| container | `max-width` | `--container-max-width` |
+
+---
+
 ## Design System Examples
 
-### Minimal System
+### Minimal Theme
 
 ```json
 {
   "colors": {
     "primary": "#000000",
+    "primary-hover": "#333333",
     "secondary": "#6b7280",
     "background": "#ffffff",
     "text": "#111827",
     "border": "#e5e7eb"
   },
   "typography": {
-    "heading_font": "system-ui, sans-serif",
-    "body_font": "system-ui, sans-serif",
-    "base_size": "16px",
-    "scale": 1.2
+    "font-sans": "system-ui, sans-serif",
+    "font-size-base": "16px"
   },
   "spacing": {
-    "unit": "0.25rem",
-    "scale": [0, 1, 2, 4, 6, 8, 12, 16, 24, 32]
+    "2": "0.5rem",
+    "4": "1rem",
+    "6": "1.5rem",
+    "8": "2rem"
   }
 }
 ```
 
-### Brand-Heavy System
+### Luxury/Elegant Theme
 
 ```json
 {
   "colors": {
-    "primary": "#ff6b35",
-    "primary_dark": "#e55a2b",
-    "secondary": "#004e89",
-    "accent": "#ffd23f",
-    "background": "#fffcf9",
-    "text": "#1a1a2e"
+    "primary": "#d4af37",
+    "primary-hover": "#c9a22e",
+    "primary-light": "#f5e6b3",
+    "secondary": "#2c2c2c",
+    "accent": "#8b7355",
+    "background": "#fafafa",
+    "text": "#1a1a1a"
   },
   "typography": {
-    "heading_font": "'Playfair Display', serif",
-    "body_font": "'Source Sans Pro', sans-serif",
-    "base_size": "18px",
-    "scale": 1.333
+    "font-family-h1": "'Playfair Display', serif",
+    "font-family-h2": "'Playfair Display', serif",
+    "font-family-body": "'Source Sans Pro', sans-serif",
+    "font-size-base": "18px"
   }
 }
 ```
 
-### Ecommerce-Optimized
+### Dark Mode Theme
 
 ```json
 {
   "colors": {
-    "primary": "#2563eb",
-    "primary_dark": "#1d4ed8",
-    "secondary": "#7c3aed",
-    "accent": "#f59e0b",
-    "success": "#10b981",
-    "error": "#ef4444",
-    "background": "#ffffff",
-    "surface": "#f8fafc",
-    "text": "#0f172a",
-    "text_light": "#64748b"
-  },
-  "typography": {
-    "heading_font": "Inter, system-ui, sans-serif",
-    "body_font": "Inter, system-ui, sans-serif",
-    "base_size": "16px",
-    "scale": 1.25,
-    "weights": {
-      "regular": 400,
-      "medium": 500,
-      "semibold": 600,
-      "bold": 700
-    }
+    "primary": "#60a5fa",
+    "primary-hover": "#3b82f6",
+    "secondary": "#a78bfa",
+    "accent": "#f472b6",
+    "text": "#f9fafb",
+    "text-light": "#d1d5db",
+    "text-muted": "#9ca3af",
+    "background": "#111827",
+    "background-secondary": "#1f2937",
+    "surface": "#1f2937",
+    "surface-hover": "#374151",
+    "border": "#374151",
+    "shadow": "rgba(0, 0, 0, 0.3)"
   }
 }
 ```
@@ -961,6 +1509,7 @@ The validator checks your design tokens for:
 - Valid color formats
 - Valid font stack syntax
 - Numeric values where expected
+- Proper kebab-case naming
 
 Run validation:
 
@@ -975,32 +1524,42 @@ spwig validate
 ### Naming
 
 - Use clear, semantic names (`primary`, `success`, not `blue`, `green`)
-- Use consistent suffixes (`_dark`, `_light`)
-- Keep names lowercase with underscores
+- Use hyphens (kebab-case): `primary-dark`, `text-light`
+- Keep names lowercase
 
 ### Colors
 
 - Ensure sufficient contrast (WCAG AA minimum)
-- Provide light/dark variants for primary colors
-- Include semantic colors (success, warning, error)
+- Provide light/dark/hover variants for primary colors
+- Include semantic colors (success, warning, error, info)
 
 ### Typography
 
 - Use system font stacks for performance
-- Keep the type scale reasonable (1.2-1.333)
 - Define weights you'll actually use
+- Consider per-heading font families for mixed typography
 
 ### Spacing
 
-- Use consistent increments
+- Use consistent increments (4px-based scale)
 - Follow 4px/8px grid for visual harmony
-- Use semantic names in code
 
 ### Testing
 
 - Test tokens across all components
 - Check responsive behavior
 - Verify accessibility (contrast, font sizes)
+
+---
+
+## Migration from v1.0
+
+If upgrading from SDK v1.0:
+
+1. **Rename token file**: `design_tokens.json` → `tokens.json`
+2. **Update naming**: Replace underscores with hyphens (`primary_dark` → `primary-dark`)
+3. **Add new categories**: Add `z-index` and `container` sections
+4. **Update typography**: Add letter-spacing tokens if needed
 
 ---
 
