@@ -29,7 +29,7 @@ coverage/
 tmp/
 temp/
 *.tmp
-.claude_code
+.claude
 
 # Env
 .env*

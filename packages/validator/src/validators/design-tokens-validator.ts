@@ -56,6 +56,11 @@ export class DesignTokensValidator {
       this.validateSpacing(tokens.spacing, tokensPath);
     }
 
+    // Validate menu tokens
+    if (tokens.menu) {
+      this.validateMenu(tokens.menu, tokensPath);
+    }
+
     // Check for recommended properties
     this.checkRecommendedProperties(tokens, tokensPath);
 
@@ -230,6 +235,51 @@ export class DesignTokensValidator {
           createWarning('spacing_unit', `Spacing "${name}" may be missing a unit: ${value}`, {
             path: tokensPath,
             suggestion: `Add a unit like px, rem, or em`,
+          })
+        );
+      }
+    }
+  }
+
+  /**
+   * Validate menu tokens
+   */
+  private validateMenu(menu: Record<string, string>, tokensPath: string): void {
+    // Check for recommended menu tokens
+    const recommendedMenuTokens = [
+      'text-color',
+      'text-hover-color',
+      'background-hover',
+      'dropdown-background',
+      'item-gap',
+      'link-padding-x',
+      'link-padding-y',
+      'font-size',
+      'border-radius',
+      'animation-duration',
+    ];
+
+    const missingTokens = recommendedMenuTokens.filter((token) => !(token in menu));
+
+    if (missingTokens.length > 0) {
+      this.warnings.push(
+        createWarning(
+          'incomplete_menu_tokens',
+          `Missing recommended menu tokens: ${missingTokens.slice(0, 5).join(', ')}${missingTokens.length > 5 ? '...' : ''}`,
+          {
+            path: tokensPath,
+            suggestion: 'Add these menu tokens for complete navigation styling',
+          }
+        )
+      );
+    }
+
+    // Validate each menu token value
+    for (const [name, value] of Object.entries(menu)) {
+      if (typeof value !== 'string') {
+        this.errors.push(
+          createError('invalid_menu_token', `Menu token "${name}" must be a string`, {
+            path: tokensPath,
           })
         );
       }

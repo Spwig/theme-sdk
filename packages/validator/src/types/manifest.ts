@@ -185,6 +185,12 @@ export interface DesignTokens {
   borderRadius?: Record<string, string>;
   /** Transitions */
   transitions?: Record<string, string>;
+  /** Z-index values */
+  'z-index'?: Record<string, string>;
+  /** Container settings */
+  container?: Record<string, string>;
+  /** Menu tokens for navigation styling */
+  menu?: Record<string, string>;
   /** Other design tokens */
   [key: string]: any;
 }

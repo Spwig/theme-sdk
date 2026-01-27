@@ -642,6 +642,111 @@ Scope all styles to your component to avoid conflicts:
 
 ---
 
+## Menu Widget Styling
+
+Spwig provides a comprehensive set of CSS variables for customizing navigation menus. These variables let you control colors, spacing, typography, animations, and responsive behavior.
+
+### Menu CSS Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `--menu-text-color` | Default text color for menu items | `var(--color-text)` |
+| `--menu-text-hover-color` | Text color on hover | `var(--color-primary)` |
+| `--menu-background` | Menu background | `transparent` |
+| `--menu-background-hover` | Item background on hover | `var(--color-primary)` |
+| `--menu-dropdown-background` | Dropdown menu background | `var(--color-surface)` |
+| `--menu-dropdown-shadow` | Dropdown shadow | `var(--shadow-lg)` |
+| `--menu-border-color` | Border color for mobile modes | `var(--color-border)` |
+| `--menu-active-indicator-color` | Active page indicator | `var(--color-primary)` |
+| `--menu-item-gap` | Space between items | `var(--space-1)` |
+| `--menu-link-padding-x` | Horizontal link padding | `var(--space-4)` |
+| `--menu-link-padding-y` | Vertical link padding | `var(--space-2)` |
+| `--menu-dropdown-padding` | Dropdown menu padding | `var(--space-2)` |
+| `--menu-font-size` | Menu item font size | `var(--font-size-base)` |
+| `--menu-font-weight` | Default font weight | `var(--font-weight-medium)` |
+| `--menu-font-weight-active` | Active item font weight | `var(--font-weight-semibold)` |
+| `--menu-border-radius` | Item border radius | `var(--radius-md)` |
+| `--menu-dropdown-border-radius` | Dropdown border radius | `var(--radius-lg)` |
+| `--menu-animation-duration` | Animation speed | `var(--duration-fast)` |
+| `--menu-animation-timing` | Animation easing | `var(--easing-default)` |
+| `--menu-slide-duration` | Mobile slide animation | `var(--duration-slow)` |
+
+### Example: Custom Menu Styling
+
+```css
+/* tokens.css - override menu defaults */
+:root {
+  --menu-text-color: #374151;
+  --menu-text-hover-color: #ffffff;
+  --menu-background-hover: var(--color-primary);
+  --menu-dropdown-background: #ffffff;
+  --menu-dropdown-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  --menu-item-gap: 0.25rem;
+  --menu-link-padding-x: 1rem;
+  --menu-link-padding-y: 0.5rem;
+  --menu-border-radius: 0.375rem;
+  --menu-animation-duration: 200ms;
+}
+```
+
+### Animation Customization
+
+Themes can customize menu animation timing:
+
+```css
+:root {
+  /* Faster animations for snappier feel */
+  --menu-animation-duration: 150ms;
+  --menu-animation-timing: ease-out;
+
+  /* Slower slide for mobile menus */
+  --menu-slide-duration: 400ms;
+}
+```
+
+### Mobile Menu Modes
+
+Themes should support these mobile menu mode classes:
+
+| Class | Description |
+|-------|-------------|
+| `.mobile-mode-hamburger` | Traditional hamburger menu (default) |
+| `.mobile-mode-bottom-nav` | Fixed bottom navigation bar |
+| `.mobile-mode-slide` | Off-canvas slide menu |
+| `.mobile-mode-fullscreen` | Fullscreen overlay menu |
+
+Example CSS for mobile modes:
+
+```css
+/* Bottom navigation mode */
+.widget-menu.mobile-mode-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Slide menu mode */
+.widget-menu.mobile-mode-slide {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  transform: translateX(-100%);
+  transition: transform var(--menu-slide-duration) ease;
+}
+
+.widget-menu.mobile-mode-slide.menu-open {
+  transform: translateX(0);
+}
+```
+
+---
+
 ## Creating Components
 
 ### Using the CLI

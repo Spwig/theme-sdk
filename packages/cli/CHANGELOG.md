@@ -30,6 +30,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `header-bg`, `footer-bg` for layout areas
   - `shadow`, `overlay` utility colors
 
+- **Menu tokens for navigation styling**
+  - Color tokens: `text-color`, `text-hover-color`, `background`, `background-hover`, `dropdown-background`, `dropdown-shadow`, `border-color`, `active-indicator-color`
+  - Spacing tokens: `item-gap`, `link-padding-x`, `link-padding-y`, `dropdown-padding`, `dropdown-offset`
+  - Typography tokens: `font-size`, `font-weight`, `font-weight-active`
+  - Shape tokens: `border-radius`, `dropdown-border-radius`
+  - Animation tokens: `animation-duration`, `animation-timing`, `slide-duration`
+  - Mobile mode classes: `.mobile-mode-hamburger`, `.mobile-mode-bottom-nav`, `.mobile-mode-slide`, `.mobile-mode-fullscreen`
+
 ### Migration
 - See DESIGN_TOKENS.md "Migration from v1.0" section for upgrade instructions
 

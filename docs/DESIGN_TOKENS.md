@@ -31,7 +31,8 @@ All tokens live in `tokens.json` at your theme root:
   "transitions": { ... },
   "breakpoints": { ... },
   "z-index": { ... },
-  "container": { ... }
+  "container": { ... },
+  "menu": { ... }
 }
 ```
 
@@ -1048,6 +1049,101 @@ Container tokens define the main content width and padding:
 
 ---
 
+## Menu Tokens
+
+Menu tokens control the appearance and behavior of navigation menus throughout the storefront. These tokens allow comprehensive customization of colors, spacing, typography, and animations for menu components.
+
+```json
+{
+  "menu": {
+    "text-color": "var(--color-text)",
+    "text-hover-color": "var(--color-text-inverse)",
+    "background": "transparent",
+    "background-hover": "var(--color-primary)",
+    "dropdown-background": "var(--color-surface)",
+    "dropdown-shadow": "var(--shadow-lg)",
+    "border-color": "var(--color-border)",
+    "active-indicator-color": "var(--color-primary)",
+    "item-gap": "var(--space-1)",
+    "link-padding-x": "var(--space-4)",
+    "link-padding-y": "var(--space-2)",
+    "dropdown-padding": "var(--space-2)",
+    "dropdown-offset": "var(--space-2)",
+    "font-size": "var(--font-size-base)",
+    "font-weight": "var(--font-weight-medium)",
+    "font-weight-active": "var(--font-weight-semibold)",
+    "border-radius": "var(--radius-md)",
+    "dropdown-border-radius": "var(--radius-lg)",
+    "animation-duration": "var(--duration-fast)",
+    "animation-timing": "var(--easing-default)",
+    "slide-duration": "var(--duration-slow)"
+  }
+}
+```
+
+### Menu Token Reference
+
+| Token | Description | Typical Value |
+|-------|-------------|---------------|
+| `text-color` | Default text color for menu items | `var(--color-text)` |
+| `text-hover-color` | Text color when hovered | `var(--color-text-inverse)` |
+| `background` | Default menu item background | `transparent` |
+| `background-hover` | Background color on hover | `var(--color-primary)` |
+| `dropdown-background` | Dropdown panel background | `var(--color-surface)` |
+| `dropdown-shadow` | Shadow for dropdown menus | `var(--shadow-lg)` |
+| `border-color` | Border color for separators | `var(--color-border)` |
+| `active-indicator-color` | Color for active page indicator | `var(--color-primary)` |
+| `item-gap` | Space between menu items | `var(--space-1)` |
+| `link-padding-x` | Horizontal padding for links | `var(--space-4)` |
+| `link-padding-y` | Vertical padding for links | `var(--space-2)` |
+| `dropdown-padding` | Padding inside dropdown panels | `var(--space-2)` |
+| `dropdown-offset` | Gap between parent and dropdown | `var(--space-2)` |
+| `font-size` | Menu item font size | `var(--font-size-base)` |
+| `font-weight` | Default font weight | `var(--font-weight-medium)` |
+| `font-weight-active` | Font weight for active items | `var(--font-weight-semibold)` |
+| `border-radius` | Border radius for menu items | `var(--radius-md)` |
+| `dropdown-border-radius` | Border radius for dropdowns | `var(--radius-lg)` |
+| `animation-duration` | Duration for hover animations | `var(--duration-fast)` |
+| `animation-timing` | Easing function for animations | `var(--easing-default)` |
+| `slide-duration` | Duration for mobile slide animations | `var(--duration-slow)` |
+
+**Usage in CSS:**
+```css
+.widget-menu .menu-link {
+  color: var(--menu-text-color);
+  padding: var(--menu-link-padding-y) var(--menu-link-padding-x);
+  font-size: var(--menu-font-size);
+  font-weight: var(--menu-font-weight);
+  border-radius: var(--menu-border-radius);
+  transition: all var(--menu-animation-duration) var(--menu-animation-timing);
+}
+
+.widget-menu .menu-link:hover {
+  color: var(--menu-text-hover-color);
+  background: var(--menu-background-hover);
+}
+
+.widget-menu .dropdown-menu {
+  background: var(--menu-dropdown-background);
+  box-shadow: var(--menu-dropdown-shadow);
+  border-radius: var(--menu-dropdown-border-radius);
+  padding: var(--menu-dropdown-padding);
+}
+```
+
+### Mobile Menu Modes
+
+Themes should support these mobile menu mode classes:
+
+| Class | Description |
+|-------|-------------|
+| `.mobile-mode-hamburger` | Traditional hamburger toggle menu (default) |
+| `.mobile-mode-bottom-nav` | Fixed bottom navigation bar |
+| `.mobile-mode-slide` | Off-canvas slide-in menu |
+| `.mobile-mode-fullscreen` | Fullscreen overlay menu |
+
+---
+
 ## Complete Design Tokens Example
 
 ```json
@@ -1208,6 +1304,30 @@ Container tokens define the main content width and padding:
   "container": {
     "max-width": "1280px",
     "padding": "1rem"
+  },
+
+  "menu": {
+    "text-color": "var(--color-text)",
+    "text-hover-color": "var(--color-text-inverse)",
+    "background": "transparent",
+    "background-hover": "var(--color-primary)",
+    "dropdown-background": "var(--color-surface)",
+    "dropdown-shadow": "var(--shadow-lg)",
+    "border-color": "var(--color-border)",
+    "active-indicator-color": "var(--color-primary)",
+    "item-gap": "var(--space-1)",
+    "link-padding-x": "var(--space-4)",
+    "link-padding-y": "var(--space-2)",
+    "dropdown-padding": "var(--space-2)",
+    "dropdown-offset": "var(--space-2)",
+    "font-size": "var(--font-size-base)",
+    "font-weight": "var(--font-weight-medium)",
+    "font-weight-active": "var(--font-weight-semibold)",
+    "border-radius": "var(--radius-md)",
+    "dropdown-border-radius": "var(--radius-lg)",
+    "animation-duration": "var(--duration-fast)",
+    "animation-timing": "var(--easing-default)",
+    "slide-duration": "var(--duration-slow)"
   }
 }
 ```
