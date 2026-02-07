@@ -1,64 +1,26 @@
 {
-  "name": "starter_theme",
-  "version": "1.0.0",
+  "name": "starter-theme",
+  "version": "2.0.0",
   "display_name": "Starter Theme",
-  "description": "A clean, minimal theme to get you started with Spwig theme development",
-  "author": {
-    "name": "Spwig",
-    "email": "themes@spwig.com",
-    "url": "https://spwig.com"
-  },
+  "description": "A clean, minimal starter theme for Spwig eCommerce. Perfect starting point for custom theme development.",
+  "author": "Spwig",
+  "sdk_version": "2.0",
   "license": "MIT",
-  "default_language": "en",
-  "tier_compatibility": ["A", "B", "C"],
+  "min_platform_version": "2.0.0",
+  "preview_image": "preview.png",
+  "tags": ["minimal", "starter", "clean", "responsive"],
+  "categories": ["general"],
   "features": [
-    "responsive",
-    "accessible",
-    "seo-optimized"
+    "Responsive design",
+    "Clean typography",
+    "Accessible focus states",
+    "Dark-friendly color tokens"
   ],
-  "categories": [
-    "minimal",
-    "modern",
-    "starter"
-  ],
-  "tags": [
-    "starter",
-    "minimal",
-    "clean",
-    "modern"
-  ],
-  "bundled_components": [
+  "changelog": [
     {
-      "type": "header",
-      "name": "main_header",
-      "path": "components/headers/main_header"
-    },
-    {
-      "type": "footer",
-      "name": "main_footer",
-      "path": "components/footers/main_footer"
-    },
-    {
-      "type": "section",
-      "name": "hero_section",
-      "path": "components/sections/hero_section"
-    },
-    {
-      "type": "section",
-      "name": "product_grid",
-      "path": "components/sections/product_grid"
-    },
-    {
-      "type": "section",
-      "name": "newsletter",
-      "path": "components/sections/newsletter"
+      "version": "2.0.0",
+      "date": "2026-02-07",
+      "changes": ["Rebuilt for SDK v2.0 — tokens-focused architecture"]
     }
-  ],
-  "page_schemas": [
-    "pages/home.json",
-    "pages/product.json",
-    "pages/collection.json",
-    "pages/cart.json"
-  ],
-  "design_tokens": "design_tokens.json"
+  ]
 }

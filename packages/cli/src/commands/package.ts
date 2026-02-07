@@ -35,7 +35,6 @@ interface PackageInfo {
   content_checksum: string;
   file_count: number;
   total_size: number;
-  bundled_components: number;
 }
 
 export async function packageCommand(themePath: string, options: PackageOptions): Promise<void> {
@@ -109,7 +108,6 @@ export async function packageCommand(themePath: string, options: PackageOptions)
     console.log(chalk.gray('  Size:'), formatBytes(packageInfo.package_size));
     console.log(chalk.gray('  Files:'), packageInfo.file_count);
     console.log(chalk.gray('  Checksum:'), packageInfo.checksum_file);
-    console.log(chalk.gray('  Components:'), packageInfo.bundled_components);
     console.log();
     console.log(chalk.green('✅ Theme package ready for distribution!'));
   } catch (error) {
@@ -165,7 +163,6 @@ async function createPackage(
       content_checksum: metadata.checksum,
       file_count: metadata.file_count,
       total_size: metadata.total_size,
-      bundled_components: manifest.bundled_components?.length || 0,
     };
   } finally {
     // Cleanup build directory

@@ -5,9 +5,7 @@
 
 // Export validators
 export { ThemeValidator } from './validators/theme-validator.js';
-export { ComponentValidator } from './validators/component-validator.js';
 export { ManifestValidator } from './validators/manifest-validator.js';
-export { TemplateValidator } from './validators/template-validator.js';
 export { DesignTokensValidator } from './validators/design-tokens-validator.js';
 
 // Export types
@@ -19,8 +17,5 @@ export type {
 
 export type {
   ThemeManifest,
-  ComponentManifest,
-  PageSchema,
   DesignTokens,
-  BundledComponentRef,
 } from './types/manifest.js';

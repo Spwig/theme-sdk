@@ -1,0 +1,39 @@
+{
+  "name": "Classic Header",
+  "description": "Clean header with logo left, menu center, and utility icons right",
+  "layout_type": "standard",
+  "is_sticky": true,
+  "enable_notification_zone": false,
+  "zone_layouts": {
+    "main-header": ["left", "center", "right"]
+  },
+  "widget_placements": [
+    {
+      "widget_type": "logo",
+      "zone": "main-header_left",
+      "order": 0,
+      "config": { "height": 40 }
+    },
+    {
+      "widget_type": "menu",
+      "zone": "main-header_center",
+      "order": 0
+    },
+    {
+      "widget_type": "search",
+      "zone": "main-header_right",
+      "order": 0,
+      "config": { "style": "icon" }
+    },
+    {
+      "widget_type": "account",
+      "zone": "main-header_right",
+      "order": 1
+    },
+    {
+      "widget_type": "cart",
+      "zone": "main-header_right",
+      "order": 2
+    }
+  ]
+}

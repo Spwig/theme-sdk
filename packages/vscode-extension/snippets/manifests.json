@@ -8,99 +8,63 @@
       "  \"display_name\": \"${3:My Theme}\",",
       "  \"description\": \"${4:A custom theme for Spwig}\",",
       "  \"author\": \"${5:Your Name}\",",
-      "  \"author_email\": \"${6:your@email.com}\",",
+      "  \"sdk_version\": \"2.0\",",
+      "  \"min_platform_version\": \"${6:2.0.0}\",",
       "  \"license\": \"${7|MIT,Apache-2.0,GPL-3.0,Proprietary|}\",",
-      "  \"spwig_version\": \">=1.0.0\",",
-      "  \"tier_compatibility\": [\"A\", \"B\", \"C\"],",
-      "  \"preview_image\": \"assets/images/preview.png\",",
-      "  \"components\": {",
-      "    \"headers\": [],",
-      "    \"footers\": [],",
-      "    \"sections\": [],",
-      "    \"utilities\": []",
-      "  }",
-      "}"
-    ],
-    "description": "Complete theme manifest file"
-  },
-  "Component Manifest - Header": {
-    "prefix": "spwig-component-manifest-header",
-    "body": [
-      "{",
-      "  \"name\": \"${1:my_header}\",",
-      "  \"version\": \"${2:1.0.0}\",",
-      "  \"display_name\": \"${3:My Header}\",",
-      "  \"description\": \"${4:Header component}\",",
-      "  \"author\": \"${5:Your Name}\",",
-      "  \"tier_compatibility\": [\"A\", \"B\", \"C\"],",
-      "  \"regions\": [\"header\"],",
-      "  \"category\": \"header\",",
-      "  \"tags\": [\"navigation\", \"header\"]",
-      "}"
-    ],
-    "description": "Header component manifest"
-  },
-  "Component Manifest - Footer": {
-    "prefix": "spwig-component-manifest-footer",
-    "body": [
-      "{",
-      "  \"name\": \"${1:my_footer}\",",
-      "  \"version\": \"${2:1.0.0}\",",
-      "  \"display_name\": \"${3:My Footer}\",",
-      "  \"description\": \"${4:Footer component}\",",
-      "  \"author\": \"${5:Your Name}\",",
-      "  \"tier_compatibility\": [\"A\", \"B\", \"C\"],",
-      "  \"regions\": [\"footer\"],",
-      "  \"category\": \"footer\",",
-      "  \"tags\": [\"footer\", \"navigation\"]",
-      "}"
-    ],
-    "description": "Footer component manifest"
-  },
-  "Component Manifest - Section": {
-    "prefix": "spwig-component-manifest-section",
-    "body": [
-      "{",
-      "  \"name\": \"${1:my_section}\",",
-      "  \"version\": \"${2:1.0.0}\",",
-      "  \"display_name\": \"${3:My Section}\",",
-      "  \"description\": \"${4:Section component}\",",
-      "  \"author\": \"${5:Your Name}\",",
-      "  \"tier_compatibility\": [\"A\", \"B\", \"C\"],",
-      "  \"regions\": [\"main\", \"sidebar\"],",
-      "  \"category\": \"${6|hero,featured,content,gallery,testimonial,cta|}\",",
-      "  \"tags\": [\"${7:section}\", \"${8:content}\"]",
-      "}"
-    ],
-    "description": "Section component manifest"
-  },
-  "Bundled Component Reference": {
-    "prefix": "spwig-component-ref",
-    "body": [
-      "{",
-      "  \"name\": \"${1:component_name}\",",
-      "  \"version\": \"${2:1.0.0}\",",
-      "  \"path\": \"components/${3|headers,footers,sections,utilities|}/${1}\"",
-      "}"
-    ],
-    "description": "Reference to bundled component"
-  },
-  "Page Schema": {
-    "prefix": "spwig-page-schema",
-    "body": [
-      "{",
-      "  \"page_type\": \"${1|home,product,collection,cart,checkout,account,page|}\",",
-      "  \"sections\": [",
-      "    {",
-      "      \"type\": \"${2:hero_section}\",",
-      "      \"settings\": {",
-      "        \"title\": \"${3:Welcome}\",",
-      "        \"description\": \"${4:Your description here}\"",
-      "      }",
-      "    }",
+      "  \"preview_image\": \"preview.png\",",
+      "  \"tags\": [\"${8:modern}\", \"${9:responsive}\"],",
+      "  \"categories\": [\"${10|fashion,electronics,home-garden,sports,beauty,food-beverage,books,toys,jewelry,automotive,general|}\"],",
+      "  \"features\": [",
+      "    \"${11:Responsive design}\",",
+      "    \"${12:Dark mode support}\"",
       "  ]",
       "}"
     ],
-    "description": "Page schema structure"
+    "description": "Complete theme manifest file (SDK v2.0)"
+  },
+  "Header Preset": {
+    "prefix": "spwig-header-preset",
+    "body": [
+      "{",
+      "  \"name\": \"${1:default-header}\",",
+      "  \"display_name\": \"${2:Default Header}\",",
+      "  \"description\": \"${3:A clean default header layout}\",",
+      "  \"layout\": {",
+      "    \"style\": \"${4|standard,centered,split,minimal|}\",",
+      "    \"sticky\": ${5|true,false|},",
+      "    \"transparent\": ${6|false,true|}",
+      "  },",
+      "  \"widgets\": {",
+      "    \"left\": [\"${7:logo}\", \"${8:menu}\"],",
+      "    \"center\": [],",
+      "    \"right\": [\"${9:search}\", \"${10:account}\", \"${11:cart}\"]",
+      "  }",
+      "}"
+    ],
+    "description": "Header preset configuration"
+  },
+  "Footer Preset": {
+    "prefix": "spwig-footer-preset",
+    "body": [
+      "{",
+      "  \"name\": \"${1:default-footer}\",",
+      "  \"display_name\": \"${2:Default Footer}\",",
+      "  \"description\": \"${3:A standard footer layout}\",",
+      "  \"layout\": {",
+      "    \"style\": \"${4|standard,centered,minimal,mega|}\",",
+      "    \"columns\": ${5:4}",
+      "  },",
+      "  \"widgets\": {",
+      "    \"columns\": [",
+      "      [\"${6:logo}\", \"${7:text}\"],",
+      "      [\"${8:links}\"],",
+      "      [\"${9:links}\"],",
+      "      [\"${10:newsletter}\", \"${11:social}\"]",
+      "    ],",
+      "    \"bottom\": [\"${12:text}\", \"${13:payment}\"]",
+      "  }",
+      "}"
+    ],
+    "description": "Footer preset configuration"
   }
 }

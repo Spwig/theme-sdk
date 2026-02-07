@@ -1,18 +1,6 @@
 /**
- * Type definitions for theme and component manifests
+ * Type definitions for theme manifests
  */
-
-/**
- * Reference to a bundled component in theme manifest
- */
-export interface BundledComponentRef {
-  /** Component type */
-  type: 'header' | 'footer' | 'section' | 'utility';
-  /** Component name */
-  name: string;
-  /** Relative path to component directory */
-  path: string;
-}
 
 /**
  * Changelog entry
@@ -44,18 +32,6 @@ export interface ColorScheme {
 }
 
 /**
- * Component dependency
- */
-export interface ComponentDependency {
-  /** Component name */
-  name: string;
-  /** Minimum version (optional) */
-  min_version?: string;
-  /** Maximum version (optional) */
-  max_version?: string;
-}
-
-/**
  * Theme manifest structure
  */
 export interface ThemeManifest {
@@ -69,22 +45,10 @@ export interface ThemeManifest {
   description: string;
   /** Author/vendor name */
   author: string;
+  /** SDK version (e.g., "2.0") */
+  sdk_version?: string;
   /** License type */
   license?: 'MIT' | 'Apache-2.0' | 'GPL-3.0' | 'Proprietary';
-  /** Bundled components */
-  bundled_components?: BundledComponentRef[];
-  /** Page schema paths */
-  page_schemas?: {
-    home?: string;
-    product?: string;
-    collection?: string;
-    cart?: string;
-    checkout?: string;
-    landing?: string;
-    [key: string]: string | undefined;
-  };
-  /** Design tokens file path */
-  design_tokens?: string;
   /** Preview image filename */
   preview_image?: string;
   /** Screenshot filenames */
@@ -118,53 +82,42 @@ export interface ThemeManifest {
 }
 
 /**
- * Component manifest structure
+ * Element-specific token categories
+ * These provide default styling for page builder elements
  */
-export interface ComponentManifest {
-  /** Component identifier */
-  name: string;
-  /** Semantic version */
-  version: string;
-  /** Human-readable name */
-  display_name: string;
-  /** Component description */
-  description: string;
-  /** Author name */
-  author: string;
-  /** Tier compatibility */
-  tier_compatibility: ('A' | 'B' | 'C')[];
-  /** Allowed regions */
-  regions: string[];
-  /** Component category */
-  category: string;
-  /** Searchable tags */
-  tags?: string[];
-  /** Asset declarations */
-  assets?: {
-    css?: string[];
-    js?: string[];
-    images?: string[];
-  };
-  /** Supported locales */
-  locales?: string[];
-  /** Preview image filename */
-  preview?: string;
-  /** Dependencies */
-  dependencies?: ComponentDependency[];
-  /** Props schema (optional, can be in separate file) */
-  props_schema?: Record<string, any>;
-}
-
-/**
- * Page schema structure (simplified - actual structure is flexible)
- */
-export interface PageSchema {
-  /** Page type */
-  page_type: string;
-  /** Layout sections */
-  sections: any[];
-  /** Other page-specific config */
-  [key: string]: any;
+export interface ElementTokens {
+  /** Hero section defaults */
+  hero?: Record<string, string>;
+  /** Button element defaults */
+  button?: Record<string, string>;
+  /** Card styling (shared by product cards, testimonials, etc.) */
+  card?: Record<string, string>;
+  /** Divider element defaults */
+  divider?: Record<string, string>;
+  /** Form input styling */
+  form?: Record<string, string>;
+  /** Accordion/FAQ styling */
+  accordion?: Record<string, string>;
+  /** Modal/popup styling */
+  modal?: Record<string, string>;
+  /** Countdown timer styling */
+  countdown?: Record<string, string>;
+  /** Testimonial element styling */
+  testimonial?: Record<string, string>;
+  /** Blog element styling */
+  blog?: Record<string, string>;
+  /** Product display styling */
+  product?: Record<string, string>;
+  /** Voucher/coupon code styling */
+  voucher?: Record<string, string>;
+  /** Heading element defaults */
+  heading?: Record<string, string>;
+  /** Image element defaults */
+  image?: Record<string, string>;
+  /** Gallery element defaults */
+  gallery?: Record<string, string>;
+  /** Other element categories */
+  [key: string]: Record<string, string> | undefined;
 }
 
 /**
@@ -183,6 +136,8 @@ export interface DesignTokens {
   shadows?: Record<string, string>;
   /** Border radius values */
   borderRadius?: Record<string, string>;
+  /** Border width values */
+  borders?: Record<string, string>;
   /** Transitions */
   transitions?: Record<string, string>;
   /** Z-index values */
@@ -191,6 +146,10 @@ export interface DesignTokens {
   container?: Record<string, string>;
   /** Menu tokens for navigation styling */
   menu?: Record<string, string>;
+  /** Search component tokens */
+  search?: Record<string, string>;
+  /** Element-specific tokens for page builder elements */
+  elements?: ElementTokens;
   /** Other design tokens */
   [key: string]: any;
 }

@@ -29,25 +29,34 @@ export class ThemeTreeDataProvider implements vscode.TreeDataProvider<TreeItem> 
 
     if (element instanceof ThemeItem) {
       // Theme children - sections
-      return [
+      const sections: TreeItem[] = [
         new SectionItem('Theme Info', 'info', element.themePath),
-        new SectionItem('Components', 'components', element.themePath),
-        new SectionItem('Pages', 'pages', element.themePath),
         new SectionItem('Design Tokens', 'tokens', element.themePath),
-        new SectionItem('Actions', 'actions', element.themePath),
       ];
+
+      // Only show Presets if presets/ directory exists
+      const presetsPath = path.join(element.themePath, 'presets');
+      if (fs.existsSync(presetsPath)) {
+        sections.push(new SectionItem('Presets', 'presets', element.themePath));
+      }
+
+      // Only show Overrides if overrides.css exists
+      const overridesPath = path.join(element.themePath, 'overrides.css');
+      if (fs.existsSync(overridesPath)) {
+        sections.push(new SectionItem('Overrides', 'overrides', element.themePath));
+      }
+
+      sections.push(new SectionItem('Actions', 'actions', element.themePath));
+
+      return sections;
     }
 
     if (element instanceof SectionItem) {
       return this.getSectionChildren(element);
     }
 
-    if (element instanceof ComponentTypeItem) {
-      return this.getComponentTypeChildren(element);
-    }
-
-    if (element instanceof ComponentItem) {
-      return this.getComponentFiles(element);
+    if (element instanceof PresetTypeItem) {
+      return this.getPresetTypeChildren(element);
     }
 
     return [];
@@ -72,44 +81,40 @@ export class ThemeTreeDataProvider implements vscode.TreeDataProvider<TreeItem> 
         }
       }
 
-      case 'components': {
-        const componentsPath = path.join(themePath, 'components');
-        if (!fs.existsSync(componentsPath)) {
+      case 'tokens': {
+        const tokensPath = path.join(themePath, 'tokens.json');
+        if (fs.existsSync(tokensPath)) {
+          return [new FileItem('tokens.json', tokensPath, 'tokens')];
+        }
+        return [];
+      }
+
+      case 'presets': {
+        const presetsPath = path.join(themePath, 'presets');
+        if (!fs.existsSync(presetsPath)) {
           return [];
         }
 
         const types: TreeItem[] = [];
-        const dirs = ['headers', 'footers', 'sections', 'utilities'];
+        const dirs = ['headers', 'footers'];
         for (const dir of dirs) {
-          const typePath = path.join(componentsPath, dir);
+          const typePath = path.join(presetsPath, dir);
           if (fs.existsSync(typePath)) {
-            const count = fs.readdirSync(typePath).filter((f) =>
-              fs.statSync(path.join(typePath, f)).isDirectory()
-            ).length;
-            if (count > 0) {
-              types.push(new ComponentTypeItem(dir, typePath, count));
+            const files = fs.readdirSync(typePath).filter((f: string) =>
+              f.endsWith('.json')
+            );
+            if (files.length > 0) {
+              types.push(new PresetTypeItem(dir.charAt(0).toUpperCase() + dir.slice(1), typePath));
             }
           }
         }
         return types;
       }
 
-      case 'pages': {
-        const pagesPath = path.join(themePath, 'pages');
-        if (!fs.existsSync(pagesPath)) {
-          return [];
-        }
-
-        return fs
-          .readdirSync(pagesPath)
-          .filter((f) => f.endsWith('.json'))
-          .map((f) => new FileItem(f, path.join(pagesPath, f), 'page'));
-      }
-
-      case 'tokens': {
-        const tokensPath = path.join(themePath, 'design_tokens.json');
-        if (fs.existsSync(tokensPath)) {
-          return [new FileItem('design_tokens.json', tokensPath, 'tokens')];
+      case 'overrides': {
+        const overridesPath = path.join(themePath, 'overrides.css');
+        if (fs.existsSync(overridesPath)) {
+          return [new FileItem('overrides.css', overridesPath, 'overrides')];
         }
         return [];
       }
@@ -127,32 +132,18 @@ export class ThemeTreeDataProvider implements vscode.TreeDataProvider<TreeItem> 
     }
   }
 
-  private getComponentTypeChildren(typeItem: ComponentTypeItem): TreeItem[] {
+  private getPresetTypeChildren(typeItem: PresetTypeItem): TreeItem[] {
     const items: TreeItem[] = [];
-    const dirs = fs.readdirSync(typeItem.typePath);
+    const files = fs.readdirSync(typeItem.typePath);
 
-    for (const dir of dirs) {
-      const componentPath = path.join(typeItem.typePath, dir);
-      if (fs.statSync(componentPath).isDirectory()) {
-        items.push(new ComponentItem(dir, componentPath));
+    for (const file of files) {
+      if (file.endsWith('.json')) {
+        const filePath = path.join(typeItem.typePath, file);
+        items.push(new FileItem(file, filePath, 'preset'));
       }
     }
 
     return items;
-  }
-
-  private getComponentFiles(component: ComponentItem): TreeItem[] {
-    const files: TreeItem[] = [];
-    const entries = fs.readdirSync(component.componentPath);
-
-    for (const entry of entries) {
-      const filePath = path.join(component.componentPath, entry);
-      if (fs.statSync(filePath).isFile()) {
-        files.push(new FileItem(entry, filePath, 'component-file'));
-      }
-    }
-
-    return files;
   }
 }
 
@@ -187,9 +178,9 @@ class SectionItem extends TreeItem {
 
     const icons: Record<string, string> = {
       info: 'info',
-      components: 'extensions',
-      pages: 'file-code',
       tokens: 'symbol-color',
+      presets: 'list-tree',
+      overrides: 'file-code',
       actions: 'play',
     };
 
@@ -204,25 +195,13 @@ class InfoItem extends TreeItem {
   }
 }
 
-class ComponentTypeItem extends TreeItem {
+class PresetTypeItem extends TreeItem {
   constructor(
     label: string,
-    public readonly typePath: string,
-    count: number
-  ) {
-    super(`${label} (${count})`, vscode.TreeItemCollapsibleState.Collapsed);
-    this.iconPath = new vscode.ThemeIcon('folder');
-  }
-}
-
-class ComponentItem extends TreeItem {
-  constructor(
-    label: string,
-    public readonly componentPath: string
+    public readonly typePath: string
   ) {
     super(label, vscode.TreeItemCollapsibleState.Collapsed);
-    this.contextValue = 'component';
-    this.iconPath = new vscode.ThemeIcon('extensions');
+    this.iconPath = new vscode.ThemeIcon('folder');
   }
 }
 

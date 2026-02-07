@@ -5,7 +5,6 @@ import chalk from 'chalk';
 import { initCommand } from './commands/init.js';
 import { validateCommand } from './commands/validate.js';
 import { packageCommand } from './commands/package.js';
-import { componentCommand } from './commands/component.js';
 import { devCommand } from './commands/dev.js';
 
 const program = new Command();
@@ -13,7 +12,7 @@ const program = new Command();
 program
   .name('spwig')
   .description('Spwig Theme SDK - Build professional themes for Spwig eCommerce')
-  .version('1.1.0');
+  .version('2.0.0');
 
 // spwig init
 program
@@ -23,8 +22,8 @@ program
   .option('-e, --email <email>', 'Author email')
   .option('-d, --description <text>', 'Theme description')
   .option('-l, --license <type>', 'License type', 'MIT')
-  .option('--no-git', 'Skip git initialization')
-  .option('-t, --template <name>', 'Use template (blank, minimal, full)', 'full')
+  .option('-t, --template <name>', 'Use template (basic, standard, complete)', 'standard')
+  .option('--primary-color <hex>', 'Primary color hex (e.g., #2563eb)')
   .action(async (name, options) => {
     try {
       await initCommand(name, options);
@@ -37,8 +36,7 @@ program
 // spwig validate
 program
   .command('validate [path]')
-  .description('Validate theme or component package')
-  .option('-t, --type <type>', 'Package type (theme, component)', undefined)
+  .description('Validate theme package')
   .option('-v, --verbose', 'Show detailed validation output')
   .action(async (path, options) => {
     try {
@@ -83,32 +81,6 @@ program
       process.exit(1);
     }
   });
-
-// spwig component
-program
-  .command('component')
-  .description('Component management')
-  .action(() => {
-    program.help();
-  });
-
-program
-  .command('component add [type] [name]')
-  .description('Add a new component')
-  .option('-d, --display-name <text>', 'Display name')
-  .option('--description <text>', 'Component description')
-  .option('--with-css', 'Create styles.css')
-  .option('--with-js', 'Create script.js')
-  .option('-t, --template <name>', 'Use template (blank, basic, advanced)', 'basic')
-  .action(async (type, name, options) => {
-    try {
-      await componentCommand(type, name, options);
-    } catch (error) {
-      console.error(chalk.red('Error:'), error instanceof Error ? error.message : error);
-      process.exit(1);
-    }
-  });
-
 // Global error handler
 process.on('uncaughtException', (error) => {
   console.error(chalk.red('Uncaught Exception:'), error.message);

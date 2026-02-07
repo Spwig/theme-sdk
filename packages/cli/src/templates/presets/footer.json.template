@@ -1,0 +1,16 @@
+{
+  "name": "{{displayName}} Footer",
+  "description": "Custom footer preset for {{displayName}} theme",
+  "layout_type": "standard",
+  "zone_layouts": {
+    "main-footer": ["left", "center", "right"],
+    "bottom-bar": ["left", "right"]
+  },
+  "widget_placements": [
+    {"widget_type": "text", "zone": "main-footer_left", "order": 0},
+    {"widget_type": "links", "zone": "main-footer_center", "order": 0},
+    {"widget_type": "newsletter", "zone": "main-footer_right", "order": 0},
+    {"widget_type": "social", "zone": "bottom-bar_left", "order": 0},
+    {"widget_type": "text", "zone": "bottom-bar_right", "order": 0, "config": {"content": "© {{year}} {{displayName}}. All rights reserved."}}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Standard Footer",
+  "description": "Multi-column footer with links, newsletter, and social icons",
+  "layout_type": "standard",
+  "zone_layouts": {
+    "main-footer": ["left", "center", "right"],
+    "bottom-bar": ["left", "right"]
+  },
+  "widget_placements": [
+    {
+      "widget_type": "text",
+      "zone": "main-footer_left",
+      "order": 0,
+      "config": { "content": "About Us" }
+    },
+    {
+      "widget_type": "links",
+      "zone": "main-footer_center",
+      "order": 0,
+      "config": { "title": "Quick Links" }
+    },
+    {
+      "widget_type": "newsletter",
+      "zone": "main-footer_right",
+      "order": 0,
+      "config": { "title": "Stay Updated" }
+    },
+    {
+      "widget_type": "text",
+      "zone": "bottom-bar_left",
+      "order": 0,
+      "config": { "content": "&copy; 2026 Your Store. All rights reserved." }
+    },
+    {
+      "widget_type": "social",
+      "zone": "bottom-bar_right",
+      "order": 0
+    }
+  ]
+}

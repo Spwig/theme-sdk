@@ -6,7 +6,6 @@ import {
   directoryExists,
   ensureDirectory,
   writeFromTemplate,
-  writeJSON,
 } from '../utils/file-system.js';
 import {
   isValidThemeName,
@@ -26,10 +25,14 @@ export interface InitOptions {
 }
 
 /**
- * Initialize a new theme
+ * Initialize a new Spwig theme (v2.0 architecture)
+ *
+ * Theme v2.0 is token-driven: the primary deliverable is tokens.json
+ * which controls all visual aspects of the storefront. Themes no longer
+ * bundle components or page schemas.
  */
 export async function initCommand(themeName: string | undefined, options: InitOptions): Promise<void> {
-  console.log(chalk.blue.bold('\n🎨 Spwig Theme SDK - Create New Theme\n'));
+  console.log(chalk.blue.bold('\n  Spwig Theme SDK v2.0 - Create New Theme\n'));
 
   // Get theme name
   let finalThemeName = themeName;
@@ -97,6 +100,20 @@ export async function initCommand(themeName: string | undefined, options: InitOp
         input.length >= 10 ? true : 'Description must be at least 10 characters',
     },
     {
+      type: 'input',
+      name: 'primaryColor',
+      message: 'Primary color (hex):',
+      default: '#2563eb',
+      validate: (input: string) => /^#[0-9a-fA-F]{6}$/.test(input) ? true : 'Must be a valid hex color (e.g. #2563eb)',
+    },
+    {
+      type: 'input',
+      name: 'primaryHoverColor',
+      message: 'Primary hover color (hex):',
+      default: '#1d4ed8',
+      validate: (input: string) => /^#[0-9a-fA-F]{6}$/.test(input) ? true : 'Must be a valid hex color (e.g. #1d4ed8)',
+    },
+    {
       type: 'list',
       name: 'license',
       message: 'License:',
@@ -122,16 +139,31 @@ export async function initCommand(themeName: string | undefined, options: InitOp
       email: answers.email,
       description: answers.description,
       license: answers.license,
+      primaryColor: answers.primaryColor,
+      primaryHoverColor: answers.primaryHoverColor,
       template: options.template || 'full',
     });
 
     spinner.succeed(chalk.green('Theme created successfully!'));
 
+    // Show created structure
+    console.log(chalk.blue('\n  Theme structure:\n'));
+    console.log(chalk.dim(`  ${themeSlug}/`));
+    console.log(chalk.dim('  \u251c\u2500\u2500 manifest.json'));
+    console.log(chalk.dim('  \u251c\u2500\u2500 tokens.json'));
+    console.log(chalk.dim('  \u251c\u2500\u2500 presets/'));
+    console.log(chalk.dim('  \u2502   \u251c\u2500\u2500 header.json'));
+    console.log(chalk.dim('  \u2502   \u2514\u2500\u2500 footer.json'));
+    console.log(chalk.dim('  \u251c\u2500\u2500 css/'));
+    console.log(chalk.dim('  \u2502   \u2514\u2500\u2500 theme.css'));
+    console.log(chalk.dim('  \u2514\u2500\u2500 README.md'));
+
     // Show next steps
-    console.log(chalk.blue('\n📦 Next steps:\n'));
+    console.log(chalk.blue('\n  Next steps:\n'));
     console.log(chalk.white(`  cd ${themeSlug}`));
-    console.log(chalk.white(`  spwig dev`));
-    console.log(chalk.dim('\n  Visit http://localhost:3000 to see your theme\n'));
+    console.log(chalk.white('  spwig dev'));
+    console.log(chalk.dim("\n  Edit tokens.json to customize your theme's appearance."));
+    console.log(chalk.dim('  Visit http://localhost:3000 to preview your theme.\n'));
   } catch (error) {
     spinner.fail(chalk.red('Failed to create theme'));
     throw error;
@@ -139,7 +171,15 @@ export async function initCommand(themeName: string | undefined, options: InitOp
 }
 
 /**
- * Create theme directory structure
+ * Create theme directory structure for v2.0
+ *
+ * v2.0 themes consist of:
+ * - manifest.json: Theme metadata
+ * - tokens.json: Complete design token set (the main deliverable)
+ * - presets/header.json: Default header layout configuration
+ * - presets/footer.json: Default footer layout configuration
+ * - css/theme.css: Optional custom CSS overrides
+ * - README.md: Theme documentation
  */
 async function createThemeStructure(
   themePath: string,
@@ -150,21 +190,35 @@ async function createThemeStructure(
     email?: string;
     description: string;
     license: string;
+    primaryColor: string;
+    primaryHoverColor: string;
     template: 'blank' | 'minimal' | 'full';
   }
 ): Promise<void> {
-  const { themeName, displayName, author, description, license, template } = config;
-
-  // Create base directories
-  await ensureDirectory(themePath);
-
-  // Template variables
-  const variables = {
+  const {
     themeName,
     displayName,
     author,
     description,
     license,
+    primaryColor,
+    primaryHoverColor,
+    template,
+  } = config;
+
+  // Create base directory
+  await ensureDirectory(themePath);
+
+  // Template variables for all templates
+  const variables: Record<string, string> = {
+    themeName,
+    displayName,
+    author,
+    description,
+    license,
+    primaryColor,
+    primaryHoverColor,
+    year: new Date().getFullYear().toString(),
   };
 
   // Get templates directory
@@ -185,223 +239,60 @@ async function createThemeStructure(
   );
 
   // Create .gitignore
-  const gitignoreContent = `node_modules/
-dist/
-*.log
-.DS_Store
-Thumbs.db
-`;
-  await ensureDirectory(themePath);
   const fs = await import('fs-extra');
-  await fs.writeFile(path.join(themePath, '.gitignore'), gitignoreContent);
+  await fs.writeFile(
+    path.join(themePath, '.gitignore'),
+    `node_modules/\ndist/\n*.log\n.DS_Store\nThumbs.db\n`
+  );
 
   if (template === 'blank') {
-    // Blank template - just manifest and README
+    // Blank template: manifest + README only
     return;
   }
 
-  // Minimal and full templates include design tokens
+  // Minimal and full: include tokens.json
   await writeFromTemplate(
-    path.join(templatesDir, 'theme/design_tokens.json.template'),
-    path.join(themePath, 'design_tokens.json'),
+    path.join(templatesDir, 'theme/tokens.json.template'),
+    path.join(themePath, 'tokens.json'),
     variables
   );
 
   if (template === 'minimal') {
-    // Minimal template - basic structure only
-    await ensureDirectory(path.join(themePath, 'components'));
-    await ensureDirectory(path.join(themePath, 'pages'));
-    await ensureDirectory(path.join(themePath, 'assets'));
+    // Minimal: tokens + empty presets and css directories
+    await ensureDirectory(path.join(themePath, 'presets'));
+    await ensureDirectory(path.join(themePath, 'css'));
     return;
   }
 
-  // Full template - complete structure with default components
+  // Full template: complete structure with presets and starter CSS
 
-  // Create components
-  await createDefaultComponent(themePath, 'header', 'default_header', 'Default Header', variables);
-  await createDefaultComponent(themePath, 'footer', 'default_footer', 'Default Footer', variables);
-  await createDefaultComponent(
-    themePath,
-    'section',
-    'hero_section',
-    'Hero Section',
-    variables
-  );
-
-  // Create pages directory with basic schemas
-  await ensureDirectory(path.join(themePath, 'pages'));
-  const pagesDir = path.join(themePath, 'pages');
-
-  // Home page schema
-  await writeJSON(path.join(pagesDir, 'home.json'), {
-    page_type: 'home',
-    sections: [
-      {
-        type: 'hero_section',
-        settings: {
-          title: 'Welcome to Your Store',
-          description: 'Discover our amazing products',
-        },
-      },
-    ],
-  });
-
-  // Product page schema
-  await writeJSON(path.join(pagesDir, 'product.json'), {
-    page_type: 'product',
-    sections: [],
-  });
-
-  // Collection page schema
-  await writeJSON(path.join(pagesDir, 'collection.json'), {
-    page_type: 'collection',
-    sections: [],
-  });
-
-  // Cart page schema
-  await writeJSON(path.join(pagesDir, 'cart.json'), {
-    page_type: 'cart',
-    sections: [],
-  });
-
-  // Create assets directory
-  await ensureDirectory(path.join(themePath, 'assets/styles'));
-  await ensureDirectory(path.join(themePath, 'assets/scripts'));
-  await ensureDirectory(path.join(themePath, 'assets/images'));
-
-  // Create global CSS
-  const globalCSS = `/* Global Styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: var(--body-font);
-  font-size: var(--base-size);
-  color: var(--text-color);
-  line-height: 1.6;
-}
-
-.container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-`;
-  await fs.writeFile(path.join(themePath, 'assets/styles/global.css'), globalCSS);
-
-  // Create theme.js
+  // Create presets
+  await ensureDirectory(path.join(themePath, 'presets'));
   await writeFromTemplate(
-    path.join(templatesDir, 'assets/theme.js.template'),
-    path.join(themePath, 'assets/theme.js'),
+    path.join(templatesDir, 'presets/header.json.template'),
+    path.join(themePath, 'presets/header.json'),
     variables
   );
-
-  // Create placeholder logo
   await writeFromTemplate(
-    path.join(templatesDir, 'assets/logo.svg.template'),
-    path.join(themePath, 'assets/images/logo.svg'),
+    path.join(templatesDir, 'presets/footer.json.template'),
+    path.join(themePath, 'presets/footer.json'),
     variables
   );
 
-  // Create page templates directory
-  const templatesPath = path.join(themePath, 'templates');
-  await ensureDirectory(templatesPath);
-
-  // Layout template
-  await writeFromTemplate(
-    path.join(templatesDir, 'pages/layout.html.template'),
-    path.join(templatesPath, 'layout.html'),
-    variables
-  );
-
-  // Home page template
-  await writeFromTemplate(
-    path.join(templatesDir, 'pages/home.html.template'),
-    path.join(templatesPath, 'home.html'),
-    variables
-  );
-
-  // Product page template
-  await writeFromTemplate(
-    path.join(templatesDir, 'pages/product.html.template'),
-    path.join(templatesPath, 'product.html'),
-    variables
-  );
-
-  // Collection page template
-  await writeFromTemplate(
-    path.join(templatesDir, 'pages/collection.html.template'),
-    path.join(templatesPath, 'collection.html'),
-    variables
-  );
-
-  // Cart page template
-  await writeFromTemplate(
-    path.join(templatesDir, 'pages/cart.html.template'),
-    path.join(templatesPath, 'cart.html'),
-    variables
-  );
-}
-
-/**
- * Create a default component
+  // Create CSS directory with starter theme.css
+  await ensureDirectory(path.join(themePath, 'css'));
+  const starterCSS = `/* ${displayName} - Custom CSS Overrides */
+/* 
+ * This file is loaded after token-generated styles.
+ * Use it for advanced customizations that go beyond design tokens.
+ *
+ * Token-generated CSS variables are available as:
+ *   --theme-color-primary, --theme-color-secondary, etc.
+ *   --theme-font-size-base, --theme-font-family-body, etc.
+ *   --theme-space-4, --theme-radius-md, etc.
+ *
+ * See tokens.json for the complete list of available tokens.
  */
-async function createDefaultComponent(
-  themePath: string,
-  type: string,
-  name: string,
-  displayName: string,
-  variables: Record<string, string>
-): Promise<void> {
-  const componentDir = path.join(themePath, `components/${type}s/${name}`);
-  await ensureDirectory(componentDir);
-
-  const templatesDir = path.join(__dirname, '../templates/components');
-
-  const componentVars = {
-    ...variables,
-    componentName: name,
-    displayName: displayName,
-    description: `${displayName} component`,
-  };
-
-  // Manifest
-  await writeFromTemplate(
-    path.join(templatesDir, `${type}.manifest.json.template`),
-    path.join(componentDir, 'manifest.json'),
-    componentVars
-  );
-
-  // Template
-  await writeFromTemplate(
-    path.join(templatesDir, `${type}.template.html.template`),
-    path.join(componentDir, 'template.html'),
-    componentVars
-  );
-
-  // Schema
-  await writeFromTemplate(
-    path.join(templatesDir, `${type}.schema.json.template`),
-    path.join(componentDir, 'schema.json'),
-    componentVars
-  );
-
-  // Styles
-  await writeFromTemplate(
-    path.join(templatesDir, `${type}.styles.css.template`),
-    path.join(componentDir, 'styles.css'),
-    componentVars
-  );
+`;
+  await fs.writeFile(path.join(themePath, 'css/theme.css'), starterCSS);
 }

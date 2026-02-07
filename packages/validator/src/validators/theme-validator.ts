@@ -1,12 +1,12 @@
 /**
  * Theme Validator
- * Validates theme packages with bundled components
+ * Validates Spwig v2.0 theme packages (tokens-focused)
  */
 
 import path from 'path';
 import fs from 'fs-extra';
 import { ManifestValidator } from './manifest-validator.js';
-import { ComponentValidator } from './component-validator.js';
+import { DesignTokensValidator } from './design-tokens-validator.js';
 import {
   ValidationResult,
   createError,
@@ -59,20 +59,14 @@ export class ThemeValidator extends ManifestValidator {
       return this.buildResult();
     }
 
-    // 4. Validate bundled components (if any)
-    if (this.manifest.bundled_components && this.manifest.bundled_components.length > 0) {
-      await this.validateBundledComponents();
-    }
+    // 4. Validate tokens.json (required — the primary deliverable)
+    await this.validateTokensFile();
 
-    // 5. Validate page schemas (if declared)
-    if (this.manifest.page_schemas) {
-      await this.validatePageSchemas();
-    }
+    // 5. Validate overrides.css (if exists)
+    await this.validateOverrides();
 
-    // 6. Validate design tokens (if declared)
-    if (this.manifest.design_tokens) {
-      await this.validateDesignTokens();
-    }
+    // 6. Validate presets (if exists — Tier 2)
+    await this.validatePresets();
 
     // 7. Validate preview image (if declared)
     if (this.manifest.preview_image) {
@@ -88,109 +82,152 @@ export class ThemeValidator extends ManifestValidator {
   }
 
   /**
-   * Validate all bundled components
+   * Validate tokens.json file exists and is valid
    */
-  private async validateBundledComponents(): Promise<void> {
-    if (!this.manifest?.bundled_components) return;
-
-    for (const componentRef of this.manifest.bundled_components) {
-      const componentPath = path.join(this.themeDir, componentRef.path);
-
-      if (!(await this.directoryExists(componentPath))) {
-        this.addError(
-          createError('missing_component', `Bundled component not found: ${componentRef.path}`)
-        );
-        continue;
-      }
-
-      // Validate component using ComponentValidator
-      const componentValidator = new ComponentValidator(componentPath);
-      const result = await componentValidator.validate();
-
-      if (!result.isValid) {
-        this.addError(
-          createError('component_validation_failed', `Component validation failed for ${componentRef.name}:`)
-        );
-
-        // Add component errors as sub-errors
-        for (const error of result.errors) {
-          this.addError({
-            ...error,
-            message: `  - ${error.message}`,
-          });
-        }
-      }
-
-      // Add component warnings
-      for (const warning of result.warnings) {
-        this.addWarning({
-          ...warning,
-          message: `[${componentRef.name}] ${warning.message}`,
-        });
-      }
-    }
-  }
-
-  /**
-   * Validate page schema files exist
-   */
-  private async validatePageSchemas(): Promise<void> {
-    if (!this.manifest?.page_schemas) return;
-
-    for (const [pageType, schemaPath] of Object.entries(this.manifest.page_schemas)) {
-      if (!schemaPath) continue;
-
-      const fullPath = path.join(this.themeDir, schemaPath);
-
-      if (!(await this.fileExists(fullPath))) {
-        this.addError(
-          createError('missing_schema', `Page schema not found: ${schemaPath} (for ${pageType})`)
-        );
-        continue;
-      }
-
-      // Validate it's valid JSON
-      try {
-        await this.loadJSON(fullPath);
-      } catch {
-        // Error already added by loadJSON
-      }
-    }
-  }
-
-  /**
-   * Validate design tokens file exists and is valid JSON
-   */
-  private async validateDesignTokens(): Promise<void> {
-    if (!this.manifest?.design_tokens) return;
-
-    const tokensPath = path.join(this.themeDir, this.manifest.design_tokens);
+  private async validateTokensFile(): Promise<void> {
+    const tokensPath = path.join(this.themeDir, 'tokens.json');
 
     if (!(await this.fileExists(tokensPath))) {
       this.addError(
-        createError('missing_tokens', `Design tokens file not found: ${this.manifest.design_tokens}`)
+        createError('missing_tokens', 'Required file missing: tokens.json — this is the primary theme deliverable')
       );
       return;
     }
 
-    // Validate it's valid JSON
-    try {
-      const tokens = await this.loadJSON(tokensPath);
+    // Use the DesignTokensValidator for detailed validation
+    const tokensValidator = new DesignTokensValidator();
+    const result = await tokensValidator.validate(tokensPath);
 
-      // Basic validation - check for expected properties
-      if (!tokens.colors && !tokens.typography && !tokens.spacing) {
+    // Forward errors and warnings
+    for (const error of result.errors) {
+      this.addError(error);
+    }
+    for (const warning of result.warnings) {
+      this.addWarning(warning);
+    }
+  }
+
+  /**
+   * Validate overrides.css if present
+   */
+  private async validateOverrides(): Promise<void> {
+    const overridesPath = path.join(this.themeDir, 'overrides.css');
+
+    if (!(await this.fileExists(overridesPath))) {
+      return; // Optional file, no error
+    }
+
+    // Check it's valid UTF-8 and not empty
+    try {
+      const content = await fs.readFile(overridesPath, 'utf-8');
+      if (content.trim().length === 0) {
         this.addWarning(
-          createWarning(
-            'incomplete_tokens',
-            'Design tokens file is missing common properties (colors, typography, spacing)',
-            {
-              suggestion: 'Add at least colors, typography, and spacing definitions',
-            }
-          )
+          createWarning('empty_overrides', 'overrides.css is empty — you can remove it if not needed')
         );
       }
-    } catch {
-      // Error already added by loadJSON
+
+      // Check file size (max 1MB for CSS)
+      const stats = await fs.stat(overridesPath);
+      if (stats.size > 1024 * 1024) {
+        this.addWarning(
+          createWarning('large_overrides', 'overrides.css is larger than 1MB', {
+            suggestion: 'Consider moving styles into tokens.json values where possible',
+          })
+        );
+      }
+    } catch (error) {
+      this.addError(
+        createError('invalid_overrides', `Failed to read overrides.css: ${error instanceof Error ? error.message : error}`)
+      );
+    }
+  }
+
+  /**
+   * Validate preset files (Tier 2 themes)
+   */
+  private async validatePresets(): Promise<void> {
+    const presetsDir = path.join(this.themeDir, 'presets');
+
+    if (!(await this.directoryExists(presetsDir))) {
+      return; // Tier 1 theme, no presets
+    }
+
+    // Validate header presets
+    const headersDir = path.join(presetsDir, 'headers');
+    if (await this.directoryExists(headersDir)) {
+      await this.validatePresetDir(headersDir, 'header');
+    }
+
+    // Validate footer presets
+    const footersDir = path.join(presetsDir, 'footers');
+    if (await this.directoryExists(footersDir)) {
+      await this.validatePresetDir(footersDir, 'footer');
+    }
+  }
+
+  /**
+   * Validate a directory of preset JSON files
+   */
+  private async validatePresetDir(dir: string, type: 'header' | 'footer'): Promise<void> {
+    const files = await fs.readdir(dir);
+    const jsonFiles = files.filter(f => f.endsWith('.json'));
+
+    if (jsonFiles.length === 0) {
+      this.addWarning(
+        createWarning(`empty_${type}_presets`, `${type} presets directory exists but contains no JSON files`)
+      );
+      return;
+    }
+
+    for (const file of jsonFiles) {
+      const filePath = path.join(dir, file);
+
+      try {
+        const preset = await fs.readJSON(filePath);
+
+        // Validate required preset fields
+        if (!preset.name || typeof preset.name !== 'string') {
+          this.addError(
+            createError('invalid_preset', `${type} preset "${file}" is missing required "name" field`)
+          );
+        }
+
+        if (!preset.layout_type || typeof preset.layout_type !== 'string') {
+          this.addError(
+            createError('invalid_preset', `${type} preset "${file}" is missing required "layout_type" field`)
+          );
+        }
+
+        if (!preset.widget_placements || !Array.isArray(preset.widget_placements)) {
+          this.addError(
+            createError('invalid_preset', `${type} preset "${file}" is missing required "widget_placements" array`)
+          );
+        } else {
+          // Validate each widget placement
+          for (const placement of preset.widget_placements) {
+            if (!placement.widget_type || typeof placement.widget_type !== 'string') {
+              this.addError(
+                createError('invalid_preset', `${type} preset "${file}" has a placement missing "widget_type"`)
+              );
+            }
+            if (!placement.zone || typeof placement.zone !== 'string') {
+              this.addError(
+                createError('invalid_preset', `${type} preset "${file}" has a placement missing "zone"`)
+              );
+            }
+          }
+        }
+      } catch (error) {
+        if (error instanceof SyntaxError) {
+          this.addError(
+            createError('json_parse_error', `Invalid JSON in ${type} preset "${file}": ${error.message}`)
+          );
+        } else {
+          this.addError(
+            createError('read_error', `Failed to read ${type} preset "${file}": ${error instanceof Error ? error.message : error}`)
+          );
+        }
+      }
     }
   }
 
@@ -209,8 +246,8 @@ export class ThemeValidator extends ManifestValidator {
       return;
     }
 
-    // Check file size (max 5MB like component previews)
-    const maxSize = 5 * 1024 * 1024; // 5 MB
+    // Check file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024;
     const stats = await fs.stat(previewPath);
 
     if (stats.size > maxSize) {
@@ -238,7 +275,7 @@ export class ThemeValidator extends ManifestValidator {
       }
 
       // Check file size (max 5MB each)
-      const maxSize = 5 * 1024 * 1024; // 5 MB
+      const maxSize = 5 * 1024 * 1024;
       const stats = await fs.stat(screenshotPath);
 
       if (stats.size > maxSize) {
@@ -273,12 +310,15 @@ export class ThemeValidator extends ManifestValidator {
       lines.push(`Theme: ${this.manifest.display_name || 'Unknown'}`);
       lines.push(`Name: ${this.manifest.name || 'Unknown'}`);
       lines.push(`Version: ${this.manifest.version || 'Unknown'}`);
+      if (this.manifest.sdk_version) {
+        lines.push(`SDK Version: ${this.manifest.sdk_version}`);
+      }
       lines.push('');
     }
 
     const errors = this.getErrors();
     if (errors.length > 0) {
-      lines.push(`❌ ERRORS (${errors.length}):`);
+      lines.push(`ERRORS (${errors.length}):`);
       for (const error of errors) {
         lines.push(`  - ${error.message}`);
       }
@@ -287,7 +327,7 @@ export class ThemeValidator extends ManifestValidator {
 
     const warnings = this.getWarnings();
     if (warnings.length > 0) {
-      lines.push(`⚠️  WARNINGS (${warnings.length}):`);
+      lines.push(`WARNINGS (${warnings.length}):`);
       for (const warning of warnings) {
         lines.push(`  - ${warning.message}`);
         if (warning.suggestion) {
@@ -298,7 +338,7 @@ export class ThemeValidator extends ManifestValidator {
     }
 
     if (errors.length === 0 && warnings.length === 0) {
-      lines.push('✅ Validation passed with no errors or warnings');
+      lines.push('Validation passed with no errors or warnings');
     }
 
     return lines.join('\n');

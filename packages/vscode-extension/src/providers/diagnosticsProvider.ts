@@ -28,9 +28,7 @@ export class DiagnosticsProvider implements vscode.Disposable {
 
         if (fileName === 'manifest.json') {
           this.validateManifest(document, parsed, diagnostics);
-        } else if (fileName === 'schema.json') {
-          this.validateSchema(document, parsed, diagnostics);
-        } else if (fileName === 'design_tokens.json') {
+        } else if (fileName === 'tokens.json') {
           this.validateDesignTokens(document, parsed, diagnostics);
         }
       }
@@ -119,83 +117,6 @@ export class DiagnosticsProvider implements vscode.Disposable {
     }
   }
 
-  private validateSchema(
-    document: vscode.TextDocument,
-    schema: Record<string, unknown>,
-    diagnostics: vscode.Diagnostic[]
-  ) {
-    // Check settings array
-    if (!schema.settings || !Array.isArray(schema.settings)) {
-      diagnostics.push(
-        new vscode.Diagnostic(
-          new vscode.Range(0, 0, 0, 1),
-          'Schema must have a "settings" array',
-          vscode.DiagnosticSeverity.Error
-        )
-      );
-      return;
-    }
-
-    // Validate each setting
-    const settings = schema.settings as Array<Record<string, unknown>>;
-    for (let i = 0; i < settings.length; i++) {
-      const setting = settings[i];
-
-      if (!setting.id) {
-        diagnostics.push(
-          new vscode.Diagnostic(
-            new vscode.Range(0, 0, 0, 1),
-            `Setting ${i + 1} missing required field: "id"`,
-            vscode.DiagnosticSeverity.Error
-          )
-        );
-      }
-
-      if (!setting.type) {
-        diagnostics.push(
-          new vscode.Diagnostic(
-            new vscode.Range(0, 0, 0, 1),
-            `Setting ${i + 1} missing required field: "type"`,
-            vscode.DiagnosticSeverity.Error
-          )
-        );
-      }
-
-      if (!setting.label) {
-        diagnostics.push(
-          new vscode.Diagnostic(
-            new vscode.Range(0, 0, 0, 1),
-            `Setting ${i + 1} missing required field: "label"`,
-            vscode.DiagnosticSeverity.Warning
-          )
-        );
-      }
-
-      // Validate setting type
-      const validTypes = [
-        'text',
-        'textarea',
-        'checkbox',
-        'select',
-        'color',
-        'image',
-        'range',
-        'radio',
-        'url',
-        'number',
-      ];
-      if (setting.type && !validTypes.includes(setting.type as string)) {
-        diagnostics.push(
-          new vscode.Diagnostic(
-            new vscode.Range(0, 0, 0, 1),
-            `Setting ${i + 1} has invalid type: "${setting.type}"`,
-            vscode.DiagnosticSeverity.Error
-          )
-        );
-      }
-    }
-  }
-
   private validateDesignTokens(
     document: vscode.TextDocument,
     tokens: Record<string, unknown>,
@@ -255,7 +176,7 @@ export class DiagnosticsProvider implements vscode.Disposable {
     }
 
     // Validate all relevant files
-    const patterns = ['manifest.json', 'design_tokens.json', 'components/**/manifest.json', 'components/**/schema.json'];
+    const patterns = ['manifest.json', 'tokens.json'];
 
     for (const pattern of patterns) {
       const files = await vscode.workspace.findFiles(pattern);

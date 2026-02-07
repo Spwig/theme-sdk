@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Theme Package Manifest Schema",
-  "description": "Schema for Spwig theme package manifests with bundled components",
+  "description": "Schema for Spwig theme package manifests (SDK v2.0)",
   "type": "object",
   "required": [
     "name",
@@ -41,73 +41,28 @@
       "maxLength": 100,
       "description": "Theme author/vendor name"
     },
+    "sdk_version": {
+      "type": "string",
+      "enum": [
+        "2.0"
+      ],
+      "description": "SDK version used to build this theme"
+    },
+    "min_platform_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$",
+      "description": "Minimum platform version required"
+    },
     "license": {
       "type": "string",
-      "enum": ["MIT", "Apache-2.0", "GPL-3.0", "Proprietary"],
+      "enum": [
+        "MIT",
+        "Apache-2.0",
+        "GPL-3.0",
+        "Proprietary"
+      ],
       "default": "Proprietary",
       "description": "Theme license type"
-    },
-    "bundled_components": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["type", "name", "path"],
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["header", "footer", "section", "utility"],
-            "description": "Component type"
-          },
-          "name": {
-            "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]*$",
-            "description": "Component name"
-          },
-          "path": {
-            "type": "string",
-            "pattern": "^components/",
-            "description": "Relative path to component directory"
-          }
-        }
-      },
-      "description": "List of components bundled with this theme"
-    },
-    "page_schemas": {
-      "type": "object",
-      "properties": {
-        "home": {
-          "type": "string",
-          "description": "Path to home page schema"
-        },
-        "product": {
-          "type": "string",
-          "description": "Path to product page schema"
-        },
-        "collection": {
-          "type": "string",
-          "description": "Path to collection page schema"
-        },
-        "cart": {
-          "type": "string",
-          "description": "Path to cart page schema"
-        },
-        "checkout": {
-          "type": "string",
-          "description": "Path to checkout page schema"
-        },
-        "landing": {
-          "type": "string",
-          "description": "Path to landing page schema"
-        }
-      },
-      "additionalProperties": {
-        "type": "string"
-      },
-      "description": "Page schema file paths"
-    },
-    "design_tokens": {
-      "type": "string",
-      "description": "Path to design tokens file (colors, fonts, spacing)"
     },
     "preview_image": {
       "type": "string",
@@ -172,7 +127,10 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["name", "colors"],
+        "required": [
+          "name",
+          "colors"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -214,21 +172,15 @@
       },
       "description": "List of theme features for marketing"
     },
-    "min_platform_version": {
-      "type": "string",
-      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$",
-      "description": "Minimum platform version required"
-    },
-    "max_platform_version": {
-      "type": "string",
-      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$",
-      "description": "Maximum platform version supported"
-    },
     "changelog": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["version", "date", "changes"],
+        "required": [
+          "version",
+          "date",
+          "changes"
+        ],
         "properties": {
           "version": {
             "type": "string",

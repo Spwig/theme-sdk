@@ -1,0 +1,16 @@
+{
+  "name": "{{displayName}} Header",
+  "description": "Custom header preset for {{displayName}} theme",
+  "layout_type": "classic",
+  "is_sticky": true,
+  "enable_notification_zone": false,
+  "zone_layouts": {
+    "main-header": ["left", "center", "right"]
+  },
+  "widget_placements": [
+    {"widget_type": "logo", "zone": "main-header_left", "order": 0},
+    {"widget_type": "search", "zone": "main-header_center", "order": 0},
+    {"widget_type": "cart", "zone": "main-header_right", "order": 0},
+    {"widget_type": "account", "zone": "main-header_right", "order": 1}
+  ]
+}

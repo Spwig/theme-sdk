@@ -6,54 +6,84 @@
 
 - **Author**: {{author}}
 - **Version**: 1.0.0
+- **SDK Version**: 2.0
 - **License**: {{license}}
+- **Min Platform Version**: 2.0.0
 
 ## Features
 
 - Responsive design optimized for all devices
-- Modern and clean aesthetics
-- Customizable color schemes via design tokens
-- Performance optimized
+- Mobile-first approach
+- Fully customizable via design tokens
+- Header and footer presets included
 - Accessible and SEO-friendly
+
+## Theme Structure
+
+```
+{{themeName}}/
+├── manifest.json          # Theme metadata and configuration
+├── tokens.json            # Design tokens (colors, typography, spacing, etc.)
+├── presets/
+│   ├── header.json        # Default header layout preset
+│   └── footer.json        # Default footer layout preset
+├── css/
+│   └── theme.css          # Custom CSS overrides (optional)
+├── preview.png            # Theme preview image
+└── README.md
+```
 
 ## Development
 
 ```bash
-# Start development server
+# Start development server with live preview
 spwig dev
 
-# Validate theme
+# Validate theme structure and tokens
 spwig validate
 
 # Package for distribution
 spwig package
 ```
 
-## Bundled Components
-
-This theme includes the following components:
-
-- **Default Header** - Site header with navigation
-- **Default Footer** - Site footer with links
-- **Hero Section** - Eye-catching hero banner
-
 ## Customization
 
 ### Design Tokens
 
-Edit `design_tokens.json` to customize colors, typography, spacing, and more.
+The `tokens.json` file is the primary deliverable of your theme. It controls every visual aspect of the storefront:
 
-### Components
+- **Colors** - Primary, secondary, accent, text, backgrounds, borders, status colors
+- **Typography** - Font families, sizes, weights, line heights, letter spacing
+- **Spacing** - Consistent spacing scale used throughout the layout
+- **Borders** - Border widths and radius values
+- **Shadows** - Elevation levels from subtle to prominent
+- **Transitions** - Animation durations and easing functions
+- **Breakpoints** - Responsive design breakpoints
+- **Z-Index** - Layering system for overlapping elements
+- **Container** - Max width and padding for page content
+- **Menu** - Navigation styling and behavior
+- **Header** - Header zones, backgrounds, text colors, and per-layout-type overrides
+- **Footer** - Footer zones, backgrounds, text colors
+- **Search** - Search input, button, and dropdown styling
+- **Buttons** - Primary, secondary, neutral, and danger button variants (solid, outline, ghost)
+- **Cards** - Default, elevated, bordered, and minimal card variants
+- **Elements** - Hero, heading, body text, form, product card, gallery, modal, and more
+- **Widgets** - Account, cart, logo, language, currency, announcement, newsletter, social, links, text, payment, trust badges, contact
 
-Components are located in the `components/` directory. Each component has:
-- `manifest.json` - Component configuration
-- `template.html` - Component template
-- `schema.json` - Component settings schema
-- `styles.css` - Component styles (optional)
+Edit `tokens.json` to customize any of these values. The platform converts tokens into CSS custom properties automatically.
 
-### Pages
+### Header & Footer Presets
 
-Page schemas are in the `pages/` directory. Configure which components appear on each page type.
+The `presets/` directory contains default header and footer configurations:
+
+- **header.json** - Defines the header layout type, sticky behavior, zone layout, and widget placements
+- **footer.json** - Defines the footer layout type, zone layout, and widget placements
+
+These presets are applied when a merchant activates your theme, giving them a ready-to-use layout that matches your design vision.
+
+### Custom CSS (Optional)
+
+For advanced customization beyond tokens, add a `css/theme.css` file. This CSS is loaded after the token-generated styles and can override specific rules.
 
 ## Support
 

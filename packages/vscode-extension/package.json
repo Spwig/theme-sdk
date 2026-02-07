@@ -2,7 +2,7 @@
   "name": "spwig-theme-dev",
   "displayName": "Spwig Theme Development",
   "description": "Build professional themes for Spwig eCommerce",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "publisher": "spwig",
   "license": "Apache-2.0",
   "repository": {
@@ -60,11 +60,6 @@
         "category": "Spwig"
       },
       {
-        "command": "spwig.componentAdd",
-        "title": "Add Component",
-        "category": "Spwig"
-      },
-      {
         "command": "spwig.openDocs",
         "title": "Open Documentation",
         "category": "Spwig"
@@ -93,11 +88,6 @@
         "command": "spwig.dev",
         "key": "ctrl+alt+d",
         "mac": "cmd+alt+d"
-      },
-      {
-        "command": "spwig.componentAdd",
-        "key": "ctrl+alt+c",
-        "mac": "cmd+alt+c"
       }
     ],
     "viewsContainers": {
@@ -148,13 +138,6 @@
           "when": "view == spwigThemeExplorer && viewItem == theme",
           "group": "spwig@3"
         }
-      ],
-      "explorer/context": [
-        {
-          "command": "spwig.componentAdd",
-          "when": "explorerResourceIsFolder && resourcePath =~ /components/",
-          "group": "spwig@1"
-        }
       ]
     },
     "jsonValidation": [
@@ -163,20 +146,8 @@
         "url": "./schemas/theme-manifest.schema.json"
       },
       {
-        "fileMatch": "components/**/manifest.json",
-        "url": "./schemas/component-manifest.schema.json"
-      },
-      {
-        "fileMatch": "design_tokens.json",
+        "fileMatch": "tokens.json",
         "url": "./schemas/design-tokens.schema.json"
-      },
-      {
-        "fileMatch": "pages/*.json",
-        "url": "./schemas/page.schema.json"
-      },
-      {
-        "fileMatch": "components/**/schema.json",
-        "url": "./schemas/component-settings.schema.json"
       }
     ],
     "snippets": [
@@ -201,7 +172,9 @@
       {
         "scopeName": "text.html.jinja",
         "path": "./syntaxes/jinja-html.tmLanguage.json",
-        "injectTo": ["text.html.basic"]
+        "injectTo": [
+          "text.html.basic"
+        ]
       }
     ],
     "configuration": {

@@ -85,7 +85,7 @@ export async function devCommand(themePath: string, options: DevOptions): Promis
     const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf-8'));
     const themeName = manifest.name || 'Unknown Theme';
 
-    console.log(chalk.blue(`\n🚀 Spwig Theme Development Server\n`));
+    console.log(chalk.blue(`\n🚀 Spwig Theme SDK v2.0 - Dev Server\n`));
     console.log(`Theme: ${chalk.bold(themeName)}`);
     console.log(`Shop: ${chalk.cyan(options.shop)}\n`);
 
@@ -279,7 +279,7 @@ async function connectToShop(
       theme_name: themeName,
       theme_path: themePath,
       client_info: {
-        cli_version: '1.1.0',
+        cli_version: '2.0.0',
         node_version: process.version,
         os: process.platform,
       },
