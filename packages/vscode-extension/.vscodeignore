@@ -17,6 +17,8 @@ node_modules/**
 
 # Exclude parent/sibling directories
 ../**
+**/.claude/**
+.claude/**
 
 # Exclude development files
 *.vsix
