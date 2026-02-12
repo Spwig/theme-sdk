@@ -1,0 +1,165 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Spwig Theme Design Tokens",
+  "description": "Design tokens for Spwig v2.0 themes. Tokens become CSS custom properties with the --theme- prefix.",
+  "type": "object",
+  "definitions": {
+    "stringOrResponsive": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "description": "Responsive breakpoint values",
+          "propertyNames": {
+            "enum": ["mobile", "tablet", "desktop", "sm", "md", "lg", "xl", "2xl"]
+          },
+          "additionalProperties": { "type": "string" }
+        }
+      ]
+    },
+    "flatTokenObject": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "responsiveTokenObject": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/stringOrResponsive" }
+    },
+    "nestedTokenObject": {
+      "type": "object",
+      "description": "Tokens with optional nested sub-objects (e.g., zones)",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                { "type": "string" },
+                {
+                  "type": "object",
+                  "additionalProperties": { "type": "string" }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "properties": {
+    "colors": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Color palette tokens. Recommended: primary, primary-hover, primary-light, primary-dark, secondary, accent, text, text-light, text-muted, text-inverse, background, background-secondary, background-tertiary, surface, surface-hover, surface-secondary, surface-dark, border, border-light, border-dark, success, error, warning, info (each with -light variant), overlay."
+    },
+    "dark": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Dark mode color overrides. Applied when dark mode is active. Recommended: bg-primary, bg-secondary, bg-tertiary, surface-primary, surface-secondary, surface-hover, text-primary, text-secondary, text-muted, border-primary, border-secondary, overlay."
+    },
+    "typography": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Typography tokens. Includes: font-family-body, font-family-heading, font-sans, font-serif, font-mono, font-size-xs through 5xl, font-weight-normal/medium/semibold/bold, line-height-tight/normal/relaxed, letter-spacing-tight/normal/wide, word-spacing, text-indent, font-variant, text-decoration, text-align, vertical-align, direction."
+    },
+    "spacing": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Spacing scale tokens. Keys: 0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24. Values: CSS lengths."
+    },
+    "borders": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Border width and radius tokens. width-0/1/2, radius-none/sm/base/md/lg/xl/full."
+    },
+    "shadows": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Box shadow tokens. none, sm, base, md, lg, xl."
+    },
+    "transitions": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Transition timing tokens. duration-fast/base/slow, easing-default/in/out."
+    },
+    "breakpoints": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Responsive breakpoint tokens. sm, md, lg, xl, 2xl."
+    },
+    "responsive": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Responsive scaling factors. Recommended: scale-mobile-text, scale-mobile-space, scale-mobile-padding."
+    },
+    "z-index": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Z-index layer tokens. dropdown, sticky, fixed, modal-backdrop, modal, popover, tooltip."
+    },
+    "container": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Container layout tokens. max-width, padding."
+    },
+    "menu": {
+      "$ref": "#/definitions/responsiveTokenObject",
+      "description": "Navigation menu tokens. text-color, background, dropdown-background, font-size, animations, etc."
+    },
+    "header": {
+      "$ref": "#/definitions/nestedTokenObject",
+      "description": "Header tokens with nested zones object. Top-level: background, text-color, border-color, padding, logo-height, icon-size. Nested: zones.top-bar, zones.main-header, zones.bottom-bar, zones.mega-menu-bar — each with per-layout-style variants (promotional, boutique, split, classic, mega, minimal)."
+    },
+    "footer": {
+      "$ref": "#/definitions/nestedTokenObject",
+      "description": "Footer tokens with nested zones object. Top-level: background, text-color, link-color, heading-color, padding. Nested: zones.top, zones.main, zones.bottom."
+    },
+    "search": {
+      "$ref": "#/definitions/responsiveTokenObject",
+      "description": "Search widget tokens. Desktop: input-bg, btn-bg, dropdown-bg, results-bg. Mobile: mobile-input-bg, mobile-btn-bg, mobile-overlay-bg, mobile-backdrop-bg, mobile-close-color."
+    },
+    "button-primary": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Primary button variant tokens. solid-bg, solid-text, outline-bg, outline-text, ghost-bg, ghost-text, focus-ring-color, and hover variants."
+    },
+    "button-secondary": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Secondary button variant tokens."
+    },
+    "button-neutral": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Neutral button variant tokens."
+    },
+    "button-danger": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Danger button variant tokens."
+    },
+    "card-default": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Default card style tokens. bg, border-width, border-color, shadow, shadow-hover."
+    },
+    "card-elevated": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Elevated card style tokens."
+    },
+    "card-bordered": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Bordered card style tokens."
+    },
+    "card-minimal": {
+      "$ref": "#/definitions/flatTokenObject",
+      "description": "Minimal card style tokens."
+    },
+    "elements": {
+      "type": "object",
+      "description": "Element-specific design tokens. Known: hero, button, spacer, card, divider, form, accordion, modal, countdown, testimonial, blog, product, category, voucher, heading, body, body-light, body-muted, image, gallery, alert, image-accordion. Custom elements allowed.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": { "$ref": "#/definitions/stringOrResponsive" }
+      }
+    },
+    "widgets": {
+      "type": "object",
+      "description": "Widget-specific tokens. Known: account, cart, language, currency, logo, announcement, newsletter, social, links, text, payment, trust-badges, contact. Custom widgets allowed.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": { "$ref": "#/definitions/stringOrResponsive" }
+      }
+    }
+  },
+  "additionalProperties": {
+    "type": "object",
+    "description": "Custom token categories are allowed",
+    "additionalProperties": true
+  }
+}

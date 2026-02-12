@@ -143,11 +143,19 @@
     "jsonValidation": [
       {
         "fileMatch": "manifest.json",
-        "url": "./schemas/theme-manifest.schema.json"
+        "url": "./schemas/theme_manifest_schema.json"
       },
       {
         "fileMatch": "tokens.json",
-        "url": "./schemas/design-tokens.schema.json"
+        "url": "./schemas/tokens_schema.json"
+      },
+      {
+        "fileMatch": "presets/headers/*.json",
+        "url": "./schemas/header_preset_schema.json"
+      },
+      {
+        "fileMatch": "presets/footers/*.json",
+        "url": "./schemas/footer_preset_schema.json"
       }
     ],
     "snippets": [

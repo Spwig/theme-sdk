@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Spwig Header Preset",
+  "description": "Header layout preset for Spwig v2.0 themes. Defines zone structure and widget placements for a header configuration.",
+  "type": "object",
+  "required": ["name", "layout_type", "widget_placements"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Display name for this header preset"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Brief description of the header layout"
+    },
+    "layout_type": {
+      "type": "string",
+      "enum": ["standard", "centered", "minimal"],
+      "description": "Header layout variant"
+    },
+    "is_sticky": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the header sticks to the top on scroll"
+    },
+    "enable_notification_zone": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to show the announcement/notification zone above the header"
+    },
+    "zone_layouts": {
+      "type": "object",
+      "description": "Defines which zones are active and their position slots. Each zone contains an array of position names.",
+      "properties": {
+        "top-bar": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["left", "center", "right", "full"] },
+          "description": "Optional top bar zone (announcements, contact info, etc.)"
+        },
+        "main-header": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["left", "center", "right", "full"] },
+          "description": "Primary header zone (logo, menu, utilities)"
+        },
+        "bottom-bar": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["left", "center", "right", "full"] },
+          "description": "Optional bottom bar zone (secondary navigation, breadcrumbs)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "widget_placements": {
+      "type": "array",
+      "description": "Array of widget placement definitions. Each widget is placed in a zone at a specific position and order.",
+      "items": {
+        "type": "object",
+        "required": ["widget_type", "zone"],
+        "properties": {
+          "widget_type": {
+            "type": "string",
+            "enum": [
+              "logo", "menu", "search", "cart", "account", "currency", "language",
+              "social", "newsletter", "contact", "text", "links", "payment",
+              "trust_badges", "announcement", "loyalty_balance", "loyalty_tier_badge",
+              "site_variable", "custom"
+            ],
+            "description": "Type of header widget"
+          },
+          "zone": {
+            "type": "string",
+            "pattern": "^(top-bar|main-header|bottom-bar)_(left|center|right|full)$",
+            "description": "Target zone and position in format: zone-name_position (e.g., main-header_left)"
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0,
+            "description": "Display order within the zone position (lower = first)"
+          },
+          "config": {
+            "type": "object",
+            "description": "Widget-specific configuration (e.g., logo height, search style)",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
