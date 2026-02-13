@@ -22,8 +22,9 @@ my-theme/
 ├── manifest.json       # Theme metadata (name, version, author, etc.)
 ├── tokens.json         # Design system values (colors, typography, spacing, etc.)
 ├── overrides.css       # Optional: CSS beyond what tokens cover
-├── preview.png         # Optional: Theme preview image (600x800px, max 5MB)
-├── screenshots/        # Optional: Up to 8 marketplace screenshots (max 5MB each)
+├── preview.png         # Optional: Theme preview image (600px wide, 800-1500px tall, max 5MB)
+├── screenshots/        # Optional: Up to 8 marketplace screenshots (WebP/PNG/JPG, 1280x720 to 3840x2160, max 5MB each)
+├── videos/             # Optional: Up to 2 demo videos (WebM/MP4, max 30 seconds, max 50MB each)
 └── presets/            # Optional (Tier 2): Header/footer layout presets
     ├── headers/
     │   └── *.json      # Header preset definitions
@@ -232,8 +233,9 @@ The `dark` category provides color overrides applied when the merchant enables d
 ## manifest.json Optional Fields
 - `license`: `MIT` | `Apache-2.0` | `GPL-3.0` | `Proprietary`
 - `categories`: from enum: fashion, electronics, home-garden, sports, beauty, food-beverage, books, toys, jewelry, automotive, general
-- `preview_image`: png/jpg/jpeg/webp, recommended 600x800px, max 5MB
-- `screenshots`: array of image filenames (max 8, marketplace gallery)
+- `preview_image`: Filename of theme preview/thumbnail (PNG/JPG/JPEG/WebP, 600px wide × 800-1500px tall, max 5MB). Displayed in marketplace theme cards with auto-scroll to showcase full page layout. Taller images allow more content to be shown.
+- `screenshots`: Array of image filenames (max 8, WebP/PNG/JPG, 1280x720 to 3840x2160, max 5MB each). Marketplace gallery images showcasing theme features and layouts.
+- `videos`: Array of video filenames (max 2, WebM/MP4, max 30 seconds each, max 50MB each). Demo videos for marketplace showing theme in action.
 - `tags`: max 10, lowercase with hyphens
 - `color_schemes`: array of color scheme names (e.g., `["light", "dark"]`)
 - `features`: array of feature flags (e.g., `["sticky-header", "mega-menu"]`)
@@ -255,7 +257,9 @@ The `dark` category provides color overrides applied when the merchant enables d
 - `var()` references MUST include `--theme-` prefix — `var(--theme-color-primary)` not `var(--color-primary)`
 - CSS variable prefixes are NOT uniform — see Token Architecture table above (e.g., `--theme-space-` not `--theme-spacing-`)
 - `overrides.css` max 1MB
-- `preview_image` max 5MB, screenshots max 5MB each
+- `preview_image` must be 600px wide, 800-1500px tall (taller = more scrollable content), max 5MB
+- `screenshots` max 8 files, 5MB each, 1280x720 to 3840x2160 resolution
+- `videos` max 2 files, 50MB each, max 30 seconds duration (WebM/MP4)
 - Do NOT include `node_modules/`, `dist/`, or `.git/` in theme packages
 - Element token CSS vars: `--theme-element-{type}-{key}` (e.g., `--theme-element-button-radius`)
 - Widget token CSS vars: `--theme-widget-{type}-{key}` (e.g., `--theme-widget-cart-badge-bg`)
