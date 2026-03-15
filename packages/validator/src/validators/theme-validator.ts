@@ -4,7 +4,11 @@
  */
 
 import path from 'path';
+import { fileURLToPath } from 'url';
 import fs from 'fs-extra';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import { ManifestValidator } from './manifest-validator.js';
 import { DesignTokensValidator } from './design-tokens-validator.js';
 import {
@@ -165,6 +169,11 @@ export class ThemeValidator extends ManifestValidator {
     }
   }
 
+  // Valid header layout types (must match platform HeaderTemplate.layout_type choices)
+  private static VALID_HEADER_LAYOUT_TYPES = ['classic', 'boutique', 'minimal', 'mega', 'promotional', 'split'];
+  private static VALID_HEADER_ZONES = ['top-bar', 'main-header', 'bottom-bar', 'mega-menu-bar'];
+  private static HEADER_ZONE_PATTERN = /^(top-bar|main-header|bottom-bar|mega-menu-bar)_(left|center|right|full)$/;
+
   /**
    * Validate a directory of preset JSON files
    */
@@ -196,6 +205,21 @@ export class ThemeValidator extends ManifestValidator {
           this.addError(
             createError('invalid_preset', `${type} preset "${file}" is missing required "layout_type" field`)
           );
+        } else if (type === 'header' && !ThemeValidator.VALID_HEADER_LAYOUT_TYPES.includes(preset.layout_type)) {
+          this.addError(
+            createError('invalid_preset', `${type} preset "${file}" has invalid layout_type "${preset.layout_type}". Must be one of: ${ThemeValidator.VALID_HEADER_LAYOUT_TYPES.join(', ')}`)
+          );
+        }
+
+        // Validate zone_layouts keys if present
+        if (type === 'header' && preset.zone_layouts && typeof preset.zone_layouts === 'object') {
+          for (const zoneName of Object.keys(preset.zone_layouts)) {
+            if (!ThemeValidator.VALID_HEADER_ZONES.includes(zoneName)) {
+              this.addError(
+                createError('invalid_preset', `${type} preset "${file}" has invalid zone "${zoneName}" in zone_layouts. Must be one of: ${ThemeValidator.VALID_HEADER_ZONES.join(', ')}`)
+              );
+            }
+          }
         }
 
         if (!preset.widget_placements || !Array.isArray(preset.widget_placements)) {
@@ -213,6 +237,10 @@ export class ThemeValidator extends ManifestValidator {
             if (!placement.zone || typeof placement.zone !== 'string') {
               this.addError(
                 createError('invalid_preset', `${type} preset "${file}" has a placement missing "zone"`)
+              );
+            } else if (type === 'header' && !ThemeValidator.HEADER_ZONE_PATTERN.test(placement.zone)) {
+              this.addError(
+                createError('invalid_preset', `${type} preset "${file}" has invalid zone "${placement.zone}". Must match format: zone-name_position (e.g., main-header_left, mega-menu-bar_full)`)
               );
             }
           }
@@ -261,16 +289,28 @@ export class ThemeValidator extends ManifestValidator {
   }
 
   /**
-   * Validate screenshot files exist
+   * Validate screenshot files exist.
+   * Screenshots are objects with a required "file" key and optional "title".
    */
   private async validateScreenshots(): Promise<void> {
     if (!this.manifest?.screenshots) return;
 
-    for (const screenshot of this.manifest.screenshots) {
-      const screenshotPath = path.join(this.themeDir, screenshot);
+    for (const entry of this.manifest.screenshots) {
+      let filePath: string | undefined;
+      if (typeof entry === 'string') {
+        filePath = entry;
+      } else {
+        filePath = entry.file;
+      }
+      if (!filePath) {
+        this.addError(createError('invalid_screenshot', 'Screenshot entry is missing "file" field'));
+        continue;
+      }
+
+      const screenshotPath = path.join(this.themeDir, filePath);
 
       if (!(await this.fileExists(screenshotPath))) {
-        this.addError(createError('missing_screenshot', `Screenshot not found: ${screenshot}`));
+        this.addError(createError('missing_screenshot', `Screenshot not found: ${filePath}`));
         continue;
       }
 
@@ -280,7 +320,7 @@ export class ThemeValidator extends ManifestValidator {
 
       if (stats.size > maxSize) {
         this.addWarning(
-          createWarning('large_screenshot', `Screenshot is large (>5MB): ${screenshot}`, {
+          createWarning('large_screenshot', `Screenshot is large (>5MB): ${filePath}`, {
             suggestion: 'Consider optimizing the screenshot to reduce file size',
           })
         );

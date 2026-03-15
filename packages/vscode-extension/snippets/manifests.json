@@ -14,10 +14,13 @@
       "  \"preview_image\": \"preview.png\",",
       "  \"tags\": [\"${8:modern}\", \"${9:responsive}\"],",
       "  \"categories\": [\"${10|fashion,electronics,home-garden,sports,beauty,food-beverage,books,toys,jewelry,automotive,general|}\"],",
-      "  \"features\": [",
-      "    \"${11:Responsive design}\",",
-      "    \"${12:Dark mode support}\"",
-      "  ]",
+      "  \"features\": {",
+      "    \"responsive\": true,",
+      "    \"mobile_first\": true,",
+      "    \"dark_mode\": ${11|false,true|},",
+      "    \"rtl_support\": false,",
+      "    \"accessibility\": \"${12:WCAG 2.1 AA}\"",
+      "  },",
       "}"
     ],
     "description": "Complete theme manifest file (SDK v2.0)"

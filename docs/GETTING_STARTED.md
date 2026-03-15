@@ -36,13 +36,13 @@ You will be prompted for display name, author, description, and template type.
 
 | Template | Contents | Best For |
 |----------|----------|----------|
-| **basic** | `manifest.json` + `tokens.json` | Minimal starting point |
-| **standard** | Adds `overrides.css` | Most theme projects |
-| **complete** | Adds `presets/` directory with header/footer presets | Full-featured themes |
+| **blank** | `manifest.json` only | Absolute minimal starting point |
+| **minimal** | Adds `tokens.json` + empty `overrides.css` | Token-only themes |
+| **full** | Adds `presets/` with header/footer presets (default) | Full-featured themes |
 
 ```bash
 # Skip prompts with flags
-spwig init my-theme --author "Your Name" --template standard
+spwig init my-theme --author "Your Name" --template full
 ```
 
 ---
@@ -104,10 +104,10 @@ These become CSS custom properties with the `--theme-` prefix:
 | Token Path | CSS Variable |
 |------------|-------------|
 | `colors.primary` | `--theme-color-primary` |
-| `typography.font-family-body` | `--theme-typo-font-family-body` |
+| `typography.font-family-body` | `--theme-font-family-body` |
 | `spacing.md` | `--theme-space-md` |
 
-See the [Design Tokens Reference](./DESIGN_TOKENS.md) for all available tokens.
+See the [Design Tokens Reference](./DESIGN_TOKENS.md) for all available tokens, including dark mode support.
 
 ---
 
@@ -162,23 +162,23 @@ When a theme with presets is activated, its header/footer presets become availab
 
 ## Using overrides.css
 
-For CSS rules that tokens cannot express:
+For visual effects that tokens cannot express — hover animations, corner shapes, glassmorphism, neon glows, external fonts:
 
 ```css
+/* Load Google Fonts (external @imports are preserved) */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
 /* Custom hover animation */
-.product-card:hover .product-image img {
-    transform: scale(1.05);
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 12px 24px -4px rgba(0, 0, 0, 0.1);
 }
 
-/* Mobile layout adjustment */
-@media (max-width: 768px) {
-    .widget-newsletter .newsletter-form {
-        flex-direction: column;
-    }
-}
+/* Squircle corners (Chrome 139+, graceful fallback) */
+.product-card { corner-shape: squircle; }
 ```
 
-Overrides load after platform styles and token CSS, so they take precedence.
+See the [CSS Overrides Guide](./CSS_OVERRIDES_GUIDE.md) for techniques and real-world examples.
 
 ---
 
@@ -196,5 +196,8 @@ Install "Spwig Theme Development" from the VS Code Marketplace for:
 ## Next Steps
 
 - [Design Tokens Reference](./DESIGN_TOKENS.md) -- All available tokens
+- [CSS Overrides Guide](./CSS_OVERRIDES_GUIDE.md) -- Hover effects, corner shapes, glassmorphism, dark theme patterns
+- [Component Classes Reference](./COMPONENT_CLASSES.md) -- All platform CSS classes you can target
+- [CSS Load Order](./CSS_LOAD_ORDER.md) -- Understanding the cascade
 - [Presets Guide](./PRESETS.md) -- Header and footer preset development
 - Example themes in `examples/`

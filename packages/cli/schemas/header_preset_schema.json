@@ -18,8 +18,8 @@
     },
     "layout_type": {
       "type": "string",
-      "enum": ["standard", "centered", "minimal"],
-      "description": "Header layout variant"
+      "enum": ["classic", "boutique", "minimal", "mega", "promotional", "split"],
+      "description": "Header layout variant. classic=traditional store, boutique=centered logo, minimal=single-row compact, mega=category mega-menu bar, promotional=campaign banner bar, split=two-row branding+nav"
     },
     "is_sticky": {
       "type": "boolean",
@@ -30,6 +30,11 @@
       "type": "boolean",
       "default": false,
       "description": "Whether to show the announcement/notification zone above the header"
+    },
+    "is_default": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this header should be set as the store default when the theme is installed"
     },
     "zone_layouts": {
       "type": "object",
@@ -49,6 +54,11 @@
           "type": "array",
           "items": { "type": "string", "enum": ["left", "center", "right", "full"] },
           "description": "Optional bottom bar zone (secondary navigation, breadcrumbs)"
+        },
+        "mega-menu-bar": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["left", "center", "right", "full"] },
+          "description": "Optional mega menu navigation bar (used by mega layout type for category navigation)"
         }
       },
       "additionalProperties": false
@@ -72,8 +82,8 @@
           },
           "zone": {
             "type": "string",
-            "pattern": "^(top-bar|main-header|bottom-bar)_(left|center|right|full)$",
-            "description": "Target zone and position in format: zone-name_position (e.g., main-header_left)"
+            "pattern": "^(top-bar|main-header|bottom-bar|mega-menu-bar)_(left|center|right|full)$",
+            "description": "Target zone and position in format: zone-name_position (e.g., main-header_left, mega-menu-bar_full)"
           },
           "order": {
             "type": "integer",

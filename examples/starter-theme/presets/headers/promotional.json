@@ -1,7 +1,7 @@
 {
-  "name": "Classic E-commerce",
-  "description": "Traditional online store layout with search bar, actions, and navigation bar",
-  "layout_type": "classic",
+  "name": "Promotional Marketing",
+  "description": "Perfect for sales campaigns with navigation bar and promotional banner",
+  "layout_type": "promotional",
   "is_sticky": true,
   "enable_notification_zone": true,
   "zone_layouts": {
@@ -13,7 +13,6 @@
     {"widget_type": "search", "zone": "main-header_center", "order": 0},
     {"widget_type": "cart", "zone": "main-header_right", "order": 0},
     {"widget_type": "account", "zone": "main-header_right", "order": 1},
-    {"widget_type": "language", "zone": "main-header_right", "order": 2},
     {"widget_type": "menu", "zone": "bottom-bar_full", "order": 0}
   ]
 }

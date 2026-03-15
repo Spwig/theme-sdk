@@ -54,7 +54,7 @@
     },
     "dark": {
       "$ref": "#/definitions/flatTokenObject",
-      "description": "Dark mode color overrides. Applied when dark mode is active. Recommended: bg-primary, bg-secondary, bg-tertiary, surface-primary, surface-secondary, surface-hover, text-primary, text-secondary, text-muted, border-primary, border-secondary, overlay."
+      "description": "Dark mode overrides (requires features.dark_mode: true in manifest). Keys use same names as colors/shadows sections. Recommended: background, background-secondary, background-tertiary, surface, surface-secondary, surface-hover, text, text-light, text-muted, text-inverse, border, border-light, border-dark, primary-light, success-light, error-light, warning-light, info-light, overlay, shadow-sm, shadow-base, shadow-md, shadow-lg, shadow-xl."
     },
     "typography": {
       "$ref": "#/definitions/flatTokenObject",
@@ -150,7 +150,7 @@
     },
     "widgets": {
       "type": "object",
-      "description": "Widget-specific tokens. Known: account, cart, language, currency, logo, announcement, newsletter, social, links, text, payment, trust-badges, contact. Custom widgets allowed.",
+      "description": "Widget-specific tokens. Known: account, cart, language, currency, logo, announcement, newsletter, social, social-share, links, text, payment, trust-badges, contact. Custom widgets allowed.",
       "additionalProperties": {
         "type": "object",
         "additionalProperties": { "$ref": "#/definitions/stringOrResponsive" }

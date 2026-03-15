@@ -1,0 +1,19 @@
+{
+  "name": "Split Navigation",
+  "description": "Two-row layout perfect for content-heavy sites and editorial commerce",
+  "layout_type": "split",
+  "is_sticky": true,
+  "enable_notification_zone": false,
+  "zone_layouts": {
+    "top-bar": ["left", "right"],
+    "main-header": ["left", "center", "right"]
+  },
+  "widget_placements": [
+    {"widget_type": "logo", "zone": "top-bar_left", "order": 0},
+    {"widget_type": "search", "zone": "top-bar_right", "order": 0},
+    {"widget_type": "cart", "zone": "top-bar_right", "order": 1},
+    {"widget_type": "account", "zone": "top-bar_right", "order": 2},
+    {"widget_type": "language", "zone": "top-bar_right", "order": 3},
+    {"widget_type": "menu", "zone": "main-header_left", "order": 0}
+  ]
+}

@@ -34,7 +34,7 @@ my-theme/
 
 ## Development Workflow
 ```bash
-spwig init my-theme --template full    # Create new theme (blank|minimal|full)
+spwig init my-theme --template full    # Create new theme (blank | minimal | full)
 # Edit tokens.json, manifest.json, presets/
 spwig dev --shop http://localhost:8000  # Live preview with token hot-reload
 spwig validate --verbose                # Validate structure and schemas
@@ -47,7 +47,7 @@ Every token becomes a CSS custom property. The mapping varies by category — it
 | Token Category | CSS Variable Prefix | Example Token | Example CSS Variable |
 |---|---|---|---|
 | `colors` | `--theme-color-` | `colors.primary` | `--theme-color-primary` |
-| `dark` | `--theme-dark-` | `dark.bg-primary` | `--theme-dark-bg-primary` |
+| `dark` | `--theme-dark-` | `dark.background` | `--theme-dark-background` |
 | `typography` (fonts) | `--theme-font-` | `typography.font-sans` | `--theme-font-sans` |
 | `typography` (sizes) | `--theme-font-size-` | `typography.font-size-lg` | `--theme-font-size-lg` |
 | `typography` (weights) | `--theme-font-weight-` | `typography.font-weight-bold` | `--theme-font-weight-bold` |
@@ -69,8 +69,8 @@ Every token becomes a CSS custom property. The mapping varies by category — it
 | `footer` | `--theme-footer-` | `footer.background` | `--theme-footer-background` |
 | `footer.zones` | `--theme-footer-zones-` | `footer.zones.main.padding-y` | `--theme-footer-zones-main-padding-y` |
 | `search` | `--theme-search-` | `search.input-bg` | `--theme-search-input-bg` |
-| `button-{variant}` | `--theme-button-{variant}-` | `button-primary.solid-bg` | `--theme-button-primary-solid-bg` |
-| `card-{style}` | `--theme-card-{style}-` | `card-elevated.shadow` | `--theme-card-elevated-shadow` |
+| `button-{variant}` | `--theme-element-button-{variant}-` | `button-primary.solid-bg` | `--theme-element-button-primary-solid-bg` |
+| `card-{style}` | `--theme-element-card-{style}-` | `card-elevated.shadow` | `--theme-element-card-elevated-shadow` |
 | `elements` | `--theme-element-{type}-` | `elements.button.radius` | `--theme-element-button-radius` |
 | `widgets` | `--theme-widget-{type}-` | `widgets.cart.badge-bg` | `--theme-widget-cart-badge-bg` |
 
@@ -80,7 +80,7 @@ Every token becomes a CSS custom property. The mapping varies by category — it
 | Category | Keys | Description |
 |---|---|---|
 | `colors` | ~37 | primary, secondary, accent (each with hover/light/dark), text variants, backgrounds, surfaces, borders, semantic (success/error/warning/info with -light), overlay |
-| `dark` | ~12 | Dark mode overrides: bg-primary/secondary/tertiary, surface-primary/secondary/hover, text-primary/secondary/muted, border-primary/secondary, overlay |
+| `dark` | ~24 | Dark mode overrides (requires `features.dark_mode: true`): backgrounds (3), surfaces (3), text (4), borders (3), primary-light, status -light variants (4), overlay, shadows (5). Keys use same names as `colors`/`shadows` sections. |
 | `typography` | ~48 | font-family-body/heading, font-sans/serif/mono, font-size-xs to 5xl, font-weight (4), line-height (3), letter-spacing (3), word-spacing (3), text-indent (4), font-variant (3), text-decoration (3), text-align (4), vertical-align (4), direction (2) |
 | `spacing` | ~13 | Scale 0-24 (0 to 6rem) |
 | `borders` | ~10 | width-0/1/2, radius-none/sm/base/md/lg/xl/full |
@@ -184,20 +184,40 @@ Header zones: `top-bar`, `main-header`, `bottom-bar`, `mega-menu-bar`
 Footer zones: `top`, `main`, `bottom`
 
 ## Dark Mode Support
-The `dark` category provides color overrides applied when the merchant enables dark mode. These tokens map to `--theme-dark-*` CSS variables. The platform uses these to swap colors at runtime.
+To enable dark mode, set `features.dark_mode: true` in `manifest.json` and add a `dark` section to `tokens.json`. Dark token keys use the **same names** as `colors` and `shadows` keys — the platform dynamically maps each to override its light-mode CSS variable.
 
 ```json
 "dark": {
-  "bg-primary": "#111827",
-  "bg-secondary": "#1F2937",
-  "surface-primary": "#1F2937",
-  "text-primary": "#F9FAFB",
-  "text-secondary": "#D1D5DB",
+  "background": "#111827",
+  "background-secondary": "#1F2937",
+  "background-tertiary": "#374151",
+  "surface": "#1F2937",
+  "surface-secondary": "#374151",
+  "surface-hover": "#4B5563",
+  "text": "#F9FAFB",
+  "text-light": "#D1D5DB",
   "text-muted": "#9CA3AF",
-  "border-primary": "#374151",
-  "overlay": "rgba(0, 0, 0, 0.7)"
+  "text-inverse": "#1f2937",
+  "border": "#374151",
+  "border-light": "#4B5563",
+  "border-dark": "#1F2937",
+  "primary-light": "#1e3a5f",
+  "success-light": "#065f46",
+  "error-light": "#7f1d1d",
+  "warning-light": "#78350f",
+  "info-light": "#1e3a5f",
+  "overlay": "rgba(0, 0, 0, 0.7)",
+  "shadow-sm": "0 1px 2px 0 rgba(0, 0, 0, 0.3)",
+  "shadow-base": "0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.3)",
+  "shadow-md": "0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3)",
+  "shadow-lg": "0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3)",
+  "shadow-xl": "0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3)"
 }
 ```
+
+**How it works:** Color tokens (`dark.background`) override `--theme-color-background`. Shadow tokens (`dark.shadow-md`) override `--theme-shadow-md`. The platform generates `@media (prefers-color-scheme: dark)`, `[data-theme="dark"]`, and `[data-theme="light"]` CSS blocks.
+
+**Design rules:** Brand colors (primary, secondary, accent) and status base colors (success, error) don't need dark overrides — only their `-light` variants need dark tints. Inherently dark themes should set `features.dark_mode: false`.
 
 ## Token Value Rules
 - All values **MUST be strings**, never numbers or booleans
@@ -223,9 +243,11 @@ The `dark` category provides color overrides applied when the merchant enables d
 - **Widget types**: Same 19 types as header
 
 ## manifest.json Required Fields
-- `name`: lowercase with hyphens only, pattern `^[a-z][a-z0-9-]*$`, 2-50 chars
+- `name`: human-readable display name, 1-100 chars (e.g., `"Starter Theme"`)
+- `slug`: lowercase with hyphens only, pattern `^[a-z][a-z0-9-]*$`, 2-50 chars (e.g., `"starter"`)
+- `component_type`: always `"theme"` for theme packages
 - `version`: semver `X.Y.Z` (e.g., `2.0.0`)
-- `display_name`: human-readable, 1-100 chars
+- `display_name`: same as `name` (kept for backward compatibility), 1-100 chars
 - `description`: 10-1000 chars
 - `author`: 1-100 chars
 - `sdk_version`: `"2.0"` for current SDK
@@ -237,8 +259,7 @@ The `dark` category provides color overrides applied when the merchant enables d
 - `screenshots`: Array of image filenames (max 8, WebP/PNG/JPG, 1280x720 to 3840x2160, max 5MB each). Marketplace gallery images showcasing theme features and layouts.
 - `videos`: Array of video filenames (max 2, WebM/MP4, max 30 seconds each, max 50MB each). Demo videos for marketplace showing theme in action.
 - `tags`: max 10, lowercase with hyphens
-- `color_schemes`: array of color scheme names (e.g., `["light", "dark"]`)
-- `features`: array of feature flags (e.g., `["sticky-header", "mega-menu"]`)
+- `features`: object with boolean flags: `responsive` (default true), `mobile_first` (default true), `dark_mode` (default false — set true to enable dark mode CSS generation), `rtl_support` (default false), `accessibility` (string, e.g., "WCAG 2.1 AA")
 - `demo_url`: URL to live theme demo
 - `documentation_url`: URL to theme documentation
 - `support_url`: URL to support/help page
@@ -266,15 +287,48 @@ The `dark` category provides color overrides applied when the merchant enables d
 - Menu token CSS vars: `--theme-menu-{key}` (e.g., `--theme-menu-text-color`)
 - Header zone tokens nest 2 levels deep — `header.zones.top-bar.background` becomes `--theme-header-zones-top-bar-background`
 - Footer zone tokens: `footer.zones.main.padding-y` becomes `--theme-footer-zones-main-padding-y`
-- Button variant tokens: `button-primary.solid-bg` becomes `--theme-button-primary-solid-bg`
-- Card style tokens: `card-elevated.shadow` becomes `--theme-card-elevated-shadow`
+- Button variant tokens: `button-primary.solid-bg` becomes `--theme-element-button-primary-solid-bg`
+- Card style tokens: `card-elevated.shadow` becomes `--theme-element-card-elevated-shadow`
 - Custom token categories are allowed — the schema and validator are permissive
 - Preset `zone` field format must be `{zone-name}_{position}` — underscore separator, not hyphen
 
+## overrides.css
+
+### When to Use
+Tokens handle colors, fonts, spacing, shadows, borders. Use `overrides.css` for:
+- Hover animations (card lift, image zoom, glow effects)
+- Corner shapes (`corner-shape: squircle` / `bevel` — CSS Borders Level 4, Chrome 139+)
+- Glassmorphism (`backdrop-filter: blur()` + semi-transparent bg)
+- Neon glow effects (multi-layered `box-shadow`)
+- `::selection` / `::-webkit-scrollbar` styling
+- `::after` / `::before` pseudo-elements (nav underlines, scan-lines)
+- External font loading (`@import url('https://fonts.googleapis.com/...')`)
+
+### External @import Preservation
+The platform strips relative `@import` statements but preserves external URLs (`https://`). Google Fonts and similar CDN imports work correctly.
+
+### CSS Cascade Position
+Theme CSS (including `overrides.css`) is compiled into a single file served via `<link>` tag (position 1). Platform `components.css` loads via a separate `<link>` tag (position 2). For equal-specificity selectors, platform wins by source order. Use `.product-card.product-card` for a specificity bump when needed.
+
+### Key Platform Classes
+Most commonly targeted in overrides:
+- `.product-card`, `.product-card__image`, `.product-card__overlay`, `.product-card__content`
+- `.category-card`, `.category-card__overlay`
+- `.card`, `.card--default`, `.card--elevated`
+- `.btn--primary`, `.btn--secondary`, `.btn--neutral`
+- `.site-header__nav-link`
+- `.search__input-wrapper`
+
+Full reference: `docs/COMPONENT_CLASSES.md`
+
 ## Key Reference Files
-- Example theme: `examples/starter-theme/` (complete Tier 2 theme with tokens, presets)
+- Example theme: `examples/starter-theme/` (complete Tier 2 theme with tokens, presets, overrides)
 - Token reference: `docs/DESIGN_TOKENS.md`
+- CSS overrides guide: `docs/CSS_OVERRIDES_GUIDE.md`
+- Component classes: `docs/COMPONENT_CLASSES.md`
+- CSS load order: `docs/CSS_LOAD_ORDER.md`
 - Preset guide: `docs/PRESETS.md`
 - Getting started: `docs/GETTING_STARTED.md`
+- LLM context files: `llm-context/` (drop into AI assistants)
 - CLI README: `packages/cli/README.md`
 - Validator source: `packages/validator/src/validators/`

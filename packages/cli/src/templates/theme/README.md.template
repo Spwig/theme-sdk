@@ -24,11 +24,10 @@
 {{themeName}}/
 ├── manifest.json          # Theme metadata and configuration
 ├── tokens.json            # Design tokens (colors, typography, spacing, etc.)
+├── overrides.css           # Custom CSS overrides (optional)
 ├── presets/
 │   ├── header.json        # Default header layout preset
 │   └── footer.json        # Default footer layout preset
-├── css/
-│   └── theme.css          # Custom CSS overrides (optional)
 ├── preview.png            # Theme preview image
 └── README.md
 ```
@@ -81,9 +80,11 @@ The `presets/` directory contains default header and footer configurations:
 
 These presets are applied when a merchant activates your theme, giving them a ready-to-use layout that matches your design vision.
 
-### Custom CSS (Optional)
+### CSS Overrides (Optional)
 
-For advanced customization beyond tokens, add a `css/theme.css` file. This CSS is loaded after the token-generated styles and can override specific rules.
+For visual effects that go beyond what tokens can express — hover animations, glassmorphism, corner shapes, neon glows — use `overrides.css`. This file is loaded after token-generated styles and can override specific rules.
+
+External `@import` statements (e.g. Google Fonts) are preserved by the platform. See the [CSS Overrides Guide](https://github.com/nicholasgriffintn/spwig-theme-sdk/blob/main/docs/CSS_OVERRIDES_GUIDE.md) for patterns and examples.
 
 ## Support
 

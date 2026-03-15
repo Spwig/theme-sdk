@@ -22,7 +22,7 @@ program
   .option('-e, --email <email>', 'Author email')
   .option('-d, --description <text>', 'Theme description')
   .option('-l, --license <type>', 'License type', 'MIT')
-  .option('-t, --template <name>', 'Use template (basic, standard, complete)', 'standard')
+  .option('-t, --template <name>', 'Use template (blank, minimal, full)', 'full')
   .option('--primary-color <hex>', 'Primary color hex (e.g., #2563eb)')
   .action(async (name, options) => {
     try {

@@ -1,0 +1,146 @@
+{
+  "system": "Spwig Theme SDK v2.0 — AI Context for Theme Development",
+  "architecture": {
+    "description": "Token-based configuration themes. No templates, components, or JavaScript. Define design tokens in JSON; platform renders via CSS custom properties.",
+    "tiers": {
+      "tier1": "manifest.json + tokens.json + optional overrides.css",
+      "tier2": "Tier 1 + presets/ directory with header/footer JSON"
+    },
+    "file_structure": {
+      "manifest.json": "Theme metadata (name, version, author)",
+      "tokens.json": "Design system values — the primary deliverable",
+      "overrides.css": "Optional CSS for effects beyond tokens (hover, corner-shape, glassmorphism)",
+      "presets/headers/*.json": "Header layout presets (Tier 2)",
+      "presets/footers/*.json": "Footer layout presets (Tier 2)",
+      "preview.png": "Optional preview image (600px wide, max 5MB)"
+    }
+  },
+  "token_categories": {
+    "colors": { "prefix": "--theme-color-", "keys": "~37", "examples": ["primary", "primary-hover", "secondary", "accent", "text", "text-light", "text-muted", "text-inverse", "background", "background-secondary", "surface", "surface-hover", "border", "border-dark", "success", "error", "warning", "info", "overlay"] },
+    "dark": { "prefix": "--theme-dark-", "keys": "~24", "note": "Keys use same names as colors/shadows sections. Requires features.dark_mode: true in manifest.", "categories": {"backgrounds": ["background", "background-secondary", "background-tertiary"], "surfaces": ["surface", "surface-secondary", "surface-hover"], "text": ["text", "text-light", "text-muted", "text-inverse"], "borders": ["border", "border-light", "border-dark"], "primary": ["primary-light"], "status": ["success-light", "error-light", "warning-light", "info-light"], "overlay": ["overlay"], "shadows": ["shadow-sm", "shadow-base", "shadow-md", "shadow-lg", "shadow-xl"]} },
+    "typography": { "prefixes": ["--theme-font-", "--theme-font-size-", "--theme-font-weight-", "--theme-line-height-", "--theme-letter-spacing-"], "keys": "~48" },
+    "spacing": { "prefix": "--theme-space-", "keys": "~13", "scale": "0 to 24 (0rem to 6rem)" },
+    "borders": { "prefixes": ["--theme-border-width-", "--theme-radius-"], "keys": "~10" },
+    "shadows": { "prefix": "--theme-shadow-", "keys": "~6", "values": ["none", "sm", "base", "md", "lg", "xl"] },
+    "transitions": { "prefixes": ["--theme-transition-duration-", "--theme-transition-easing-"], "keys": "~6" },
+    "breakpoints": { "prefix": "--theme-breakpoint-", "values": {"sm": "640px", "md": "768px", "lg": "1024px", "xl": "1280px", "2xl": "1536px"} },
+    "z-index": { "prefix": "--theme-z-", "values": ["dropdown", "sticky", "fixed", "modal-backdrop", "modal", "popover", "tooltip"] },
+    "container": { "prefix": "--theme-container-", "keys": ["max-width", "padding"] },
+    "menu": { "prefix": "--theme-menu-", "keys": "~19" },
+    "header": { "prefix": "--theme-header-", "keys": "~10 + zones", "zones": ["top-bar", "main-header", "bottom-bar", "mega-menu-bar"] },
+    "footer": { "prefix": "--theme-footer-", "keys": "~10 + zones", "zones": ["top", "main", "bottom"] },
+    "search": { "prefix": "--theme-search-", "keys": "~47" },
+    "button_variants": { "prefix": "--theme-element-button-{variant}-", "variants": ["primary", "secondary", "neutral", "danger"], "styles": ["solid-bg", "solid-bg-hover", "solid-text", "solid-border", "outline-bg", "outline-bg-hover", "outline-text", "outline-border", "ghost-bg", "ghost-bg-hover", "ghost-text", "focus-ring-color"] },
+    "card_styles": { "prefix": "--theme-element-card-{style}-", "styles": ["default", "elevated", "bordered", "minimal"], "keys": ["bg", "border-width", "border-color", "border-color-hover", "shadow", "shadow-hover"] },
+    "elements": { "prefix": "--theme-element-{type}-", "types": ["hero", "button", "spacer", "card", "divider", "form", "accordion", "modal", "countdown", "testimonial", "blog", "product", "category", "voucher", "heading", "body", "image", "gallery", "alert", "image-accordion"] },
+    "widgets": { "prefix": "--theme-widget-{type}-", "types": ["account", "cart", "language", "currency", "logo", "announcement", "newsletter", "social", "social-share", "links", "text", "payment", "trust-badges", "contact"] }
+  },
+  "css_variable_mapping": {
+    "note": "Prefixes are NOT uniform. Use this lookup.",
+    "colors.*": "--theme-color-{key}",
+    "dark.*": "--theme-dark-{key}",
+    "typography.font-*": "--theme-font-{rest}",
+    "typography.font-size-*": "--theme-font-size-{rest}",
+    "typography.font-weight-*": "--theme-font-weight-{rest}",
+    "typography.line-height-*": "--theme-line-height-{rest}",
+    "typography.letter-spacing-*": "--theme-letter-spacing-{rest}",
+    "spacing.*": "--theme-space-{key}",
+    "borders.width-*": "--theme-border-width-{rest}",
+    "borders.radius-*": "--theme-radius-{rest}",
+    "shadows.*": "--theme-shadow-{key}",
+    "transitions.duration-*": "--theme-transition-duration-{rest}",
+    "transitions.easing-*": "--theme-transition-easing-{rest}",
+    "elements.{type}.{key}": "--theme-element-{type}-{key}",
+    "widgets.{type}.{key}": "--theme-widget-{type}-{key}",
+    "header.zones.{zone}.{key}": "--theme-header-zones-{zone}-{key}",
+    "footer.zones.{zone}.{key}": "--theme-footer-zones-{zone}-{key}"
+  },
+  "platform_classes": {
+    "product_cards": [".product-card", ".product-card__image", ".product-card__image img", ".product-card__img", ".product-card__overlay", ".product-card__content", ".product-card__title", ".product-card__price", ".product-card__price-current", ".product-card__price-original", ".product-card__badges", ".product-card__badge--sale", ".product-card__badge--new", ".product-card__badge--soldout", ".product-card__actions", ".product-card__action-btn", ".product-card__add-btn", ".product-card__button"],
+    "category_cards": [".category-card", ".category-card__image", ".category-card__overlay", ".category-card__content", ".category-card__title"],
+    "cards": [".card", ".card--default", ".card--elevated", ".card--bordered", ".card--minimal", ".card__image", ".card__body", ".card__title", ".card__text", ".card__meta"],
+    "buttons": [".btn", ".btn--primary", ".btn--secondary", ".btn--neutral", ".btn--danger", ".btn--primary-outline", ".btn--primary-ghost", ".btn--secondary-outline", ".btn--secondary-ghost", ".btn--neutral-outline", ".btn--neutral-ghost", ".btn--danger-outline", ".btn--danger-ghost", ".btn--sm", ".btn--md", ".btn--lg", ".btn--pill", ".btn--full"],
+    "header": [".site-header", ".site-header__inner", ".site-header__nav", ".site-header__nav-link", ".site-header__logo", ".site-header__icon", ".site-header__cart-count"],
+    "footer": [".site-footer", ".site-footer__grid", ".site-footer__link", ".site-footer__social-link", ".site-footer__column-title", ".site-footer__bottom"],
+    "search": [".search", ".search__input-wrapper", ".search__input", ".search__button", ".search__dropdown"],
+    "forms": [".form-group", ".form-label", ".form-input", ".form-select", ".form-checkbox", ".form-radio", ".form-error"],
+    "layout": [".container", ".grid", ".grid--2", ".grid--3", ".grid--4", ".section"],
+    "other": [".hero", ".breadcrumb", ".pagination", ".newsletter", ".alert", ".badge", ".section-header", ".empty-state", ".product-grid"]
+  },
+  "overrides_patterns": {
+    "external_fonts": "@import url('https://fonts.googleapis.com/css2?family=...&display=swap');",
+    "selection_color": "::selection { background-color: rgba(R, G, B, 0.15); color: var(--theme-color-text); }",
+    "card_hover_lift": ".product-card { transition: box-shadow 0.25s ease, transform 0.25s ease; }\n.product-card:hover { transform: translateY(-6px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 12px 24px -4px rgba(0,0,0,0.1); }",
+    "image_zoom": ".product-card__image img { transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }\n.product-card:hover .product-card__image img { transform: scale(1.06); }",
+    "nav_underline": ".site-header__nav-link { position: relative; }\n.site-header__nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 2px; background-color: var(--theme-color-primary); transform: scaleX(0); transform-origin: left; transition: transform 0.2s ease; }\n.site-header__nav-link:hover::after { transform: scaleX(1); }",
+    "squircle_corners": ".product-card, .category-card, .card { corner-shape: squircle; }",
+    "bevel_corners": ".product-card, .category-card { corner-shape: bevel; }",
+    "glassmorphism": ".product-card { background: rgba(31, 41, 55, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }",
+    "dark_theme_body": "html, body { background-color: var(--theme-color-background); color: var(--theme-color-text); }",
+    "dark_theme_scrollbar": "::-webkit-scrollbar { width: 6px; }\n::-webkit-scrollbar-track { background: var(--theme-color-background-secondary); }\n::-webkit-scrollbar-thumb { background: var(--theme-color-border-dark); border-radius: 2px; }",
+    "neon_glow": ".product-card { border: 1px solid rgba(6, 182, 212, 0.15); }\n.product-card:hover { border-color: rgba(6, 182, 212, 0.5); box-shadow: 0 0 1px rgba(6, 182, 212, 0.6), 0 0 8px rgba(6, 182, 212, 0.2); }"
+  },
+  "css_load_order": [
+    {"position": 1, "file": "theme CSS", "type": "link", "note": "Compiled theme CSS (tokens.css + reset.css + theme components.css + overrides.css) served as single <link>"},
+    {"position": 2, "file": "platform components.css", "type": "link", "note": "Platform UI components (buttons, cards, product cards)"},
+    {"position": 3, "file": "base.css", "type": "link", "note": "Platform base layout and utilities"},
+    {"position": 4, "file": "animations.css", "type": "link", "note": "Global animations"},
+    {"position": 5, "file": "element CSS", "type": "link", "note": "Form builder, element-specific stylesheets"},
+    {"position": 6, "file": "brand CSS", "type": "link", "note": "Merchant branding customizations"},
+    {"position": 7, "file": "header/footer CSS", "type": "link", "note": "Zone layouts, presets, widget styles"},
+    {"position": 8, "file": "widget CSS", "type": "link", "note": "Cart, search, mobile menu, footer extras"}
+  ],
+  "manifest_schema": {
+    "required": {
+      "name": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$", "length": "2-50"},
+      "version": {"type": "string", "pattern": "semver X.Y.Z"},
+      "display_name": {"type": "string", "length": "1-100"},
+      "description": {"type": "string", "length": "10-1000"},
+      "author": {"type": "string", "length": "1-100"}
+    },
+    "optional": ["sdk_version", "license", "categories", "preview_image", "screenshots", "tags", "min_platform_version", "max_platform_version", "demo_url", "documentation_url", "support_url", "changelog"],
+    "features": {
+      "type": "object",
+      "properties": {
+        "responsive": {"type": "boolean", "default": true},
+        "mobile_first": {"type": "boolean", "default": true},
+        "dark_mode": {"type": "boolean", "default": false, "note": "Set true to enable dark mode CSS generation. Dark themes (inherently dark) should set false."},
+        "rtl_support": {"type": "boolean", "default": false},
+        "accessibility": {"type": "string"}
+      }
+    }
+  },
+  "preset_structure": {
+    "header": {
+      "required_fields": ["name", "layout_type", "widget_placements"],
+      "layout_types": ["standard", "centered", "minimal"],
+      "zones": ["top-bar", "main-header", "bottom-bar"],
+      "positions": ["left", "center", "right", "full"],
+      "zone_naming": "{zone}_{position} (underscore separator)",
+      "widget_types": ["logo", "menu", "search", "cart", "account", "currency", "language", "social", "newsletter", "contact", "text", "links", "payment", "trust_badges", "announcement", "loyalty_balance", "loyalty_tier_badge", "site_variable", "custom"],
+      "layout_styles": ["promotional", "boutique", "split", "classic", "mega", "minimal"]
+    },
+    "footer": {
+      "zones": ["main-footer", "bottom-bar"],
+      "widget_types": "same as header"
+    }
+  },
+  "cli_commands": {
+    "init": "spwig init my-theme [--template blank|minimal|full] [--author 'Name']",
+    "dev": "spwig dev --shop http://localhost:8000",
+    "validate": "spwig validate [--verbose]",
+    "package": "spwig package [--output dir] [--no-validate]"
+  },
+  "common_gotchas": [
+    "Token values MUST be strings — '400' not 400",
+    "var() references MUST include --theme- prefix",
+    "CSS variable prefixes are NOT uniform — check mapping table",
+    "overrides.css max 1MB",
+    "Don't include node_modules/, dist/, .git/ in packages",
+    "Preset zone format: {zone-name}_{position} with underscore",
+    "corner-shape requires border-radius to be set",
+    "backdrop-filter needs -webkit- prefix for Safari",
+    "External @import URLs preserved; relative ones stripped",
+    "Platform components.css loads via <link> AFTER inline overrides"
+  ]
+}

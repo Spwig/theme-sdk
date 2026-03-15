@@ -277,28 +277,60 @@ export class DesignTokensValidator {
    * Validate typography tokens
    */
   private validateTypography(typography: Record<string, any>, tokensPath: string): void {
+    const validUnits = ['px', 'rem', 'em', '%', 'vh', 'vw'];
+
     for (const [name, value] of Object.entries(typography)) {
-      if (typeof value !== 'object' || value === null) {
+      if (typeof value !== 'string') {
         this.warnings.push(
-          createWarning('invalid_typography', `Typography "${name}" should be an object`, {
+          createWarning('invalid_typography', `Typography "${name}" must be a string value`, {
             path: tokensPath,
           })
         );
         continue;
       }
 
-      // Check for recommended properties
-      const recommendedProps = ['fontSize', 'lineHeight', 'fontWeight'];
-      const hasProps = recommendedProps.some((prop) => prop in value);
+      // Font family values, keyword values (normal, bold, left, etc.), and
+      // direction values (ltr, rtl) don't need unit validation
+      if (
+        name.startsWith('font-family') ||
+        name.startsWith('font-sans') ||
+        name.startsWith('font-serif') ||
+        name.startsWith('font-mono') ||
+        name.startsWith('font-variant') ||
+        name.startsWith('text-decoration') ||
+        name.startsWith('text-align') ||
+        name.startsWith('vertical-align') ||
+        name.startsWith('direction')
+      ) {
+        continue;
+      }
 
-      if (!hasProps) {
+      // Numeric-like values (font-weight, line-height) can be unitless
+      if (name.startsWith('font-weight') || name.startsWith('line-height')) {
+        if (value !== '0' && isNaN(Number(value)) && !validUnits.some((u) => value.endsWith(u))) {
+          this.warnings.push(
+            createWarning(
+              'invalid_typography_value',
+              `Typography "${name}" has an unusual value: "${value}"`,
+              {
+                path: tokensPath,
+                suggestion: 'Expected a number or a value with units (px, rem, em)',
+              }
+            )
+          );
+        }
+        continue;
+      }
+
+      // Size/spacing-like values should have CSS units or be "0"
+      if (value !== '0' && !validUnits.some((u) => value.endsWith(u))) {
         this.warnings.push(
           createWarning(
-            'incomplete_typography',
-            `Typography "${name}" is missing recommended properties`,
+            'invalid_typography_value',
+            `Typography "${name}" has an unusual value: "${value}"`,
             {
               path: tokensPath,
-              suggestion: 'Add fontSize, lineHeight, and/or fontWeight',
+              suggestion: `Expected a value with units (${validUnits.join(', ')})`,
             }
           )
         );

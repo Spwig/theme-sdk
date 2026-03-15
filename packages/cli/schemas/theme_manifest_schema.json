@@ -59,11 +59,46 @@
     "screenshots": {
       "type": "array",
       "items": {
-        "type": "string",
-        "pattern": "^.+\\.(png|jpg|jpeg|webp)$"
+        "type": "object",
+        "required": ["file"],
+        "properties": {
+          "file": {
+            "type": "string",
+            "pattern": "^.+\\.(png|jpg|jpeg|webp)$",
+            "description": "Screenshot file path relative to theme root"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Display title for the screenshot (e.g., 'Home', 'Mobile — Product')"
+          }
+        },
+        "additionalProperties": false
       },
-      "maxItems": 10,
-      "description": "Screenshot filenames for theme showcase (recommended: 1200x800px, max 5MB each)"
+      "maxItems": 12,
+      "description": "Screenshot entries for theme showcase (desktop: 1440x900, mobile: 780x1688)"
+    },
+    "videos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file"],
+        "properties": {
+          "file": {
+            "type": "string",
+            "pattern": "^.+\\.(webm|mp4)$",
+            "description": "Video file path relative to theme root"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Display title for the video"
+          }
+        },
+        "additionalProperties": false
+      },
+      "maxItems": 2,
+      "description": "Video entries for theme showcase (max 20MB each, webm or mp4)"
     },
     "demo_url": {
       "type": "string",
@@ -150,11 +185,35 @@
       "description": "Pre-defined color schemes for theme"
     },
     "features": {
-      "type": "array",
-      "items": {
-        "type": "string"
+      "type": "object",
+      "properties": {
+        "responsive": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether the theme supports responsive design"
+        },
+        "mobile_first": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether the theme uses mobile-first design approach"
+        },
+        "dark_mode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether this theme provides dark mode tokens. Inherently dark themes should set this to false."
+        },
+        "rtl_support": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the theme supports right-to-left languages"
+        },
+        "accessibility": {
+          "type": "string",
+          "description": "Accessibility standard compliance (e.g., 'WCAG 2.1 AA')"
+        }
       },
-      "description": "List of theme features for marketing"
+      "additionalProperties": true,
+      "description": "Theme feature flags indicating capabilities"
     },
     "min_platform_version": {
       "type": "string",
@@ -203,6 +262,97 @@
       "type": "string",
       "pattern": "^sha256:[a-f0-9]{64}$",
       "description": "SHA256 checksum of package contents (added during packaging)"
+    },
+    "author_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the theme author's website (displayed in marketplace)"
+    },
+    "design_tokens": {
+      "type": "string",
+      "description": "Path to the design tokens file (e.g., 'tokens.json')"
+    },
+    "assets": {
+      "type": "object",
+      "properties": {
+        "css": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "CSS file paths included in the theme"
+        },
+        "js": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "JavaScript file paths included in the theme"
+        },
+        "critical_css": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Critical CSS paths keyed by page type (e.g., 'home', 'product')"
+        }
+      },
+      "additionalProperties": true,
+      "description": "Theme asset file references (CSS, JS, critical CSS)"
+    },
+    "bundled_components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "name", "path"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["header", "footer", "section", "widget"],
+            "description": "Component type"
+          },
+          "name": {
+            "type": "string",
+            "description": "Component identifier"
+          },
+          "path": {
+            "type": "string",
+            "description": "Path to the component within the theme package"
+          }
+        }
+      },
+      "description": "Components bundled with the theme (headers, footers, sections)"
+    },
+    "page_schemas": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Page schema paths keyed by page type"
+        },
+        {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Array of page schema file paths (legacy format)"
+        }
+      ],
+      "description": "Page layout schema definitions (optional, legacy feature)"
+    },
+    "external_dependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "string" },
+          "cdn": { "type": "string", "format": "uri" },
+          "integrity": { "type": "string" }
+        }
+      },
+      "description": "External dependencies required by the theme (e.g., icon libraries, fonts)"
+    },
+    "deprecated": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this theme version is deprecated"
+    },
+    "deprecation_message": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Message explaining why this version is deprecated and what to upgrade to"
     }
   },
   "additionalProperties": false

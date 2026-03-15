@@ -1,9 +1,200 @@
 /*
  * Starter Theme — CSS Overrides
  *
- * Use this file for structural CSS that goes beyond what tokens can express.
- * Token values are automatically converted to CSS variables (--theme-*).
+ * Use this file for visual effects beyond what tokens can express:
+ * hover animations, corner shapes, glassmorphism, neon glows, etc.
  *
- * This file is optional. If your theme only needs token changes,
- * you can safely delete it.
+ * Loaded after tokens.css — your rules here override token-generated styles.
+ * External @import statements (e.g. Google Fonts) are preserved by the platform.
+ *
+ * See docs/CSS_OVERRIDES_GUIDE.md for the full guide.
+ * See docs/COMPONENT_CLASSES.md for all targetable platform classes.
  */
+
+
+/* ============================================================
+   EXAMPLE: Load external fonts
+   ============================================================ */
+
+/* @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap'); */
+
+
+/* ============================================================
+   EXAMPLE: Selection color (brand your text highlights)
+   ============================================================ */
+
+/* ::selection {
+  background-color: rgba(37, 99, 235, 0.15);
+  color: var(--theme-color-text);
+} */
+
+
+/* ============================================================
+   EXAMPLE: Product card hover effects
+   ============================================================ */
+
+/* .product-card {
+  transition:
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+} */
+
+/* .product-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.07),
+    0 12px 24px -4px rgba(0, 0, 0, 0.1);
+} */
+
+
+/* ============================================================
+   EXAMPLE: Slow image zoom on product card hover
+   ============================================================ */
+
+/* .product-card__image img,
+.product-card__img {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.product-card:hover .product-card__image img,
+.product-card:hover .product-card__img {
+  transform: scale(1.06);
+} */
+
+
+/* ============================================================
+   EXAMPLE: Category card overlay on hover
+   ============================================================ */
+
+/* .category-card__overlay {
+  transition: background 0.3s ease;
+}
+
+.category-card:hover .category-card__overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.5) 0%,
+    transparent 60%
+  );
+} */
+
+
+/* ============================================================
+   EXAMPLE: Button gradient depth
+   ============================================================ */
+
+/* .btn--primary {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 100%
+  );
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.18) 0%,
+    transparent 100%
+  );
+} */
+
+
+/* ============================================================
+   EXAMPLE: Nav link underline animation
+   ============================================================ */
+
+/* .site-header__nav-link {
+  position: relative;
+}
+
+.site-header__nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--theme-color-primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s var(--theme-transition-easing-default);
+}
+
+.site-header__nav-link:hover::after {
+  transform: scaleX(1);
+} */
+
+
+/* ============================================================
+   EXAMPLE: Squircle corners (progressive enhancement)
+   Super-rounded iOS-style corners. Chrome 139+ only,
+   falls back gracefully to standard border-radius.
+   ============================================================ */
+
+/* .product-card,
+.category-card,
+.card {
+  corner-shape: squircle;
+}
+
+.btn--primary,
+.btn--secondary {
+  corner-shape: squircle;
+} */
+
+
+/* ============================================================
+   EXAMPLE: Bevel corners (progressive enhancement)
+   Angular diagonal cuts for a sci-fi / HUD aesthetic.
+   ============================================================ */
+
+/* .product-card,
+.category-card {
+  corner-shape: bevel;
+} */
+
+
+/* ============================================================
+   EXAMPLE: Glassmorphism (frosted glass cards)
+   ============================================================ */
+
+/* .product-card {
+  background: rgba(31, 41, 55, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+} */
+
+
+/* ============================================================
+   EXAMPLE: Dark theme body + scrollbar + selection
+   Only needed for dark themes that override background/text.
+   ============================================================ */
+
+/* html,
+body {
+  background-color: var(--theme-color-background);
+  color: var(--theme-color-text);
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--theme-color-background-secondary); }
+::-webkit-scrollbar-thumb { background: var(--theme-color-border-dark); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--theme-color-primary); }
+
+::selection {
+  background-color: rgba(96, 165, 250, 0.25);
+  color: var(--theme-color-text);
+} */
+
+
+/* ============================================================
+   EXAMPLE: Responsive adjustments
+   ============================================================ */
+
+/* @media (max-width: 768px) {
+  .product-card:hover {
+    transform: none;
+  }
+} */

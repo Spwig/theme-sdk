@@ -1,12 +1,12 @@
 {
-  "name": "Classic E-commerce",
-  "description": "Traditional online store layout with search bar, actions, and navigation bar",
-  "layout_type": "classic",
+  "name": "Mega Menu Store",
+  "description": "Perfect for large catalogs with expandable mega menu navigation",
+  "layout_type": "mega",
   "is_sticky": true,
   "enable_notification_zone": true,
   "zone_layouts": {
     "main-header": ["left", "center", "right"],
-    "bottom-bar": ["full"]
+    "mega-menu-bar": ["full"]
   },
   "widget_placements": [
     {"widget_type": "logo", "zone": "main-header_left", "order": 0},
@@ -14,6 +14,6 @@
     {"widget_type": "cart", "zone": "main-header_right", "order": 0},
     {"widget_type": "account", "zone": "main-header_right", "order": 1},
     {"widget_type": "language", "zone": "main-header_right", "order": 2},
-    {"widget_type": "menu", "zone": "bottom-bar_full", "order": 0}
+    {"widget_type": "menu", "zone": "mega-menu-bar_full", "order": 0}
   ]
 }

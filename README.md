@@ -82,7 +82,7 @@ Create a new theme with interactive prompts.
 | `-a, --author <name>` | Author name |
 | `-d, --description <text>` | Theme description |
 | `-l, --license <type>` | License (MIT, Apache-2.0, GPL-3.0, Proprietary) |
-| `-t, --template <type>` | Template: basic, standard, or complete |
+| `-t, --template <type>` | Template: blank, minimal, or full (default: full) |
 | `--no-git` | Skip git initialization |
 
 ### `spwig validate [path]`
@@ -113,7 +113,11 @@ Start a development server for live preview.
 
 - [Getting Started](docs/GETTING_STARTED.md) -- First theme creation walkthrough
 - [Design Tokens](docs/DESIGN_TOKENS.md) -- Complete token reference
+- [CSS Overrides Guide](docs/CSS_OVERRIDES_GUIDE.md) -- Hover effects, corner shapes, glassmorphism, dark themes
+- [Component Classes](docs/COMPONENT_CLASSES.md) -- All platform CSS classes you can target
+- [CSS Load Order](docs/CSS_LOAD_ORDER.md) -- Understanding the stylesheet cascade
 - [Presets](docs/PRESETS.md) -- Header and footer preset development
+- [LLM Context Files](llm-context/) -- Drop-in context for AI-assisted development
 
 ## Development
 

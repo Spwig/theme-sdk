@@ -1,16 +1,19 @@
 {
   "name": "{{displayName}} Header",
-  "description": "Custom header preset for {{displayName}} theme",
+  "description": "Classic header for {{displayName}} theme with search bar, utility icons, and navigation bar",
   "layout_type": "classic",
   "is_sticky": true,
-  "enable_notification_zone": false,
+  "enable_notification_zone": true,
   "zone_layouts": {
-    "main-header": ["left", "center", "right"]
+    "main-header": ["left", "center", "right"],
+    "bottom-bar": ["full"]
   },
   "widget_placements": [
     {"widget_type": "logo", "zone": "main-header_left", "order": 0},
     {"widget_type": "search", "zone": "main-header_center", "order": 0},
     {"widget_type": "cart", "zone": "main-header_right", "order": 0},
-    {"widget_type": "account", "zone": "main-header_right", "order": 1}
+    {"widget_type": "account", "zone": "main-header_right", "order": 1},
+    {"widget_type": "language", "zone": "main-header_right", "order": 2},
+    {"widget_type": "menu", "zone": "bottom-bar_full", "order": 0}
   ]
 }

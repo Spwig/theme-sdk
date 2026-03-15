@@ -1,0 +1,16 @@
+{
+  "name": "Minimal Startup",
+  "description": "Clean, modern single-row layout perfect for SaaS and tech companies",
+  "layout_type": "minimal",
+  "is_sticky": true,
+  "enable_notification_zone": false,
+  "zone_layouts": {
+    "main-header": ["left", "right"]
+  },
+  "widget_placements": [
+    {"widget_type": "logo", "zone": "main-header_left", "order": 0},
+    {"widget_type": "menu", "zone": "main-header_right", "order": 0},
+    {"widget_type": "cart", "zone": "main-header_right", "order": 1},
+    {"widget_type": "account", "zone": "main-header_right", "order": 2}
+  ]
+}

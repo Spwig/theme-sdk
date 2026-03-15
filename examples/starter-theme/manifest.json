@@ -1,5 +1,7 @@
 {
   "name": "starter-theme",
+  "slug": "starter-theme",
+  "component_type": "theme",
   "version": "2.0.0",
   "display_name": "Starter Theme",
   "description": "A clean, minimal starter theme for Spwig eCommerce. Perfect starting point for custom theme development.",
@@ -10,12 +12,13 @@
   "preview_image": "preview.png",
   "tags": ["minimal", "starter", "clean", "responsive"],
   "categories": ["general"],
-  "features": [
-    "Responsive design",
-    "Clean typography",
-    "Accessible focus states",
-    "Dark-friendly color tokens"
-  ],
+  "features": {
+    "responsive": true,
+    "mobile_first": true,
+    "dark_mode": true,
+    "rtl_support": false,
+    "accessibility": "WCAG 2.1 AA"
+  },
   "changelog": [
     {
       "version": "2.0.0",

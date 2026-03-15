@@ -1,18 +1,22 @@
 {
   "name": "{{themeName}}",
+  "slug": "{{themeName}}",
+  "component_type": "theme",
   "version": "1.0.0",
   "sdk_version": "2.0",
   "display_name": "{{displayName}}",
   "description": "{{description}}",
   "author": "{{author}}",
   "license": "{{license}}",
-  "min_platform_version": "2.0.0",
+  "min_platform_version": "1.0.0",
   "tags": ["ecommerce", "modern"],
   "categories": ["general"],
-  "features": [
-    "Responsive design",
-    "Mobile-first",
-    "Customizable via design tokens"
-  ],
+  "features": {
+    "responsive": true,
+    "mobile_first": true,
+    "dark_mode": false,
+    "rtl_support": false,
+    "accessibility": "WCAG 2.1 AA"
+  },
   "preview_image": "preview.png"
 }

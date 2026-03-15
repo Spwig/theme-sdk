@@ -1,5 +1,9 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
 import chalk from 'chalk';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import inquirer from 'inquirer';
 import ora from 'ora';
 import {
@@ -151,11 +155,12 @@ export async function initCommand(themeName: string | undefined, options: InitOp
     console.log(chalk.dim(`  ${themeSlug}/`));
     console.log(chalk.dim('  \u251c\u2500\u2500 manifest.json'));
     console.log(chalk.dim('  \u251c\u2500\u2500 tokens.json'));
+    console.log(chalk.dim('  \u251c\u2500\u2500 overrides.css'));
     console.log(chalk.dim('  \u251c\u2500\u2500 presets/'));
-    console.log(chalk.dim('  \u2502   \u251c\u2500\u2500 header.json'));
-    console.log(chalk.dim('  \u2502   \u2514\u2500\u2500 footer.json'));
-    console.log(chalk.dim('  \u251c\u2500\u2500 css/'));
-    console.log(chalk.dim('  \u2502   \u2514\u2500\u2500 theme.css'));
+    console.log(chalk.dim('  \u2502   \u251c\u2500\u2500 headers/'));
+    console.log(chalk.dim('  \u2502   \u2502   \u2514\u2500\u2500 default.json'));
+    console.log(chalk.dim('  \u2502   \u2514\u2500\u2500 footers/'));
+    console.log(chalk.dim('  \u2502       \u2514\u2500\u2500 default.json'));
     console.log(chalk.dim('  \u2514\u2500\u2500 README.md'));
 
     // Show next steps
@@ -258,41 +263,45 @@ async function createThemeStructure(
   );
 
   if (template === 'minimal') {
-    // Minimal: tokens + empty presets and css directories
-    await ensureDirectory(path.join(themePath, 'presets'));
-    await ensureDirectory(path.join(themePath, 'css'));
+    // Minimal: tokens + empty overrides.css + empty presets dirs
+    await ensureDirectory(path.join(themePath, 'presets', 'headers'));
+    await ensureDirectory(path.join(themePath, 'presets', 'footers'));
+    await fs.writeFile(path.join(themePath, 'overrides.css'), '');
     return;
   }
 
-  // Full template: complete structure with presets and starter CSS
+  // Full template: complete structure with presets and starter overrides
 
-  // Create presets
-  await ensureDirectory(path.join(themePath, 'presets'));
+  // Create presets (platform expects presets/headers/*.json and presets/footers/*.json)
+  await ensureDirectory(path.join(themePath, 'presets', 'headers'));
+  await ensureDirectory(path.join(themePath, 'presets', 'footers'));
   await writeFromTemplate(
     path.join(templatesDir, 'presets/header.json.template'),
-    path.join(themePath, 'presets/header.json'),
+    path.join(themePath, 'presets/headers/default.json'),
     variables
   );
   await writeFromTemplate(
     path.join(templatesDir, 'presets/footer.json.template'),
-    path.join(themePath, 'presets/footer.json'),
+    path.join(themePath, 'presets/footers/default.json'),
     variables
   );
 
-  // Create CSS directory with starter theme.css
-  await ensureDirectory(path.join(themePath, 'css'));
-  const starterCSS = `/* ${displayName} - Custom CSS Overrides */
-/* 
- * This file is loaded after token-generated styles.
- * Use it for advanced customizations that go beyond design tokens.
+  // Create overrides.css at theme root
+  const starterCSS = `/* ${displayName} — CSS Overrides */
+/*
+ * Use this file for visual effects that go beyond what design tokens express:
+ * hover animations, corner shapes, glassmorphism, neon glows, etc.
  *
- * Token-generated CSS variables are available as:
- *   --theme-color-primary, --theme-color-secondary, etc.
- *   --theme-font-size-base, --theme-font-family-body, etc.
- *   --theme-space-4, --theme-radius-md, etc.
+ * Loaded after tokens.css — your rules here override token-generated styles.
+ * Platform component classes you can target:
+ *   .product-card, .category-card, .card, .btn--primary, .site-header__nav-link
  *
- * See tokens.json for the complete list of available tokens.
+ * Token CSS variables are available:
+ *   var(--theme-color-primary), var(--theme-radius-md), var(--theme-shadow-lg), etc.
+ *
+ * External @imports (e.g. Google Fonts) are preserved by the platform.
+ * See docs/CSS_OVERRIDES_GUIDE.md for patterns and examples.
  */
 `;
-  await fs.writeFile(path.join(themePath, 'css/theme.css'), starterCSS);
+  await fs.writeFile(path.join(themePath, 'overrides.css'), starterCSS);
 }

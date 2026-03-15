@@ -1,7 +1,7 @@
 {
-  "name": "Classic E-commerce",
-  "description": "Traditional online store layout with search bar, actions, and navigation bar",
-  "layout_type": "classic",
+  "name": "Centered Boutique",
+  "description": "Elegant centered logo design perfect for fashion and lifestyle brands",
+  "layout_type": "boutique",
   "is_sticky": true,
   "enable_notification_zone": true,
   "zone_layouts": {
@@ -9,8 +9,8 @@
     "bottom-bar": ["full"]
   },
   "widget_placements": [
-    {"widget_type": "logo", "zone": "main-header_left", "order": 0},
-    {"widget_type": "search", "zone": "main-header_center", "order": 0},
+    {"widget_type": "search", "zone": "main-header_left", "order": 0},
+    {"widget_type": "logo", "zone": "main-header_center", "order": 0, "config": {"height": 60}},
     {"widget_type": "cart", "zone": "main-header_right", "order": 0},
     {"widget_type": "account", "zone": "main-header_right", "order": 1},
     {"widget_type": "language", "zone": "main-header_right", "order": 2},

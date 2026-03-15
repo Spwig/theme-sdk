@@ -8,27 +8,36 @@ Design tokens are the foundation of your theme. They define colors, typography, 
 
 1. You define values in `tokens.json`
 2. The platform converts them to CSS variables when the theme is activated
-3. All platform templates reference these CSS variables
+3. All platform components reference these CSS variables
 4. Changing a token value changes every element that uses it
+
+For effects beyond what tokens can express (hover animations, corner shapes, glassmorphism), use [`overrides.css`](./CSS_OVERRIDES_GUIDE.md). See [CSS Load Order](./CSS_LOAD_ORDER.md) for how tokens and overrides interact in the cascade.
 
 ### Naming Convention
 
-Token keys use underscores or hyphens. The platform maps them to CSS variables:
+Token keys use hyphens (kebab-case). The platform maps them to CSS variables — note that prefixes are NOT uniform across categories:
 
 | Token Category | Token Key | CSS Variable |
 |---------------|-----------|-------------|
 | `colors` | `primary` | `--theme-color-primary` |
-| `colors` | `primary_hover` | `--theme-color-primary-hover` |
-| `typography` | `font_family_body` | `--theme-typo-font-family-body` |
+| `colors` | `primary-hover` | `--theme-color-primary-hover` |
+| `dark` | `background` | `--theme-dark-background` (overrides `--theme-color-background` in dark mode) |
+| `typography` | `font-family-body` | `--theme-font-family-body` |
+| `typography` | `font-size-lg` | `--theme-font-size-lg` |
 | `spacing` | `md` | `--theme-space-md` |
-| `borders` | `radius_md` | `--theme-border-radius-md` |
+| `borders` | `radius-md` | `--theme-radius-md` |
 | `shadows` | `lg` | `--theme-shadow-lg` |
-| `transitions` | `normal` | `--theme-transition-normal` |
+| `transitions` | `duration-fast` | `--theme-transition-duration-fast` |
 | `breakpoints` | `md` | `--theme-breakpoint-md` |
-| `container` | `max_width` | `--theme-container-max-width` |
-| `elements.button` | `radius` | `--theme-element-button-radius` |
+| `container` | `max-width` | `--theme-container-max-width` |
 | `menu` | `text-color` | `--theme-menu-text-color` |
+| `header` | `background` | `--theme-header-background` |
+| `footer` | `background` | `--theme-footer-background` |
 | `search` | `bg` | `--theme-search-bg` |
+| `button-primary` | `solid-bg` | `--theme-element-button-primary-solid-bg` |
+| `card-elevated` | `shadow` | `--theme-element-card-elevated-shadow` |
+| `elements.button` | `radius` | `--theme-element-button-radius` |
+| `widgets.cart` | `badge-bg` | `--theme-widget-cart-badge-bg` |
 
 ---
 
@@ -42,37 +51,115 @@ Brand colors, backgrounds, text colors, semantic colors, and utility colors.
 {
   "colors": {
     "primary": "#2563eb",
-    "primary_hover": "#1d4ed8",
-    "primary_light": "#dbeafe",
-    "primary_dark": "#1e40af",
+    "primary-hover": "#1d4ed8",
+    "primary-light": "#dbeafe",
+    "primary-dark": "#1e40af",
     "secondary": "#64748b",
-    "secondary_hover": "#475569",
+    "secondary-hover": "#475569",
     "accent": "#10b981",
-    "accent_hover": "#059669",
+    "accent-hover": "#059669",
     "background": "#ffffff",
+    "background-secondary": "#f9fafb",
+    "background-tertiary": "#f3f4f6",
     "surface": "#f9fafb",
-    "surface_hover": "#f3f4f6",
+    "surface-secondary": "#f3f4f6",
+    "surface-hover": "#e5e7eb",
     "text": "#1f2937",
-    "text_secondary": "#6b7280",
-    "text_muted": "#9ca3af",
-    "text_inverted": "#ffffff",
+    "text-light": "#6b7280",
+    "text-muted": "#9ca3af",
+    "text-inverse": "#ffffff",
     "border": "#e5e7eb",
-    "border_dark": "#d1d5db",
+    "border-light": "#f3f4f6",
+    "border-dark": "#d1d5db",
     "error": "#ef4444",
-    "error_bg": "#fef2f2",
+    "error-light": "#fef2f2",
     "success": "#22c55e",
-    "success_bg": "#f0fdf4",
+    "success-light": "#f0fdf4",
     "warning": "#f59e0b",
-    "warning_bg": "#fffbeb",
+    "warning-light": "#fffbeb",
     "info": "#3b82f6",
-    "info_bg": "#eff6ff",
-    "overlay": "rgba(0, 0, 0, 0.5)",
-    "shadow_color": "rgba(0, 0, 0, 0.1)"
+    "info-light": "#eff6ff",
+    "overlay": "rgba(0, 0, 0, 0.5)"
   }
 }
 ```
 
 Supported color formats: hex (`#RRGGBB`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
+
+---
+
+### dark
+
+Dark mode overrides for system dark mode support (`@media (prefers-color-scheme: dark)` and `[data-theme="dark"]`). Dark tokens use the **same key names** as the `colors` and `shadows` sections. When the user's OS has dark mode enabled, each dark token value replaces its corresponding light-mode CSS variable.
+
+Set `features.dark_mode: true` in your manifest to enable dark mode generation. Themes without dark mode support should set this to `false` — the platform will auto-force light mode to prevent broken rendering.
+
+```json
+{
+  "dark": {
+    "background": "#111827",
+    "background-secondary": "#1F2937",
+    "background-tertiary": "#374151",
+    "surface": "#1F2937",
+    "surface-secondary": "#374151",
+    "surface-hover": "#4B5563",
+    "text": "#F9FAFB",
+    "text-light": "#D1D5DB",
+    "text-muted": "#9CA3AF",
+    "text-inverse": "#1f2937",
+    "border": "#374151",
+    "border-light": "#4B5563",
+    "border-dark": "#1F2937",
+    "primary-light": "#1e3a5f",
+    "success-light": "#065f46",
+    "error-light": "#7f1d1d",
+    "warning-light": "#78350f",
+    "info-light": "#1e3a5f",
+    "overlay": "rgba(0, 0, 0, 0.7)",
+    "shadow-sm": "0 1px 2px 0 rgba(0, 0, 0, 0.3)",
+    "shadow-base": "0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.3)",
+    "shadow-md": "0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3)",
+    "shadow-lg": "0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3)",
+    "shadow-xl": "0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3)"
+  }
+}
+```
+
+#### Token Categories
+
+| Category | Keys | Purpose |
+|----------|------|---------|
+| Backgrounds | `background`, `background-secondary`, `background-tertiary` | Page and section backgrounds |
+| Surfaces | `surface`, `surface-secondary`, `surface-hover` | Card and panel backgrounds |
+| Text | `text`, `text-light`, `text-muted`, `text-inverse` | Text color overrides |
+| Borders | `border`, `border-light`, `border-dark` | Border color overrides |
+| Primary | `primary-light` | Focus rings and outline button hover backgrounds |
+| Status | `success-light`, `error-light`, `warning-light`, `info-light` | Alert and status backgrounds (darker tints for dark backgrounds) |
+| Overlay | `overlay` | Modal/overlay backdrop |
+| Shadows | `shadow-sm`, `shadow-base`, `shadow-md`, `shadow-lg`, `shadow-xl` | Higher opacity shadows for visibility on dark backgrounds |
+
+#### How It Works
+
+Dark token keys map directly to CSS variables:
+- Color tokens (e.g., `dark.background`) override `--theme-color-background`
+- Shadow tokens (e.g., `dark.shadow-md`) override `--theme-shadow-md`
+
+The platform generates:
+1. `@media (prefers-color-scheme: dark)` — auto-applies when user's OS has dark mode
+2. `[data-theme="dark"]` — manual dark mode toggle
+3. `[data-theme="light"]` — force light mode (restores original values)
+
+#### Design Guidelines
+
+- **Brand colors stay unchanged** — `primary`, `secondary`, `accent` and their hover variants don't need dark overrides
+- **Status base colors stay unchanged** — `success`, `error`, `warning`, `info` don't need overrides
+- **Only override `-light` variants** — status `-light` colors need dark tints instead of pastels (e.g., `#065f46` instead of `#d1fae5`)
+- **Increase shadow opacity** — shadows need 3-4x opacity on dark backgrounds to be visible
+- **Invert text-inverse** — on dark backgrounds, `text-inverse` should be the dark text color
+
+#### When NOT to Use Dark Mode
+
+Themes that are inherently dark (dark backgrounds by default) should set `features.dark_mode: false`. They don't need a toggle — they ARE the dark mode. Only themes with light backgrounds that want to offer a dark alternative should enable dark mode.
 
 ---
 
@@ -83,27 +170,29 @@ Font families, sizes, weights, line heights, and letter spacing.
 ```json
 {
   "typography": {
-    "font_family_heading": "system-ui, -apple-system, sans-serif",
-    "font_family_body": "system-ui, -apple-system, sans-serif",
-    "font_family_mono": "'SF Mono', 'Fira Code', monospace",
-    "font_size_xs": "0.75rem",
-    "font_size_sm": "0.875rem",
-    "font_size_base": "1rem",
-    "font_size_lg": "1.125rem",
-    "font_size_xl": "1.25rem",
-    "font_size_2xl": "1.5rem",
-    "font_size_3xl": "2rem",
-    "font_size_4xl": "2.5rem",
-    "font_weight_normal": "400",
-    "font_weight_medium": "500",
-    "font_weight_semibold": "600",
-    "font_weight_bold": "700",
-    "line_height_tight": "1.25",
-    "line_height_normal": "1.5",
-    "line_height_relaxed": "1.75",
-    "letter_spacing_tight": "-0.025em",
-    "letter_spacing_normal": "0",
-    "letter_spacing_wide": "0.05em"
+    "font-family-heading": "system-ui, -apple-system, sans-serif",
+    "font-family-body": "system-ui, -apple-system, sans-serif",
+    "font-sans": "system-ui, -apple-system, sans-serif",
+    "font-serif": "Georgia, 'Times New Roman', serif",
+    "font-mono": "'SF Mono', 'Fira Code', monospace",
+    "font-size-xs": "0.75rem",
+    "font-size-sm": "0.875rem",
+    "font-size-base": "1rem",
+    "font-size-lg": "1.125rem",
+    "font-size-xl": "1.25rem",
+    "font-size-2xl": "1.5rem",
+    "font-size-3xl": "2rem",
+    "font-size-4xl": "2.5rem",
+    "font-weight-normal": "400",
+    "font-weight-medium": "500",
+    "font-weight-semibold": "600",
+    "font-weight-bold": "700",
+    "line-height-tight": "1.25",
+    "line-height-normal": "1.5",
+    "line-height-relaxed": "1.75",
+    "letter-spacing-tight": "-0.025em",
+    "letter-spacing-normal": "0",
+    "letter-spacing-wide": "0.05em"
   }
 }
 ```
@@ -125,8 +214,8 @@ Margin and padding scale. Used throughout the platform for consistent spacing.
     "2xl": "3rem",
     "3xl": "4rem",
     "4xl": "6rem",
-    "section_y": "4rem",
-    "section_x": "1.5rem"
+    "section-y": "4rem",
+    "section-x": "1.5rem"
   }
 }
 ```
@@ -140,15 +229,15 @@ Border radius and width values.
 ```json
 {
   "borders": {
-    "radius_none": "0",
-    "radius_sm": "0.25rem",
-    "radius_md": "0.5rem",
-    "radius_lg": "0.75rem",
-    "radius_xl": "1rem",
-    "radius_full": "9999px",
-    "width_thin": "1px",
-    "width_medium": "2px",
-    "width_thick": "3px"
+    "radius-none": "0",
+    "radius-sm": "0.25rem",
+    "radius-md": "0.5rem",
+    "radius-lg": "0.75rem",
+    "radius-xl": "1rem",
+    "radius-full": "9999px",
+    "width-thin": "1px",
+    "width-medium": "2px",
+    "width-thick": "3px"
   }
 }
 ```
@@ -213,7 +302,7 @@ Page container settings.
 ```json
 {
   "container": {
-    "max_width": "1280px",
+    "max-width": "1280px",
     "padding": "1.5rem"
   }
 }
@@ -229,7 +318,7 @@ Default styling for page builder elements. Each element category is a nested obj
 {
   "elements": {
     "button": {
-      "radius": "var(--theme-border-radius-md)",
+      "radius": "var(--theme-radius-md)",
       "padding-x-sm": "0.75rem",
       "padding-y-sm": "0.375rem",
       "padding-x-md": "1.25rem",
@@ -241,33 +330,38 @@ Default styling for page builder elements. Each element category is a nested obj
     "card": {
       "bg": "var(--theme-color-background)",
       "border": "var(--theme-color-border)",
-      "radius": "var(--theme-border-radius-lg)",
+      "radius": "var(--theme-radius-lg)",
       "shadow": "var(--theme-shadow-sm)",
       "shadow-hover": "var(--theme-shadow-md)",
       "padding": "1.5rem"
     },
     "hero": {
+      "bg": "var(--theme-color-primary)",
       "min-height": "500px",
       "padding-y": "4rem",
       "padding-x": "2rem",
       "title-size": "3rem",
       "subtitle-size": "1.25rem",
+      "subtitle-color": "var(--theme-element-hero-text-color)",
       "overlay-color": "rgba(0, 0, 0, 0.4)"
     },
     "form": {
       "input-bg": "var(--theme-color-background)",
       "input-border": "var(--theme-color-border)",
       "input-focus-border": "var(--theme-color-primary)",
-      "input-radius": "var(--theme-border-radius-md)",
+      "input-radius": "var(--theme-radius-md)",
       "input-padding": "0.625rem 0.875rem",
       "label-color": "var(--theme-color-text)",
       "label-size": "0.875rem",
       "error-color": "var(--theme-color-error)"
     },
     "product": {
-      "card-radius": "var(--theme-border-radius-lg)",
+      "card-radius": "var(--theme-radius-lg)",
       "card-shadow": "var(--theme-shadow-sm)",
       "card-shadow-hover": "var(--theme-shadow-md)",
+      "button-bg": "var(--theme-color-primary)",
+      "button-color": "var(--theme-color-text-inverse)",
+      "button-bg-hover": "var(--theme-color-primary-hover)",
       "price-color": "var(--theme-color-text)",
       "sale-price-color": "var(--theme-color-error)",
       "grid-gap": "1.5rem"
@@ -317,7 +411,7 @@ Navigation menu styling tokens.
     "link-padding-y": "0.5rem",
     "font-size": "0.9375rem",
     "font-weight": "500",
-    "border-radius": "var(--theme-border-radius-md)",
+    "border-radius": "var(--theme-radius-md)",
     "animation-duration": "200ms"
   }
 }
@@ -335,13 +429,76 @@ Search component styling tokens.
     "bg": "var(--theme-color-surface)",
     "border": "var(--theme-color-border)",
     "focus-border": "var(--theme-color-primary)",
-    "radius": "var(--theme-border-radius-md)",
+    "radius": "var(--theme-radius-md)",
     "height": "2.5rem",
     "font-size": "0.9375rem",
     "icon-color": "var(--theme-color-text-muted)"
   }
 }
 ```
+
+---
+
+### button variants
+
+Button color variant tokens define colors for all button styles (solid, outline, ghost) across four color variants. These are top-level token categories (not nested under `elements`).
+
+**Variants:** `button-primary`, `button-secondary`, `button-neutral`, `button-danger`
+
+**CSS prefix:** `--theme-element-button-{variant}-{key}`
+
+```json
+{
+  "button-primary": {
+    "solid-bg": "var(--theme-color-primary)",
+    "solid-bg-hover": "var(--theme-color-primary-hover)",
+    "solid-text": "#ffffff",
+    "solid-border": "transparent",
+    "outline-bg": "transparent",
+    "outline-bg-hover": "var(--theme-color-primary-light)",
+    "outline-text": "var(--theme-color-primary)",
+    "outline-border": "var(--theme-color-primary)",
+    "ghost-bg": "transparent",
+    "ghost-bg-hover": "var(--theme-color-primary-light)",
+    "ghost-text": "var(--theme-color-primary)",
+    "focus-ring-color": "var(--theme-color-primary-light)"
+  }
+}
+```
+
+Each variant follows the same key structure. In CSS, `button-primary.solid-bg` becomes `--theme-element-button-primary-solid-bg`.
+
+---
+
+### card variants
+
+Card style variant tokens define visual treatment for four card styles. These are top-level token categories (not nested under `elements`).
+
+**Styles:** `card-default`, `card-elevated`, `card-bordered`, `card-minimal`
+
+**CSS prefix:** `--theme-element-card-{style}-{key}`
+
+```json
+{
+  "card-default": {
+    "bg": "var(--theme-color-background)",
+    "border-width": "1px",
+    "border-color": "var(--theme-color-border)",
+    "border-color-hover": "var(--theme-color-primary)",
+    "shadow": "var(--theme-shadow-sm)",
+    "shadow-hover": "var(--theme-shadow-md)"
+  },
+  "card-elevated": {
+    "bg": "var(--theme-color-background)",
+    "border-width": "0",
+    "border-color": "transparent",
+    "shadow": "var(--theme-shadow-md)",
+    "shadow-hover": "var(--theme-shadow-lg)"
+  }
+}
+```
+
+In CSS, `card-elevated.shadow` becomes `--theme-element-card-elevated-shadow`.
 
 ---
 

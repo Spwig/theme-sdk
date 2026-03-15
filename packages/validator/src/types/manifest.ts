@@ -32,11 +32,33 @@ export interface ColorScheme {
 }
 
 /**
+ * Theme feature flags
+ */
+export interface ThemeFeatures {
+  /** Whether the theme supports responsive design */
+  responsive?: boolean;
+  /** Whether the theme uses mobile-first design approach */
+  mobile_first?: boolean;
+  /** Whether this theme provides dark mode tokens */
+  dark_mode?: boolean;
+  /** Whether the theme supports right-to-left languages */
+  rtl_support?: boolean;
+  /** Accessibility standard compliance (e.g., 'WCAG 2.1 AA') */
+  accessibility?: string;
+  /** Allow additional feature flags */
+  [key: string]: boolean | string | undefined;
+}
+
+/**
  * Theme manifest structure
  */
 export interface ThemeManifest {
   /** Theme identifier (kebab-case) */
   name: string;
+  /** URL-safe slug identifier */
+  slug?: string;
+  /** Component type (always "theme" for themes) */
+  component_type?: string;
   /** Semantic version */
   version: string;
   /** Human-readable name */
@@ -51,8 +73,8 @@ export interface ThemeManifest {
   license?: 'MIT' | 'Apache-2.0' | 'GPL-3.0' | 'Proprietary';
   /** Preview image filename */
   preview_image?: string;
-  /** Screenshot filenames */
-  screenshots?: string[];
+  /** Screenshot entries (string path or object with file + optional title) */
+  screenshots?: Array<string | { file: string; title?: string }>;
   /** Demo URL */
   demo_url?: string;
   /** Documentation URL */
@@ -65,8 +87,8 @@ export interface ThemeManifest {
   categories?: string[];
   /** Color schemes */
   color_schemes?: ColorScheme[];
-  /** Feature list */
-  features?: string[];
+  /** Feature flags */
+  features?: ThemeFeatures;
   /** Minimum platform version */
   min_platform_version?: string;
   /** Maximum platform version */
@@ -79,6 +101,35 @@ export interface ThemeManifest {
   file_count?: number;
   /** Package checksum (added during packaging) */
   checksum?: string;
+  /** Author website URL (displayed in marketplace) */
+  author_url?: string;
+  /** Path to design tokens file (e.g., 'tokens.json') */
+  design_tokens?: string;
+  /** Theme asset file references */
+  assets?: {
+    css?: string[];
+    js?: string[];
+    critical_css?: Record<string, string>;
+    [key: string]: any;
+  };
+  /** Components bundled with the theme */
+  bundled_components?: Array<{
+    type: 'header' | 'footer' | 'section' | 'widget';
+    name: string;
+    path: string;
+  }>;
+  /** Page layout schema definitions (legacy) */
+  page_schemas?: Record<string, string> | string[];
+  /** External dependencies (icon libraries, fonts, etc.) */
+  external_dependencies?: Record<string, {
+    version?: string;
+    cdn?: string;
+    integrity?: string;
+  }>;
+  /** Whether this theme version is deprecated */
+  deprecated?: boolean;
+  /** Deprecation message explaining upgrade path */
+  deprecation_message?: string;
 }
 
 /**
@@ -108,6 +159,8 @@ export interface ElementTokens {
   blog?: Record<string, string>;
   /** Product display styling */
   product?: Record<string, string>;
+  /** Category page styling */
+  category?: Record<string, string>;
   /** Voucher/coupon code styling */
   voucher?: Record<string, string>;
   /** Heading element defaults */
@@ -126,30 +179,54 @@ export interface ElementTokens {
 export interface DesignTokens {
   /** Color palette */
   colors?: Record<string, string>;
-  /** Typography scale */
-  typography?: Record<string, any>;
+  /** Dark mode overrides (requires features.dark_mode: true) */
+  dark?: Record<string, string>;
+  /** Typography scale (font families, sizes, weights, line heights, letter spacing) */
+  typography?: Record<string, string>;
   /** Spacing scale */
   spacing?: Record<string, string>;
-  /** Breakpoints */
-  breakpoints?: Record<string, string>;
+  /** Border width and radius values */
+  borders?: Record<string, string>;
   /** Shadows */
   shadows?: Record<string, string>;
-  /** Border radius values */
-  borderRadius?: Record<string, string>;
-  /** Border width values */
-  borders?: Record<string, string>;
-  /** Transitions */
+  /** Transitions (duration and easing) */
   transitions?: Record<string, string>;
+  /** Breakpoints */
+  breakpoints?: Record<string, string>;
+  /** Responsive scaling tokens */
+  responsive?: Record<string, string>;
   /** Z-index values */
   'z-index'?: Record<string, string>;
   /** Container settings */
   container?: Record<string, string>;
   /** Menu tokens for navigation styling */
   menu?: Record<string, string>;
+  /** Header tokens (includes nested zones) */
+  header?: Record<string, any>;
+  /** Footer tokens (includes nested zones) */
+  footer?: Record<string, any>;
   /** Search component tokens */
   search?: Record<string, string>;
+  /** Button primary variant tokens */
+  'button-primary'?: Record<string, string>;
+  /** Button secondary variant tokens */
+  'button-secondary'?: Record<string, string>;
+  /** Button neutral variant tokens */
+  'button-neutral'?: Record<string, string>;
+  /** Button danger variant tokens */
+  'button-danger'?: Record<string, string>;
+  /** Card default style tokens */
+  'card-default'?: Record<string, string>;
+  /** Card elevated style tokens */
+  'card-elevated'?: Record<string, string>;
+  /** Card bordered style tokens */
+  'card-bordered'?: Record<string, string>;
+  /** Card minimal style tokens */
+  'card-minimal'?: Record<string, string>;
   /** Element-specific tokens for page builder elements */
   elements?: ElementTokens;
+  /** Widget tokens for header/footer widgets */
+  widgets?: Record<string, Record<string, string>>;
   /** Other design tokens */
   [key: string]: any;
 }
